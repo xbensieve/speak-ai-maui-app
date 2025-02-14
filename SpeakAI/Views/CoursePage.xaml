@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakAI.Views.CoursePage"
+             Title="CoursePage">
+    <VerticalStackLayout Padding="10">
+        <Label 
+        Text="Available Courses"
+        FontSize="24"
+        FontAttributes="Bold"
+        HorizontalOptions="Center"
+        VerticalOptions="Start" />
+
+        <Button Text="Refresh Courses"
+            Command="{Binding LoadCoursesCommand}"
+            BackgroundColor="Blue"
+            TextColor="White"
+            Margin="0,10,0,10"/>
+
+        <CollectionView ItemsSource="{Binding Courses}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="5" BackgroundColor="LightGray" CornerRadius="10">
+                        <VerticalStackLayout>
+                            <Label Text="{Binding CourseName}" FontSize="20" FontAttributes="Bold" />
+                            <Label Text="{Binding Description}" FontSize="16" TextColor="Gray" />
+                            <Label Text="{Binding MaxPoint, StringFormat='Max Points: {0}'}" FontSize="14" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>

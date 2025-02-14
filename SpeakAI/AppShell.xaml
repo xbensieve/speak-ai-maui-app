@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="SpeakAI.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:SpeakAI"
+    xmlns:views="clr-namespace:SpeakAI.Views"
+    Title="SpeakAI">
+
+    <Shell.Resources>
+        <Style TargetType="Shell">
+            <Setter Property="Shell.BackgroundColor" Value="#1E1E2E"/>
+            <Setter Property="Shell.TitleColor" Value="White"/>
+            <Setter Property="Shell.ForegroundColor" Value="White"/>
+            <Setter Property="Shell.DisabledColor" Value="#7D7D7D"/>
+            <Setter Property="Shell.UnselectedColor" Value="#B0B0B0"/>
+            <Setter Property="Shell.TabBarBackgroundColor" Value="#2C2C3E"/>
+            <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
+            <Setter Property="Shell.TabBarTitleColor" Value="White"/>
+            <Setter Property="Shell.TabBarUnselectedColor" Value="#A0A0A0"/>
+        </Style>
+    </Shell.Resources>
+    <TabBar>
+        <Tab Title="Home" Icon="home_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
+        </Tab>
+        <Tab Title="Explore" Icon="explore_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate views:CoursePage}" />
+        </Tab>
+        <Tab Title="Study" Icon="study_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate views:StudyPage}" />
+        </Tab>
+        <Tab Title="AI Tutor" Icon="ai_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate views:AITutorPage}" />
+        </Tab>
+        <Tab Title="Profile" Icon="profile_icon.png">
+            <ShellContent ContentTemplate="{DataTemplate views:ProfilePage}" />
+        </Tab>
+    </TabBar>
+</Shell>
