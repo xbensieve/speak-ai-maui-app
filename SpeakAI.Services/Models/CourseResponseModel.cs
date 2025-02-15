@@ -13,12 +13,12 @@ namespace SpeakAI.Services.Models
         public int StatusCode { get; set; }
 
         [JsonPropertyName("message")]
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
 
         [JsonPropertyName("isSuccess")]
         public bool IsSuccess { get; set; }
 
         [JsonPropertyName("result")]
-        public List<CourseModel> Result { get; set; }
+        public List<CourseModel> Result { get; set; } = new List<CourseModel>();
     }
 }

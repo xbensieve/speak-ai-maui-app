@@ -9,6 +9,6 @@ namespace SpeakAI.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<ResponseModel> SignUpCustomer(UserModel userModel);
+        Task<ResponseModel<object>> SignUpCustomer(UserModel userModel);
     }
 }

@@ -32,16 +32,16 @@ namespace SpeakAI
                 return new HttpClient { BaseAddress = new Uri("http://sai.runasp.net/") };
             });
             /* API Services */
+            builder.Services.AddSingleton<HttpService>();
             builder.Services.AddSingleton<IUserService, UserService>();
             builder.Services.AddSingleton<ILoginService, LoginService>();
             builder.Services.AddSingleton<ICourseService, CourseService>();
-            builder.Services.AddSingleton<HttpService>();
 
             /* View Model Logic */
             builder.Services.AddSingleton<StudyViewModel>();
             builder.Services.AddSingleton<SignInViewModel>();
             builder.Services.AddSingleton<SignUpViewModel>();
-
+            builder.Services.AddSingleton<CourseDetailViewModel>();
             /* View Page */
             builder.Services.AddTransient<StudyPage>();
             builder.Services.AddTransient<ProfilePage>();
@@ -51,6 +51,7 @@ namespace SpeakAI
             builder.Services.AddTransient<SignUpPage>();
             builder.Services.AddTransient<CoursePage>();
             builder.Services.AddTransient<LoadingPage>();
+            builder.Services.AddTransient<CourseDetailPage>();
             return builder.Build();
         }
     }

@@ -9,6 +9,6 @@ namespace SpeakAI.Services.Interfaces
 {
     public interface ILoginService
     {
-        Task<LoginResponseModel> Login(LoginRequestModel loginRequestModel);
+        Task<ResponseModel<LoginResultModel>> Login(LoginRequestModel loginRequestModel);
     }
 }

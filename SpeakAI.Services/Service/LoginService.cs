@@ -17,13 +17,14 @@ namespace SpeakAI.Services.Service
         {
             _httpService = httpService;
         }
-        public async Task<LoginResponseModel> Login(LoginRequestModel loginRequestModel)
+        public async Task<ResponseModel<LoginResultModel>> Login(LoginRequestModel loginRequestModel)
         {
-            var result = await _httpService.PostAsync<LoginRequestModel, LoginResponseModel>("api/auth/sign-in", loginRequestModel);
+            var result = await _httpService.PostAsync<LoginRequestModel, ResponseModel<LoginResultModel>>("api/auth/sign-in", loginRequestModel);
 
             if (result != null && result.IsSuccess && result.Result != null)
             {
                 await SecureStorage.SetAsync("AccessToken", result.Result.AccessToken);
+                await SecureStorage.SetAsync("UserId", result.Result.User.UserId);
             }
 
             return result;

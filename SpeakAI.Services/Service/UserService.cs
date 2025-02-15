@@ -13,8 +13,8 @@ public class UserService : IUserService
     {
         _httpService = httpService;
     }
-    public async Task<ResponseModel> SignUpCustomer(UserModel userModel)
+    public async Task<ResponseModel<object>> SignUpCustomer(UserModel userModel)
     {
-        return await _httpService.PostAsync<UserModel, ResponseModel>("api/auth/sign-up-customer", userModel);
+        return await _httpService.PostAsync<UserModel, ResponseModel<object>>("api/auth/sign-up-customer", userModel);
     }
 }

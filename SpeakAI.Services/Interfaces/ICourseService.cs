@@ -10,5 +10,6 @@ namespace SpeakAI.Services.Interfaces
     public interface ICourseService
     {
         Task<List<CourseModel>> GetAllCourses();
+        Task<ResponseModel<EnrolledCourseResult>> CheckEnrolledCourse(string courseId);
     }
 }

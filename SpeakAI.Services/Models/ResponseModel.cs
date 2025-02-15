@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SpeakAI.Services.Models
 {
-    public class ResponseModel
+    public class ResponseModel<T>
     {
         [JsonPropertyName("statusCode")]
         public int StatusCode { get; set; }
@@ -19,6 +19,6 @@ namespace SpeakAI.Services.Models
         public bool IsSuccess { get; set; }
 
         [JsonPropertyName("result")]
-        public object? Result { get; set; }
+        public T? Result { get; set; }
     }
 }

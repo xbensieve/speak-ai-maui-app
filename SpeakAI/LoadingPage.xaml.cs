@@ -20,8 +20,8 @@ public partial class LoadingPage : ContentPage
 		string accessToken = await Xamarin.Essentials.SecureStorage.GetAsync("AccessToken");
 		if (accessToken != null)
 		{
-			Application.Current.MainPage = new NavigationPage(new AppShell());
-		} else
+            Application.Current.MainPage = new AppShell();
+        } else
 		{
 			Application.Current.MainPage = new NavigationPage(new LoginPage(_userService, _loginService));
 		}

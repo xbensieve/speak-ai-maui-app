@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace SpeakAI.Services.Service
 {
@@ -15,6 +16,40 @@ namespace SpeakAI.Services.Service
         {
             _httpService = httpService;
         }
+
+        public async Task<ResponseModel<EnrolledCourseResult>> CheckEnrolledCourse(string courseId)
+        {
+            if (string.IsNullOrEmpty(courseId))
+            {
+                throw new ArgumentException("Course ID cannot be empty.");
+            }
+
+            try
+            {
+                string userId = await SecureStorage.GetAsync("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new InvalidOperationException("Cannot retrieve user ID.");
+                }
+
+                string url = $"api/Course/check-enrollment?userId={userId}&courseId={courseId}";
+
+                var response = await _httpService.GetAsync<ResponseModel<EnrolledCourseResult>>(url);
+
+                if (response != null && response.IsSuccess)
+                {
+                    return response;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error: {ex.Message}");
+            }
+        }
+
+
         public async Task<List<CourseModel>> GetAllCourses()
         {
             if (_httpService == null)
@@ -47,6 +82,5 @@ namespace SpeakAI.Services.Service
 
             return new List<CourseModel>();
         }
-
     }
 }

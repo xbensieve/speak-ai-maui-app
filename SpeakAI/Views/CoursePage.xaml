@@ -1,31 +1,84 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SpeakAI.Views.CoursePage"
-             Title="CoursePage">
-    <VerticalStackLayout Padding="10">
-        <Label 
-        Text="Available Courses"
-        FontSize="24"
-        FontAttributes="Bold"
-        HorizontalOptions="Center"
-        VerticalOptions="Start" />
-
-        <Button Text="Refresh Courses"
-            Command="{Binding LoadCoursesCommand}"
-            BackgroundColor="Blue"
-            TextColor="White"
-            Margin="0,10,0,10"/>
-
-        <CollectionView ItemsSource="{Binding Courses}">
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SpeakAI.Views.CoursePage">
+    <VerticalStackLayout Padding="20" Spacing="15">
+        <Label x:Name="TitleLabel"
+               Text="Courses"
+               FontSize="20"
+               TextColor="Black"
+               FontFamily="Mono"
+               HorizontalOptions="Start"
+               Opacity="0"/>
+        <CollectionView ItemsSource="{Binding Courses}" Margin="0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="10" Margin="5" BackgroundColor="LightGray" CornerRadius="10">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding CourseName}" FontSize="20" FontAttributes="Bold" />
-                            <Label Text="{Binding Description}" FontSize="16" TextColor="Gray" />
-                            <Label Text="{Binding MaxPoint, StringFormat='Max Points: {0}'}" FontSize="14" />
-                        </VerticalStackLayout>
+                    <Frame Padding="15" 
+                           Margin="10"
+                           BackgroundColor="White"
+                           HasShadow="True"
+                           BorderColor="#E0E0E0"
+                           CornerRadius="20">
+
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCourseTapped" />
+                        </Frame.GestureRecognizers>
+
+                        <Grid ColumnDefinitions="80, *, 50">
+                            <!-- Course Image -->
+                            <Frame WidthRequest="70" HeightRequest="70"
+                                   Padding="0" CornerRadius="15"
+                                   HasShadow="False"
+                                   HorizontalOptions="Start"
+                                   BackgroundColor="White"
+                                   Grid.Column="0">
+                                <Image Source="vocab_icon.png"
+                                       Aspect="AspectFill"
+                                       HeightRequest="70"
+                                       WidthRequest="70"/>
+                            </Frame>
+                            <!-- Course Details -->
+                            <VerticalStackLayout Grid.Column="1" Spacing="5">
+                                <Label Text="{Binding CourseName}" 
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       TextColor="#333"/>
+
+                                <Label Text="{Binding Description}" 
+                                       FontSize="14"
+                                       TextColor="Gray"
+                                       LineBreakMode="TailTruncation"/>
+
+                                <!-- Tags -->
+                                <HorizontalStackLayout Spacing="6">
+                                    <Frame BackgroundColor="LightGray" Padding="6"
+                                           CornerRadius="6">
+                                        <Label Text="{Binding LevelId}" 
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="Black"/>
+                                    </Frame>
+                                    <Frame Padding="6"
+                                           CornerRadius="6">
+                                        <Label
+                                            Text="A2"
+                                            FontSize="12"
+                                            FontAttributes="Bold"
+                                            TextColor="Black"/>
+                                    </Frame>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+
+                            <Label
+                                Text="⤸"
+                                FontSize="30"
+                                BackgroundColor="Transparent"
+                                FontAutoScalingEnabled="True"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center"
+                                Grid.Column="2"/>
+                        </Grid>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
