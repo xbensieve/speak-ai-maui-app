@@ -36,18 +36,21 @@ namespace SpeakAI.Services.Service
 
                 var response = await _httpService.GetAsync<ResponseModel<EnrolledCourseResult>>(url);
 
-                if (response != null && response.IsSuccess)
-                {
-                    return response;
-                }
-
-                return null;
+                // Check if response exists and is successful
+                return response ?? new ResponseModel<EnrolledCourseResult> { IsSuccess = false };
+            }
+            catch (HttpRequestException ex) when (ex.Message.Contains("404"))
+            {
+                Console.WriteLine($"Enrollment check failed: {ex.Message}");
+                return new ResponseModel<EnrolledCourseResult> { IsSuccess = false };
             }
             catch (Exception ex)
             {
-                throw new Exception($"Error: {ex.Message}");
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                return new ResponseModel<EnrolledCourseResult> { IsSuccess = false };
             }
         }
+
 
 
         public async Task<List<CourseModel>> GetAllCourses()

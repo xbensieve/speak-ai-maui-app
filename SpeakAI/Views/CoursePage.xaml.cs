@@ -1,4 +1,5 @@
 using SpeakAI.Services.Interfaces;
+using SpeakAI.Services.Models;
 using SpeakAI.Services.Service;
 using SpeakAI.ViewModels;
 
@@ -21,7 +22,14 @@ public partial class CoursePage : ContentPage
         }
         else
         {
-            await Shell.Current.GoToAsync("coursedetail");
+            if (sender is Frame frame && frame.BindingContext is CourseModel selectedCourse)
+            {
+                var navigationParameter = new Dictionary<string, object>
+                    {
+                        { "course", selectedCourse }
+                    };
+                await Shell.Current.GoToAsync("coursedetail", navigationParameter);
+            }
         }
 
     }

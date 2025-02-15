@@ -1,9 +1,16 @@
-namespace SpeakAI.Views;
+using SpeakAI.Services.Interfaces;
+using SpeakAI.Services.Models;
+using SpeakAI.ViewModels;
+using System.Diagnostics;
 
-public partial class CourseDetailPage : ContentPage
+namespace SpeakAI.Views
 {
-	public CourseDetailPage()
-	{
-		InitializeComponent();
-	}
+    public partial class CourseDetailPage : ContentPage
+    {
+        public CourseDetailPage(ICourseService courseService)
+        {
+            InitializeComponent();
+            BindingContext = new CourseDetailViewModel(courseService);
+        }
+    }
 }

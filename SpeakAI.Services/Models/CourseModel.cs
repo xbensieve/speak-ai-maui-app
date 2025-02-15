@@ -12,9 +12,9 @@ namespace SpeakAI.Services.Models
         [JsonPropertyName("id")]
         public string CourseId { get; set; } = string.Empty;
         [JsonPropertyName("courseName")]
-        public string CourseName { get; set; } = "Comming soon!";
+        public string CourseName { get; set; } = "Coming soon!";
         [JsonPropertyName("description")]
-        public string Description { get; set; } = "Comming soon!";
+        public string Description { get; set; } = "Coming soon!";
         [JsonPropertyName("maxPoint")]
         public decimal MaxPoint { get; set; }
         [JsonPropertyName("isFree")]
