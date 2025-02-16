@@ -58,6 +58,17 @@
                                        TextColor="#7D7D7D" 
                                         LineBreakMode="TailTruncation"
                                        MaxLines="2"/>
+                                <HorizontalStackLayout Spacing="5">
+                                    <Image Source="trophy_icon.png" WidthRequest="20" HeightRequest="20"/>
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Points: " FontSize="15" FontAttributes="Bold" TextColor="#FFA500"/>
+                                                <Span Text="{Binding MaxPoint}" FontSize="15" FontAttributes="Bold" TextColor="#00BFFF"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </HorizontalStackLayout>
                                 <HorizontalStackLayout Spacing="12">
                                     <Frame BackgroundColor="#D4E6F1"
                                                 Padding="8"
