@@ -1,88 +1,80 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SpeakAI.MainPage"
-             BackgroundColor="#F3F4F6">
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SpeakAI.MainPage"
+    BackgroundColor="#F3F4F6">
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="10">
+        <VerticalStackLayout Padding="20" Spacing="15">
             <!-- Top Header Section -->
             <Grid ColumnDefinitions="*, Auto" RowDefinitions="Auto">
-                <VerticalStackLayout Grid.Column="0" Grid.Row="0">
-                    <Label Text="Welcome back, Alex! 👋" FontSize="22" FontAttributes="Bold" TextColor="#37474F"/>
-                    <Label Text="Keep improving your English skills!" FontSize="16" TextColor="#607D8B"/>
+                <VerticalStackLayout Grid.Column="0">
+                    <Label Text="Welcome back, Alex! 👋" FontSize="24" FontAttributes="Bold" TextColor="#1E3A8A"/>
+                    <Label Text="Keep improving your English skills!" FontSize="16" TextColor="#6B7280"/>
                 </VerticalStackLayout>
-                <Image Grid.Column="1" Grid.Row="0"
-                       Source="user_icon.png" 
-                       WidthRequest="50" HeightRequest="50" 
-                       Margin="10,0,0,0" 
-                       HorizontalOptions="End"/>
+                <Image Grid.Column="1" Source="user_icon.png" WidthRequest="50" HeightRequest="50" Margin="10,0,0,0" HorizontalOptions="End"/>
             </Grid>
+
             <!-- Learning Progress -->
-            <Frame BackgroundColor="#E8F5E9" Padding="15" CornerRadius="15" HasShadow="True">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="📊 Your Progress" FontSize="18" FontAttributes="Bold"/>
-                    <Label Text="You have completed 75% of this week's goal!" FontSize="14" TextColor="#607D8B"/>
-                    <ProgressBar Progress="0.75" HeightRequest="8" BackgroundColor="#C8E6C9"/>
+            <Frame BackgroundColor="#E3F2FD" Padding="20" CornerRadius="20" HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="📊 Your Progress" FontSize="20" FontAttributes="Bold" TextColor="#1E3A8A"/>
+                    <Label Text="You have completed 75% of this week's goal!" FontSize="14" TextColor="#6B7280"/>
+                    <ProgressBar Progress="0.75" HeightRequest="8" BackgroundColor="#BBDEFB"/>
                     <HorizontalStackLayout Spacing="10">
-                        <Button Text="Continue Learning" BackgroundColor="#66BB6A" TextColor="White" CornerRadius="8"/>
-                        <Button Text="Set Goal" BackgroundColor="Transparent" TextColor="#66BB6A" BorderColor="#66BB6A" BorderWidth="1" CornerRadius="8"/>
+                        <Button Text="Continue Learning" BackgroundColor="#2563EB" TextColor="White" CornerRadius="10" FontAttributes="Bold"/>
+                        <Button Text="Set Goal" BackgroundColor="Transparent" TextColor="#2563EB" BorderColor="#2563EB" BorderWidth="2" CornerRadius="10" FontAttributes="Bold"/>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Frame>
+
             <!-- AI-Powered Daily Learning -->
-            <Label Text="🔥 AI-Powered Daily Learning" FontSize="20" FontAttributes="Bold" TextColor="#37474F"/>
-            <Frame BackgroundColor="#FFF3E0" Padding="15" CornerRadius="15">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="✨ Word of the Day: 'Meticulous'" FontSize="18" TextColor="#37474F"/>
-                    <Label Text="Meaning: Showing great attention to detail." FontSize="14" TextColor="#607D8B"/>
-                    <Label Text="Pronunciation: /məˈtɪkjʊləs/" FontSize="14" TextColor="#607D8B"/>
-                    <Button Text="Practice Pronunciation" BackgroundColor="#FFB74D" TextColor="White" CornerRadius="8"/>
+            <Frame BackgroundColor="#ECEAFF" Padding="20" CornerRadius="20" HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🔥 Word of the Day: 'Meticulous'" FontSize="20" TextColor="#6B21A8" FontAttributes="Bold"/>
+                    <Label Text="Meaning: Showing great attention to detail." FontSize="14" TextColor="#6B7280"/>
+                    <Label Text="Pronunciation: /məˈtɪkjʊləs/" FontSize="14" TextColor="#6B7280"/>
+                    <Button Text="Practice Pronunciation" BackgroundColor="#9333EA" TextColor="White" CornerRadius="10" FontAttributes="Bold"/>
                 </VerticalStackLayout>
             </Frame>
+
             <!-- Learning Modules -->
-            <Label Text="📚 Continue Your Learning" FontSize="20" FontAttributes="Bold" TextColor="#37474F"/>
+            <Label Text="📚 Continue Your Learning" FontSize="22" FontAttributes="Bold" TextColor="#1E3A8A"/>
             <HorizontalStackLayout Spacing="15">
-                <Frame BackgroundColor="#BBDEFB" Padding="15" CornerRadius="15" WidthRequest="160">
-                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                        <Label Text="Grammar Basics" FontSize="16" TextColor="#37474F"/>
-                        <Label Text="Level: A1" FontSize="14" TextColor="#607D8B"/>
-                        <Button Text="Start" BackgroundColor="White" TextColor="#1E88E5" CornerRadius="8"/>
+                <Frame BackgroundColor="#D1E7FF" Padding="15" CornerRadius="20" WidthRequest="160" HasShadow="True">
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="Grammar Basics" FontSize="18" TextColor="#1E3A8A" FontAttributes="Bold"/>
+                        <Label Text="Level: A1" FontSize="14" TextColor="#6B7280"/>
+                        <Button Text="Start" BackgroundColor="White" TextColor="#2563EB" CornerRadius="10" FontAttributes="Bold"/>
                     </VerticalStackLayout>
                 </Frame>
-                <Frame BackgroundColor="#FFCC80" Padding="15" CornerRadius="15" WidthRequest="160">
-                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                        <Label Text="Advanced Speaking" FontSize="16" TextColor="#37474F"/>
-                        <Label Text="Level: C1" FontSize="14" TextColor="#607D8B"/>
-                        <Button Text="Join" BackgroundColor="White" TextColor="#FB8C00" CornerRadius="8"/>
+                <Frame BackgroundColor="#E1BEE7" Padding="15" CornerRadius="20" WidthRequest="160" HasShadow="True">
+                    <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                        <Label Text="Advanced Speaking" FontSize="18" TextColor="#6B21A8" FontAttributes="Bold"/>
+                        <Label Text="Level: C1" FontSize="14" TextColor="#6B7280"/>
+                        <Button Text="Join" BackgroundColor="White" TextColor="#9333EA" CornerRadius="10" FontAttributes="Bold"/>
                     </VerticalStackLayout>
                 </Frame>
             </HorizontalStackLayout>
+
             <!-- Live Speaking Practice -->
-            <Frame BackgroundColor="#FFF59D" Padding="15" CornerRadius="15">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="🎙️ Live Speaking Practice" FontSize="18" FontAttributes="Bold" TextColor="#37474F"/>
-                    <Label Text="Join an AI-powered live conversation session." FontSize="14" TextColor="#607D8B"/>
-                    <Button Text="Join Now" BackgroundColor="#FFA726" TextColor="White" CornerRadius="8"/>
+            <Frame BackgroundColor="#F1F8E9" Padding="20" CornerRadius="20" HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="🎙️ Live Speaking Practice" FontSize="20" FontAttributes="Bold" TextColor="#2563EB"/>
+                    <Label Text="Join an AI-powered live conversation session." FontSize="14" TextColor="#6B7280"/>
+                    <Button Text="Join Now" BackgroundColor="#66BB6A" TextColor="White" CornerRadius="10" FontAttributes="Bold"/>
                 </VerticalStackLayout>
             </Frame>
+
             <!-- Study Reminders -->
-            <Label Text="⏰ Smart Study Reminders" FontSize="20" FontAttributes="Bold" TextColor="#37474F"/>
-            <Frame BackgroundColor="#C8E6C9" Padding="15" CornerRadius="15">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="You're most active at 8:00 PM. Would you like a reminder?" FontSize="14" TextColor="#607D8B"/>
+            <Frame BackgroundColor="#BBDEFB" Padding="20" CornerRadius="20" HasShadow="True">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="⏰ Smart Study Reminders" FontSize="20" FontAttributes="Bold" TextColor="#1E3A8A"/>
+                    <Label Text="You're most active at 8:00 PM. Would you like a reminder?" FontSize="14" TextColor="#6B7280"/>
                     <HorizontalStackLayout Spacing="10">
-                        <Button Text="Yes" BackgroundColor="#66BB6A" TextColor="White" CornerRadius="8"/>
-                        <Button Text="No" BackgroundColor="Transparent" TextColor="#66BB6A" BorderColor="#66BB6A" BorderWidth="1" CornerRadius="8"/>
+                        <Button Text="Yes" BackgroundColor="#2563EB" TextColor="White" CornerRadius="10" FontAttributes="Bold"/>
+                        <Button Text="No" BackgroundColor="Transparent" TextColor="#2563EB" BorderColor="#2563EB" BorderWidth="2" CornerRadius="10" FontAttributes="Bold"/>
                     </HorizontalStackLayout>
-                </VerticalStackLayout>
-            </Frame>
-            <!-- Motivational Quote -->
-            <Frame Padding="15" CornerRadius="15" BackgroundColor="#B3E5FC">
-                <VerticalStackLayout Spacing="5">
-                    <Label Text="💡 Learning Quote of the Day" FontSize="16" FontAttributes="Bold" TextColor="#37474F"/>
-                    <Label Text="“Live as if you were to die tomorrow. Learn as if you were to live forever.” – Mahatma Gandhi" 
-                           FontSize="14" TextColor="#607D8B"/>
                 </VerticalStackLayout>
             </Frame>
         </VerticalStackLayout>

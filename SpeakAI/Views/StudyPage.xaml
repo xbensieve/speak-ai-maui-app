@@ -3,33 +3,75 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SpeakAI.ViewModels"
              x:Class="SpeakAI.Views.StudyPage"
-             Title="Study Page">
-    <VerticalStackLayout Padding="10">
-        <Label 
-            Text="Available Courses"
-            FontSize="24"
-            FontAttributes="Bold"
-            HorizontalOptions="Center"
-            VerticalOptions="Start" />
+             BackgroundColor="White">
 
-        <Button Text="Refresh Courses"
-                Command="{Binding LoadCoursesCommand}"
-                BackgroundColor="Blue"
-                TextColor="White"
-                Margin="0,10,0,10"/>
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
 
-        <CollectionView ItemsSource="{Binding Courses}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="10" Margin="5" BackgroundColor="LightGray" CornerRadius="10">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding CourseName}" FontSize="20" FontAttributes="Bold" />
-                            <Label Text="{Binding Description}" FontSize="16" TextColor="Gray" />
-                            <Label Text="{Binding MaxPoint, StringFormat='Max Points: {0}'}" FontSize="14" />
-                        </VerticalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+            <!-- Title with modern styling -->
+            <Label Text="📚 My Courses"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="Black"
+                   HorizontalOptions="Center"
+                   Margin="0,10,0,20"/>
+
+            <!-- Course List -->
+            <CollectionView ItemsSource="{Binding EnrolledCourses}" 
+                            SelectionMode="Single"
+                            HeightRequest="600">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="15" Margin="10" CornerRadius="15"
+                               HasShadow="True"
+                               BackgroundColor="White"
+                               BorderColor="#E0E0E0">
+
+                            <!-- Tap Gesture -->
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnCourseTapped"/>
+                            </Frame.GestureRecognizers>
+
+                            <VerticalStackLayout Spacing="8">
+
+                                <!-- Course Title -->
+                                <Label Text="{Binding CourseName}" 
+                                       TextColor="#222" 
+                                       FontSize="22" 
+                                       FontAttributes="Bold"/>
+
+                                <!-- Progress Bar -->
+                                <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center">
+                                    <Label Text="Progress:"
+                                           FontSize="16"
+                                           TextColor="#555"
+                                           VerticalOptions="Center"/>
+                                    <ProgressBar Grid.Column="1"
+                                                 Progress="{Binding ProgressPoints}" 
+                                                 HeightRequest="8"
+                                                 WidthRequest="150"
+                                                 BackgroundColor="#ddd"
+                                                 ProgressColor="#4CAF50"
+                                                 Margin="10,0,0,0"/>
+                                </Grid>
+
+                                <!-- Progress Status -->
+                                <Label Text="{Binding ProgressPoints, StringFormat='🌟 {0:N1} progress points'}" 
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="#333"/>
+
+                                <!-- Timestamp -->
+                                <Label Text="{Binding UpdatedAt, StringFormat='📅 Last updated: {0:MMM dd, yyyy}'}" 
+                                       FontSize="14"
+                                       TextColor="#777"/>
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
 </ContentPage>

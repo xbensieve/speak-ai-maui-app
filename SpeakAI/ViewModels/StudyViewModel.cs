@@ -14,7 +14,7 @@ namespace SpeakAI.ViewModels
     public class StudyViewModel : INotifyPropertyChanged
     {
         private readonly ICourseService _courseService;
-        public ObservableCollection<CourseModel> Courses { get; set; } = new();
+        public ObservableCollection<EnrolledCourseModel> EnrolledCourses { get; set; } = new();
         public ICommand LoadCoursesCommand { get; }
         public StudyViewModel(ICourseService courseService)
         {
@@ -24,16 +24,17 @@ namespace SpeakAI.ViewModels
         }
         private async Task LoadCoursesAsync()
         {
-            Courses.Clear();
-            var res = await _courseService.GetAllCourses();
+            EnrolledCourses.Clear();
+            var res = await _courseService.GetEnrolledCourses();
             if (res != null)
             {
-                foreach (var course in res)
+                foreach (var course in res.Result)
                 {
-                    Courses.Add(course);
+                    EnrolledCourses.Add(course);
                 }
             }
         }
+
         public event PropertyChangedEventHandler? PropertyChanged;
     }
 }

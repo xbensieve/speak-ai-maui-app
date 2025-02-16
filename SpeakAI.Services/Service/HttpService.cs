@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SpeakAI.Services.Service
@@ -59,13 +60,29 @@ namespace SpeakAI.Services.Service
                 response.EnsureSuccessStatusCode();
 
                 var responseData = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"[DOTNET] Raw API Response: {responseData}");
                 if (string.IsNullOrWhiteSpace(responseData))
-                    return default;
-
-                return JsonSerializer.Deserialize<TResponse>(responseData, new JsonSerializerOptions
                 {
-                    PropertyNameCaseInsensitive = true
-                });
+                    Console.WriteLine("[DOTNET] Warning: API response is empty.");
+                    return default;
+                }
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                };
+
+                try
+                {
+                    return JsonSerializer.Deserialize<TResponse>(responseData, options);
+                }
+                catch (JsonException jsonEx)
+                {
+                    Console.Error.WriteLine($"[DOTNET] JSON Deserialization Error: {jsonEx.Message}");
+                    Console.Error.WriteLine($"[DOTNET] Response that caused the error: {responseData}");
+                    throw;
+                }
             }
             catch (HttpRequestException ex)
             {

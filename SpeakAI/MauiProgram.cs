@@ -42,6 +42,7 @@ namespace SpeakAI
             builder.Services.AddSingleton<SignInViewModel>();
             builder.Services.AddSingleton<SignUpViewModel>();
             builder.Services.AddSingleton<CourseDetailViewModel>();
+            builder.Services.AddSingleton<CourseViewModel>();
             /* View Page */
             builder.Services.AddTransient<StudyPage>();
             builder.Services.AddTransient<ProfilePage>();
@@ -52,6 +53,7 @@ namespace SpeakAI
             builder.Services.AddTransient<CoursePage>();
             builder.Services.AddTransient<LoadingPage>();
             builder.Services.AddTransient<CourseDetailPage>();
+            builder.Services.AddTransient<ExercisePage>();
             return builder.Build();
         }
     }

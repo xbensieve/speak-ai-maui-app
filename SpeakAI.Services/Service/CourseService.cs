@@ -3,7 +3,9 @@ using SpeakAI.Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 
@@ -91,7 +93,7 @@ namespace SpeakAI.Services.Service
             try
             {
                 var response = await _httpService.GetAsync<CourseResponseModel>("api/Course/get-all");
-
+                Console.Error.WriteLine(response.Result);
                 if (response != null && response.IsSuccess && response.Result != null)
                 {
                     return response.Result;
@@ -111,6 +113,76 @@ namespace SpeakAI.Services.Service
             }
 
             return new List<CourseModel>();
+        }
+
+        //public async Task<ResponseModel<CourseModel>> GetCourseDetails(string courseId)
+        //{
+        //    try
+        //    {
+        //        string url = $"api/Course/{courseId}/details";
+        //        var response = await _httpService.GetAsync<ResponseModel<CourseModel>>(url);
+        //        foreach (var topic in response.Result.Topics)
+        //        {
+        //            foreach (var exercise in topic.Exercises)
+        //            {
+        //                try
+        //                {
+        //                    exercise.Content = JsonSerializer.Deserialize<ExerciseContent>(exercise.ContentRaw, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+        //                }
+        //                catch (JsonException)
+        //                {
+        //                    exercise.Content = null;
+        //                }
+        //            }
+        //        }
+        //        if (response != null && response.IsSuccess && response.Result != null)
+        //        {
+        //            return response;
+        //        }
+        //    }
+        //    catch (HttpRequestException httpEx)
+        //    {
+        //        Console.Error.WriteLine($"HTTP Error: {httpEx.Message}");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.Error.WriteLine($"Unexpected Error: {ex.Message}");
+        //    }
+
+        //    return new ResponseModel<CourseModel> { IsSuccess = false };
+        //}
+
+        public async Task<ResponseModel<List<EnrolledCourseModel>>> GetEnrolledCourses()
+        {
+            if (_httpService == null)
+            {
+                Console.Error.WriteLine("Error: _httpService is not initialized.");
+                return new ResponseModel<List<EnrolledCourseModel>> { IsSuccess = false };
+            }
+            try
+            {
+                string userId = await SecureStorage.GetAsync("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new InvalidOperationException("Cannot retrieve user ID.");
+                }
+                string url = $"/api/Course/id?Userid={userId}";
+                var response = await _httpService.GetAsync<ResponseModel<List<EnrolledCourseModel>>>(url);
+                if (response != null && response.IsSuccess && response.Result != null)
+                {
+                    return response;
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Console.Error.WriteLine($"HTTP Error: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Unexpected Error: {ex.Message}");
+            }
+
+            return new ResponseModel<List<EnrolledCourseModel>> { IsSuccess = false };
         }
     }
 }

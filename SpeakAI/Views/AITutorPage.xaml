@@ -2,11 +2,114 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SpeakAI.Views.AITutorPage"
-             Title="AITutorPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+             Title="AI Tutor"
+             BackgroundColor="#0F172A">
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="18">
+        
+            
+            <!-- AI Header -->
+        <Frame BackgroundColor="#1E293B"
+               CornerRadius="18"
+               Padding="20"
+               HasShadow="True">
+            <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                <Image Source="ai_icon.png"
+                       WidthRequest="50"
+                       HeightRequest="50"
+                       Aspect="AspectFill"/>
+                <VerticalStackLayout>
+                    <Label Text="AI Tutor"
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="#00D4FF"/>
+                    <Label Text="Your AI Learning Assistant"
+                           FontSize="15"
+                           TextColor="#CBD5E1"/>
+                </VerticalStackLayout>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <!-- AI Chat Section -->
+        <Frame BackgroundColor="#1E293B"
+               CornerRadius="18"
+               Padding="20"
+               HasShadow="True"
+               HeightRequest="450">
+            <ScrollView>
+                <VerticalStackLayout Spacing="12">
+                    <!-- User Message -->
+                    <Frame BackgroundColor="#334155"
+                           CornerRadius="14"
+                           Padding="12">
+                        <Label Text="👨‍🎓 You: How can I improve my pronunciation?"
+                               FontSize="16"
+                               FontAttributes="Bold"
+                               TextColor="White"/>
+                    </Frame>
+
+                    <!-- AI Response -->
+                    <Frame BackgroundColor="#00D4FF"
+                           CornerRadius="14"
+                           Padding="12"
+                           HorizontalOptions="End">
+                        <Label Text="🤖 AI Tutor: Try shadowing native speakers, record yourself, and use AI feedback tools."
+                               FontSize="16"
+                               TextColor="Black"/>
+                    </Frame>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Frame>
+
+        <!-- User Input Section -->
+        <Frame BackgroundColor="#1E293B"
+               CornerRadius="18"
+               Padding="14"
+               HasShadow="True">
+            <HorizontalStackLayout Spacing="10">
+                <!-- Voice Input Button -->
+                <Button Text="🎙️"
+                        BackgroundColor="#EF4444"
+                        TextColor="White"
+                        FontSize="15"
+                        Padding="14"
+                        CornerRadius="14"
+                        HeightRequest="50"
+                        WidthRequest="50"/>
+
+                <!-- Text Input -->
+                <Entry Placeholder="Type a message..."
+                       FontSize="16"
+                       TextColor="White"
+                       PlaceholderColor="#94A3B8"
+                       WidthRequest="210"
+                       HeightRequest="50"
+                       HorizontalOptions="FillAndExpand"
+                       />
+
+                <!-- Send Button -->
+                <Button Text="▶"
+                        BackgroundColor="#00D4FF"
+                        TextColor="Black"
+                        FontSize="15"
+                        Padding="12"
+                        CornerRadius="12"
+                        HeightRequest="50"
+                        WidthRequest="50"
+                        FontAttributes="Bold"/>
+            </HorizontalStackLayout>
+        </Frame>
+
+        <!-- AI Speech Output -->
+        <Button Text="🔊 Read AI Response"
+                BackgroundColor="#22C55E"
+                TextColor="White"
+                FontSize="18"
+                Padding="16"
+                CornerRadius="16"
+                HorizontalOptions="Fill"
+                FontAttributes="Bold"/>
+
     </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

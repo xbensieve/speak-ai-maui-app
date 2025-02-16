@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             x:Class="SpeakAI.Views.CoursePage"
-             BackgroundColor="#F8F9FA">
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="SpeakAI.Views.CoursePage"
+    BackgroundColor="#F8F9FA">
+
     <VerticalStackLayout>
-        <Frame BackgroundColor="#2C3E50"
+        <!-- Header -->
+        <Frame BackgroundColor="#34495E"
                Padding="30"
-               HasShadow="False"
-               CornerRadius="0">
+               HasShadow="True"
+               CornerRadius="20"
+               Margin="10">
             <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
                 <Label Text="📚 Course List"
                        FontSize="28"
@@ -22,24 +25,31 @@
                        HorizontalOptions="Center"/>
             </VerticalStackLayout>
         </Frame>
+
+        <!-- Course List -->
         <CollectionView ItemsSource="{Binding Courses}" Margin="0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="20"
                            Margin="15"
-                           BackgroundColor="#FAFAFA"
+                           BackgroundColor="White"
                            HasShadow="True"
-                           BorderColor="#E0E0E0"
-                           CornerRadius="25"
-                           Opacity="1.0"
-                           TranslationY="0">
+                           BorderColor="#D6DBDF"
+                           CornerRadius="20"
+                           Opacity="1.0">
+
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCourseTapped"/>
                         </Frame.GestureRecognizers>
+
                         <Grid ColumnDefinitions="100, *, 50">
+                            <!-- Course Image -->
                             <Frame WidthRequest="90" HeightRequest="90"
-                                   Padding="0" CornerRadius="20"
+                                   Padding="0" CornerRadius="15"
                                    Grid.Column="0"
+                                   HasShadow="True"
+                                   BackgroundColor="White"
+                                   BorderColor="#D6DBDF"
                                    HorizontalOptions="Start"
                                    VerticalOptions="Center">
                                 <Image Source="course_image_02.webp"
@@ -47,18 +57,22 @@
                                        HeightRequest="90"
                                        WidthRequest="90"/>
                             </Frame>
+
+                            <!-- Course Details -->
                             <VerticalStackLayout Grid.Column="1" Spacing="8">
                                 <Label Text="{Binding CourseName}" 
                                        FontSize="22"
                                        FontAttributes="Bold"
                                        TextColor="#2C3E50" 
-                                    LineBreakMode="TailTruncation"/>
+                                       LineBreakMode="TailTruncation"/>
                                 <Label Text="{Binding Description}" 
                                        FontSize="15"
                                        TextColor="#7D7D7D" 
-                                        LineBreakMode="TailTruncation"
+                                       LineBreakMode="TailTruncation"
                                        MaxLines="2"/>
-                                <HorizontalStackLayout Spacing="5">
+
+                                <!-- Points & Levels -->
+                                <HorizontalStackLayout Spacing="8">
                                     <Image Source="trophy_icon.png" WidthRequest="20" HeightRequest="20"/>
                                     <Label>
                                         <Label.FormattedText>
@@ -69,9 +83,11 @@
                                         </Label.FormattedText>
                                     </Label>
                                 </HorizontalStackLayout>
-                                <HorizontalStackLayout Spacing="12">
+
+                                <!-- Level Indicators -->
+                                <HorizontalStackLayout Spacing="8">
                                     <Frame BackgroundColor="#D4E6F1"
-                                                Padding="8"
+                                           Padding="8"
                                            CornerRadius="10"
                                            HasShadow="False">
                                         <Label Text="A1" 
@@ -80,7 +96,7 @@
                                                TextColor="#1B4F72"/>
                                     </Frame>
                                     <Frame BackgroundColor="#D1F2EB" 
-                                                Padding="8"
+                                           Padding="8"
                                            CornerRadius="10"
                                            HasShadow="False">
                                         <Label Text="C2"
@@ -90,6 +106,8 @@
                                     </Frame>
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
+
+                            <!-- Arrow Icon -->
                             <Label Text="➡"
                                    FontSize="28"
                                    TextColor="#2C3E50"

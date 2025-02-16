@@ -7,6 +7,7 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="24" Spacing="20">
+            <!-- Course Header -->
             <Frame BackgroundColor="White"
                    CornerRadius="18"
                    Padding="20"
@@ -38,12 +39,13 @@
                     </VerticalStackLayout>
                 </Grid>
             </Frame>
+
+            <!-- Course Overview -->
             <Frame BackgroundColor="White"
                    CornerRadius="18"
                    Padding="22"
                    HasShadow="True">
                 <VerticalStackLayout Spacing="14">
-
                     <Label Text="📘 Course Overview"
                            FontSize="24"
                            FontAttributes="Bold"
@@ -94,6 +96,8 @@
                     </VerticalStackLayout>
                 </VerticalStackLayout>
             </Frame>
+
+            <!-- Course Content -->
             <Frame BackgroundColor="White"
                    CornerRadius="18"
                    Padding="22"
@@ -114,8 +118,9 @@
                            TextColor="#2980B9"/>
                 </VerticalStackLayout>
             </Frame>
-            <VerticalStackLayout Spacing="16" Padding="12">
 
+            <!-- Action Buttons -->
+            <VerticalStackLayout Spacing="16" Padding="12">
                 <Button Text="Continue Learning"
                         IsVisible="{Binding IsEnrolled}"
                         BackgroundColor="#27AE60"
@@ -131,6 +136,7 @@
                         </Trigger>
                     </Button.Triggers>
                 </Button>
+
                 <Button Text="Enroll Now"
                         FontSize="18"
                         Padding="14"
