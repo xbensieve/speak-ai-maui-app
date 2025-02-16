@@ -11,5 +11,6 @@ namespace SpeakAI.Services.Interfaces
     {
         Task<List<CourseModel>> GetAllCourses();
         Task<ResponseModel<EnrolledCourseResult>> CheckEnrolledCourse(string courseId);
+        Task<ResponseModel<object>> EnrollCourse(string courseId);
     }
 }

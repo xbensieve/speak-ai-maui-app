@@ -51,7 +51,34 @@ namespace SpeakAI.Services.Service
             }
         }
 
-
+        public async Task<ResponseModel<object>> EnrollCourse(string courseId)
+        {
+            if (string.IsNullOrEmpty(courseId))
+            {
+                throw new ArgumentException("Course ID cannot be empty.");
+            }
+            try
+            {
+                string userId = await SecureStorage.GetAsync("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new InvalidOperationException("Cannot retrieve user ID.");
+                }
+                string url = $"api/Course/{courseId}/enroll";
+                var response = await _httpService.PostAsync<string, ResponseModel<object>>(url, userId);
+                return response ?? new ResponseModel<object> { IsSuccess = false };
+            }
+            catch (HttpRequestException ex) when (ex.Message.Contains("404"))
+            {
+                Console.WriteLine($"Enrollment check failed: {ex.Message}");
+                return new ResponseModel<object> { IsSuccess = false };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                return new ResponseModel<object> { IsSuccess = false };
+            }
+        }
 
         public async Task<List<CourseModel>> GetAllCourses()
         {

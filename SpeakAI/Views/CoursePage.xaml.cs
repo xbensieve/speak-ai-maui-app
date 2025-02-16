@@ -11,7 +11,6 @@ public partial class CoursePage : ContentPage
     {
 		InitializeComponent();
         BindingContext = new CourseViewModel(courseService);
-        AnimatePage();
     }
 
     private async void OnCourseTapped(object sender, EventArgs e)
@@ -32,10 +31,5 @@ public partial class CoursePage : ContentPage
             }
         }
 
-    }
-
-    private async void AnimatePage()
-    {
-        await TitleLabel.FadeTo(1, 1000, Easing.CubicInOut);
     }
 }

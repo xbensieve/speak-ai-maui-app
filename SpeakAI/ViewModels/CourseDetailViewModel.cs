@@ -2,6 +2,7 @@
 using SpeakAI.Services.Models;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
 
 namespace SpeakAI.ViewModels;
 
@@ -36,6 +37,7 @@ public class CourseDetailViewModel : INotifyPropertyChanged
             }
         }
     }
+    public ICommand EnrollCommand { get; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -47,6 +49,17 @@ public class CourseDetailViewModel : INotifyPropertyChanged
     public CourseDetailViewModel(ICourseService courseService)
     {
         _courseService = courseService;
+        EnrollCommand = new Command<string>(async (courseId) => await EnrollCourse(courseId));
+    }
+    private async Task EnrollCourse(string courseId)
+    {
+        var result = await _courseService.EnrollCourse(courseId);
+
+        if (result.IsSuccess)
+        {
+            IsEnrolled = true;
+            IsNew = false;
+        }
     }
     private async void CheckEnrollmentAsync()
     {
