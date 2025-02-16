@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+<ContentPage
+	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="SpeakAI.Views.CoursePage"
              BackgroundColor="#F8F9FA">
-
     <VerticalStackLayout>
-        <Frame BackgroundColor="#1A5276"
+        <Frame BackgroundColor="#2C3E50"
                Padding="30"
                HasShadow="False"
                CornerRadius="0">
@@ -22,25 +22,21 @@
                        HorizontalOptions="Center"/>
             </VerticalStackLayout>
         </Frame>
-
         <CollectionView ItemsSource="{Binding Courses}" Margin="0">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Padding="20"
                            Margin="15"
-                           BackgroundColor="White"
+                           BackgroundColor="#FAFAFA"
                            HasShadow="True"
-                           BorderColor="#D5D8DC"
+                           BorderColor="#E0E0E0"
                            CornerRadius="25"
                            Opacity="1.0"
                            TranslationY="0">
-
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCourseTapped"/>
                         </Frame.GestureRecognizers>
-
                         <Grid ColumnDefinitions="100, *, 50">
-
                             <Frame WidthRequest="90" HeightRequest="90"
                                    Padding="0" CornerRadius="20"
                                    Grid.Column="0"
@@ -55,16 +51,16 @@
                                 <Label Text="{Binding CourseName}" 
                                        FontSize="22"
                                        FontAttributes="Bold"
-                                       TextColor="#1A5276"
-                                       LineBreakMode="TailTruncation"/>
-
+                                       TextColor="#2C3E50" 
+                                    LineBreakMode="TailTruncation"/>
                                 <Label Text="{Binding Description}" 
                                        FontSize="15"
-                                       TextColor="Gray"
-                                       LineBreakMode="TailTruncation"
+                                       TextColor="#7D7D7D" 
+                                        LineBreakMode="TailTruncation"
                                        MaxLines="2"/>
                                 <HorizontalStackLayout Spacing="12">
-                                    <Frame BackgroundColor="#AED6F1" Padding="8"
+                                    <Frame BackgroundColor="#D4E6F1"
+                                                Padding="8"
                                            CornerRadius="10"
                                            HasShadow="False">
                                         <Label Text="A1" 
@@ -72,7 +68,8 @@
                                                FontAttributes="Bold"
                                                TextColor="#1B4F72"/>
                                     </Frame>
-                                    <Frame BackgroundColor="#A3E4D7" Padding="8"
+                                    <Frame BackgroundColor="#D1F2EB" 
+                                                Padding="8"
                                            CornerRadius="10"
                                            HasShadow="False">
                                         <Label Text="C2"
@@ -82,10 +79,9 @@
                                     </Frame>
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
-
                             <Label Text="➡"
                                    FontSize="28"
-                                   TextColor="#1A5276"
+                                   TextColor="#2C3E50"
                                    BackgroundColor="Transparent"
                                    FontAutoScalingEnabled="True"
                                    HorizontalOptions="Center"
