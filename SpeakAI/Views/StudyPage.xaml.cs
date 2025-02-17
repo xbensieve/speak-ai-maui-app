@@ -19,7 +19,15 @@ public partial class StudyPage : ContentPage
         }
         else
         {
-                await Shell.Current.GoToAsync("exercise");
+            if (sender is Frame frame && frame.BindingContext is EnrolledCourseModel selectedCourse)
+            {
+                var navigationParameter = new Dictionary<string, object>
+                    {
+                        { "courseId", selectedCourse.CourseId },
+                        {"enrolledCourseId", selectedCourse.EnrolledCourseId }
+                    };
+                await Shell.Current.GoToAsync("exercise", navigationParameter);
+            }
         }
     }
 }

@@ -115,42 +115,76 @@ namespace SpeakAI.Services.Service
             return new List<CourseModel>();
         }
 
-        //public async Task<ResponseModel<CourseModel>> GetCourseDetails(string courseId)
-        //{
-        //    try
-        //    {
-        //        string url = $"api/Course/{courseId}/details";
-        //        var response = await _httpService.GetAsync<ResponseModel<CourseModel>>(url);
-        //        foreach (var topic in response.Result.Topics)
-        //        {
-        //            foreach (var exercise in topic.Exercises)
-        //            {
-        //                try
-        //                {
-        //                    exercise.Content = JsonSerializer.Deserialize<ExerciseContent>(exercise.ContentRaw, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-        //                }
-        //                catch (JsonException)
-        //                {
-        //                    exercise.Content = null;
-        //                }
-        //            }
-        //        }
-        //        if (response != null && response.IsSuccess && response.Result != null)
-        //        {
-        //            return response;
-        //        }
-        //    }
-        //    catch (HttpRequestException httpEx)
-        //    {
-        //        Console.Error.WriteLine($"HTTP Error: {httpEx.Message}");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.Error.WriteLine($"Unexpected Error: {ex.Message}");
-        //    }
+        public async Task<ResponseModel<CourseDetailModel>> GetCourseDetails(string courseId)
+        {
+            try
+            {
+                string url = $"api/Course/{courseId}/details";
+                var response = await _httpService.GetAsync<ResponseModel<CourseDetailModel>>(url);
+                foreach (var topic in response.Result.Topics)
+                {
+                    foreach (var exercise in topic.Exercises)
+                    {
+                        try
+                        {
+                            exercise.ContentExercises = JsonSerializer.Deserialize<ExerciseContent>(exercise.ContentRaw, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                        }
+                        catch (JsonException)
+                        {
+                            exercise.ContentExercises = null;
+                        }
+                    }
+                }
+                if (response != null && response.IsSuccess && response.Result != null)
+                {
+                    return response;
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Console.Error.WriteLine($"HTTP Error: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Unexpected Error: {ex.Message}");
+            }
 
-        //    return new ResponseModel<CourseModel> { IsSuccess = false };
-        //}
+            return new ResponseModel<CourseDetailModel> { IsSuccess = false };
+        }
+
+        public async Task<ResponseModel<EnrolledCourseProgressModel>> GetCourseProgress(string enrolledCourseId)
+        {
+            if (_httpService == null)
+            {
+                Console.Error.WriteLine("Error: _httpService is not initialized.");
+                return new ResponseModel<EnrolledCourseProgressModel> { IsSuccess = false };
+            }
+
+            try
+            {
+                string url = $"api/Course/enrolled/{enrolledCourseId}";
+                var response = await _httpService.GetAsync<ResponseModel<EnrolledCourseProgressModel>>(url);
+                Console.Error.WriteLine(response.Result);
+                if (response != null && response.IsSuccess && response.Result != null)
+                {
+                    return response;
+                }
+                else
+                {
+                    Console.Error.WriteLine($"Error: {response?.Message ?? "Unknown error"}");
+                }
+            }
+            catch (HttpRequestException httpEx)
+            {
+                Console.Error.WriteLine($"HTTP Error: {httpEx.Message}");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Unexpected Error: {ex.Message}");
+            }
+
+            return new ResponseModel<EnrolledCourseProgressModel> { IsSuccess = false };
+        }
 
         public async Task<ResponseModel<List<EnrolledCourseModel>>> GetEnrolledCourses()
         {

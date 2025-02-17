@@ -43,6 +43,7 @@ namespace SpeakAI
             builder.Services.AddSingleton<SignUpViewModel>();
             builder.Services.AddSingleton<CourseDetailViewModel>();
             builder.Services.AddSingleton<CourseViewModel>();
+            builder.Services.AddSingleton<ExerciseViewModel>();
             /* View Page */
             builder.Services.AddTransient<StudyPage>();
             builder.Services.AddTransient<ProfilePage>();

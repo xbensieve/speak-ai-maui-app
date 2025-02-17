@@ -23,49 +23,5 @@ namespace SpeakAI.Services.Models
         public bool IsPremium { get; set; }
         [JsonPropertyName("levelId")]
         public int LevelId { get; set; }
-        //[JsonPropertyName("topics")]
-        //public List<Topic> Topics { get; set; } = new();
     }
-    //public class Topic
-    //{
-    //    [JsonPropertyName("id")]
-    //    public string TopicId { get; set; } = string.Empty;
-    //    [JsonPropertyName("topicName")]
-    //    public string TopicName { get; set; } = string.Empty;
-    //    [JsonPropertyName("maxPoint")]
-    //    public int MaxPoint { get; set; }
-    //    [JsonPropertyName("isActive")]
-    //    public bool IsActive { get; set; }
-    //    [JsonPropertyName("exercises")]
-    //    public List<Exercise> Exercises { get; set; } = new();
-    //}
-    //public class Exercise
-    //{
-    //    [JsonPropertyName("id")]
-    //    public string ContentId { get; set; } = string.Empty;
-    //    [JsonPropertyName("content")]
-    //    public string ContentRaw { get; set; } // Raw JSON string
-    //    [JsonPropertyName("maxPoint")]
-    //    public int MaxPoint { get; set; }
-    //    [JsonPropertyName("isActive")]
-    //    public bool IsActive { get; set; }
-    //    public ExerciseContent Content { get; set; }
-    //}
-    //public class ExerciseContent
-    //{
-    //    [JsonPropertyName("type")]
-    //    public string Type { get; set; }
-
-    //    [JsonPropertyName("question")]
-    //    public string Question { get; set; }
-
-    //    [JsonPropertyName("options")]
-    //    public List<string> Options { get; set; }
-
-    //    [JsonPropertyName("answer")]
-    //    public string Answer { get; set; }
-
-    //    [JsonPropertyName("explanation")]
-    //    public string Explanation { get; set; }
-    //}
 }
