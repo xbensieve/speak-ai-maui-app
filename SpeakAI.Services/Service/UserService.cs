@@ -15,6 +15,6 @@ public class UserService : IUserService
     }
     public async Task<ResponseModel<object>> SignUpCustomer(UserModel userModel)
     {
-        return await _httpService.PostAsync<UserModel, ResponseModel<object>>("api/auth/sign-up-customer", userModel);
+        return await _httpService.PostAsync<UserModel, ResponseModel<object>>("api/auth/register/customer", userModel);
     }
 }

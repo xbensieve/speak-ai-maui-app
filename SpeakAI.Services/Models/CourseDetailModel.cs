@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -26,7 +28,7 @@ namespace SpeakAI.Services.Models
         [JsonPropertyName("topics")]
         public List<Topic> Topics { get; set; } = new();
     }
-    public class Topic
+    public class Topic : INotifyPropertyChanged
     {
         [JsonPropertyName("id")]
         public string TopicId { get; set; } = string.Empty;
@@ -38,9 +40,29 @@ namespace SpeakAI.Services.Models
         public bool IsActive { get; set; }
         [JsonPropertyName("exercises")]
         public List<Exercise> Exercises { get; set; } = new();
-        [JsonIgnore]
-        public decimal ProgressPoints { get; set; }
+
+        private decimal _progressPoints;
+        public decimal ProgressPoints
+        {
+            get => _progressPoints;
+            set
+            {
+                if (_progressPoints != value)
+                {
+                    _progressPoints = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
+
     public class Exercise
     {
         [JsonPropertyName("id")]

@@ -21,6 +21,7 @@ namespace SpeakAI.Services.Models
     {
         [JsonPropertyName("id")]
         public string TopicId { get; set; }
+        [JsonPropertyName("progress")]
         public decimal ProgressPoints { get; set; }
     }
 }

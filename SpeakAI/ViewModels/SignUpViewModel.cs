@@ -113,7 +113,7 @@ namespace SpeakAI.ViewModels
 
                 var newUser = new UserModel
                 {
-                    username = Username.Trim(),
+                    userName = Username.Trim(),
                     password = Password,
                     confirmedPassword = ConfirmPassword,
                     email = Email.Trim(),

@@ -19,7 +19,7 @@ namespace SpeakAI.Services.Service
         }
         public async Task<ResponseModel<LoginResultModel>> Login(LoginRequestModel loginRequestModel)
         {
-            var result = await _httpService.PostAsync<LoginRequestModel, ResponseModel<LoginResultModel>>("api/auth/sign-in", loginRequestModel);
+            var result = await _httpService.PostAsync<LoginRequestModel, ResponseModel<LoginResultModel>>("api/auth/tokens", loginRequestModel);
 
             if (result != null && result.IsSuccess && result.Result != null)
             {

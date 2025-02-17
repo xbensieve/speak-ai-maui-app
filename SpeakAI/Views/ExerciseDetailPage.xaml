@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakAI.Views.ExerciseDetailPage"
+             BackgroundColor="#F5F5F5"
+             Title="{Binding Topic.TopicName}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <!-- Exercise Content Frame with Shadow -->
+            <Frame x:Name="ExerciseFrame" Padding="15" Margin="5"
+                   BorderColor="LightGray"
+                   BackgroundColor="White"
+                   CornerRadius="12"
+                   HasShadow="True">
+                
+                <VerticalStackLayout Spacing="12">
+                    <!-- Exercise Type -->
+                    <Label Text="{Binding CurrentExercise.ContentExercises.Type}" 
+                           FontSize="22"
+                           FontAttributes="Bold"
+                           TextColor="#333"
+                           HorizontalOptions="Center"
+                           Padding="0,5"/>
+
+                    <!-- Question Section -->
+                    <Label Text="Question:"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="DarkBlue"
+                           Padding="0,5"/>
+                    <Label Text="{Binding CurrentExercise.ContentExercises.Question}"
+                           FontSize="17"
+                           TextColor="Black"
+                           Padding="5"/>
+
+                    <!-- Options Section -->
+                    <Label Text="Options:"
+                           FontSize="18"
+                           FontAttributes="Bold"
+                           TextColor="DarkBlue"
+                           Padding="0,5"/>
+                    <Frame BackgroundColor="#F9F9F9" Padding="12" CornerRadius="10">
+                        <CollectionView ItemsSource="{Binding CurrentExercise.ContentExercises.Options}">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <RadioButton Content="{Binding .}"
+                                                 GroupName="ExerciseOptions"
+                                                 FontSize="16"
+                                                 TextColor="Black"
+                                                 Margin="5,3,0,3"
+                                                 BackgroundColor="#E9F1FF"
+                                                 BorderColor="#B3D4FC"/>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Frame>
+
+                    <!-- Show Answer Button -->
+                    <Button Text="Show Answer"
+                            TextColor="White"
+                            BackgroundColor="#388E3C"
+                            CornerRadius="8"
+                            Command="{Binding ToggleAnswerVisibilityCommand}"
+                            Padding="10,5"
+                            FontSize="16"
+                            HorizontalOptions="Center"/>
+
+                    <!-- Answer Section -->
+                    <Frame BackgroundColor="#E8F5E9" Padding="10" CornerRadius="8" IsVisible="{Binding IsAnswerVisible}">
+                        <VerticalStackLayout>
+                            <Label Text="Correct Answer:"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="DarkGreen"/>
+                            <Label Text="{Binding CurrentExercise.ContentExercises.Answer}"
+                                   FontSize="17"
+                                   TextColor="Green"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Explanation Section -->
+                    <Frame BackgroundColor="#E3F2FD" Padding="10" CornerRadius="8" IsVisible="{Binding IsAnswerVisible}">
+                        <VerticalStackLayout>
+                            <Label Text="Explanation:"
+                                   FontSize="18"
+                                   FontAttributes="Bold"
+                                   TextColor="DarkBlue"/>
+                            <Label Text="{Binding CurrentExercise.ContentExercises.Explanation}"
+                                   FontSize="16"
+                                   TextColor="Black"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- Navigation Buttons -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
+                <!-- Back Button -->
+                <Button Text="Back"
+                        Command="{Binding PreviousExerciseCommand}"
+                        IsEnabled="{Binding CanGoBack}"
+                        BackgroundColor="#1E88E5"
+                        TextColor="White"
+                        CornerRadius="8"
+                        FontSize="16"
+                        Padding="10,5"
+                        WidthRequest="100"/>
+
+                <!-- Next Button -->
+                <Button Text="Next"
+                        Command="{Binding NextExerciseCommand}"
+                        IsEnabled="{Binding CanGoNext}"
+                        BackgroundColor="#43A047"
+                        TextColor="White"
+                        CornerRadius="8"
+                        FontSize="16"
+                        Padding="10,5"
+                        WidthRequest="100"/>
+
+                <!-- Exit Button -->
+                <Button Text="Exit"
+                        Command="{Binding ExitCommand}"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        CornerRadius="8"
+                        FontSize="16"
+                        Padding="10,5"
+                        WidthRequest="100"/>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

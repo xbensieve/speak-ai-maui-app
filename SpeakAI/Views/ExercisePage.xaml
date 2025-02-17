@@ -29,7 +29,7 @@
                          HeightRequest="12" 
                          HorizontalOptions="FillAndExpand"
                          BackgroundColor="#ecf0f1" ProgressColor="#2ecc71" />
-            <Label Text="{Binding EnrolledCourse.ProgressPoints, StringFormat='{0} %'}" 
+            <Label Text="{Binding EnrolledCourse.ProgressPoints, StringFormat='{0}'}" 
                    FontSize="14" 
                    TextColor="#2ecc71" 
                    VerticalOptions="Center" />
@@ -48,6 +48,9 @@
                            BackgroundColor="#ffffff"
                            HasShadow="True">
                         <!-- Use HasShadow here -->
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnExerciseTapped"/>
+                        </Frame.GestureRecognizers>
                         <StackLayout Spacing="12">
                             <Label Text="{Binding TopicName}" 
                                    FontSize="18" 

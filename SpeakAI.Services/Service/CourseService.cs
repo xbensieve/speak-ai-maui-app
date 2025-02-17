@@ -34,7 +34,7 @@ namespace SpeakAI.Services.Service
                     throw new InvalidOperationException("Cannot retrieve user ID.");
                 }
 
-                string url = $"api/Course/check-enrollment?userId={userId}&courseId={courseId}";
+                string url = $"api/courses/users/{userId}/courses/{courseId}/enrollment-status";
 
                 var response = await _httpService.GetAsync<ResponseModel<EnrolledCourseResult>>(url);
 
@@ -66,7 +66,7 @@ namespace SpeakAI.Services.Service
                 {
                     throw new InvalidOperationException("Cannot retrieve user ID.");
                 }
-                string url = $"api/Course/{courseId}/enroll";
+                string url = $"api/courses/{courseId}/enrollments";
                 var response = await _httpService.PostAsync<string, ResponseModel<object>>(url, userId);
                 return response ?? new ResponseModel<object> { IsSuccess = false };
             }
@@ -92,7 +92,7 @@ namespace SpeakAI.Services.Service
 
             try
             {
-                var response = await _httpService.GetAsync<CourseResponseModel>("api/Course/get-all");
+                var response = await _httpService.GetAsync<CourseResponseModel>("api/courses");
                 Console.Error.WriteLine(response.Result);
                 if (response != null && response.IsSuccess && response.Result != null)
                 {
@@ -119,7 +119,7 @@ namespace SpeakAI.Services.Service
         {
             try
             {
-                string url = $"api/Course/{courseId}/details";
+                string url = $"api/courses/{courseId}/details";
                 var response = await _httpService.GetAsync<ResponseModel<CourseDetailModel>>(url);
                 foreach (var topic in response.Result.Topics)
                 {
@@ -162,9 +162,8 @@ namespace SpeakAI.Services.Service
 
             try
             {
-                string url = $"api/Course/enrolled/{enrolledCourseId}";
+                string url = $"api/courses/enrollments/{enrolledCourseId}";
                 var response = await _httpService.GetAsync<ResponseModel<EnrolledCourseProgressModel>>(url);
-                Console.Error.WriteLine(response.Result);
                 if (response != null && response.IsSuccess && response.Result != null)
                 {
                     return response;
@@ -200,7 +199,7 @@ namespace SpeakAI.Services.Service
                 {
                     throw new InvalidOperationException("Cannot retrieve user ID.");
                 }
-                string url = $"/api/Course/id?Userid={userId}";
+                string url = $"api/courses/user/{userId}/enrolled-courses";
                 var response = await _httpService.GetAsync<ResponseModel<List<EnrolledCourseModel>>>(url);
                 if (response != null && response.IsSuccess && response.Result != null)
                 {

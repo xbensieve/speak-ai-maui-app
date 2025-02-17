@@ -117,13 +117,17 @@ namespace SpeakAI.ViewModels
                 EnrolledCourse = response.Result;
                 TopicProgresses = EnrolledCourse.TopicProgresses ?? new List<TopicProgress>();
 
-                // Merge TopicProgress with Topics
                 foreach (var topic in Topics)
                 {
-                    var topicProgress = TopicProgresses.FirstOrDefault(tp => tp.TopicId == topic.TopicId);
+                    var topicProgress = TopicProgresses.SingleOrDefault(tp => tp.TopicId == topic.TopicId);
                     if (topicProgress != null)
                     {
+                        Console.WriteLine($"Topic: {topic.TopicName}, Progress: {topicProgress.ProgressPoints}");
                         topic.ProgressPoints = topicProgress.ProgressPoints;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"No progress found for Topic: {topic.TopicName}");
                     }
                 }
             }
