@@ -1,34 +1,41 @@
+﻿using SpeakAI.Services.Interfaces;
 using SpeakAI.ViewModels;
 
 namespace SpeakAI.Views;
 
 public partial class ExerciseDetailPage : ContentPage
 {
-	public ExerciseDetailPage()
+	public ExerciseDetailPage(ICourseService courseService)
 	{
 		InitializeComponent();
-        BindingContext = new ExerciseDetailViewModel();
+        var viewModel = new ExerciseDetailViewModel(courseService);
+        BindingContext = viewModel;
+        if (BindingContext == null)
+        {
+            Console.WriteLine("BindingContext not set properly.");
+        }
     }
     private void OnOptionSelected(object sender, CheckedChangedEventArgs e)
     {
-        if (sender is RadioButton radioButton)
+        if (sender is RadioButton radioButton && radioButton.IsChecked)
         {
-            var viewModel = BindingContext as ExerciseDetailViewModel;
-            if (viewModel != null)
+            if (BindingContext is ExerciseDetailViewModel viewModel)
             {
                 viewModel.SelectedAnswer = radioButton.Content.ToString();
             }
         }
     }
-    private async void OnNextExercise(object sender, EventArgs e)
+    private void _OnCheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        await ExerciseFrame.TranslateTo(-this.Width, 0, 300, Easing.CubicInOut);
-        await ExerciseFrame.TranslateTo(0, 0, 300, Easing.CubicInOut);
-    }
+        if (sender is RadioButton radioButton && e.Value)
+        {
+            var selectedAnswer = radioButton.Content.ToString().ToLower();
 
-    private async void OnPreviousExercise(object sender, EventArgs e)
-    {
-        await ExerciseFrame.TranslateTo(this.Width, 0, 300, Easing.CubicInOut);
-        await ExerciseFrame.TranslateTo(0, 0, 300, Easing.CubicInOut);
+            if (BindingContext is ExerciseDetailViewModel viewModel && viewModel.SelectedAnswer != selectedAnswer)
+            {
+                viewModel.SelectedAnswer = selectedAnswer;
+                Console.WriteLine($"[DOTNET] SelectedAnswer set to: {viewModel.SelectedAnswer}");
+            }
+        }
     }
 }

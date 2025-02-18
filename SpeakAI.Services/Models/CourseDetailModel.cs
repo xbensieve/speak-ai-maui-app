@@ -66,7 +66,7 @@ namespace SpeakAI.Services.Models
     public class Exercise
     {
         [JsonPropertyName("id")]
-        public string ContentId { get; set; } = string.Empty;
+        public string ExerciseId { get; set; } = string.Empty;
         [JsonPropertyName("content")]
         public string ContentRaw { get; set; }
         [JsonPropertyName("maxPoint")]

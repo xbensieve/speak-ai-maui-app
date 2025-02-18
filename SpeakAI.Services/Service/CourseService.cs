@@ -217,5 +217,39 @@ namespace SpeakAI.Services.Service
 
             return new ResponseModel<List<EnrolledCourseModel>> { IsSuccess = false };
         }
+
+        public async Task<ResponseModel<object>> SubmitExerciseResult(string exerciseId, decimal earnedPoints)
+        {
+            if (string.IsNullOrEmpty(exerciseId))
+            {
+                throw new ArgumentException("Exercise Id cannot be empty.");
+            }
+            try
+            {
+                string userId = await SecureStorage.GetAsync("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    throw new InvalidOperationException("Cannot retrieve user ID.");
+                }
+                var exerciseResult = new ExerciseResultModel
+                {
+                    userId = userId,
+                    earnedPoints = earnedPoints
+                };
+                string url = $"api/courses/exercises/{exerciseId}/submissions";
+                var response = await _httpService.PostAsync<ExerciseResultModel, ResponseModel<object>>(url, exerciseResult);
+                return response ?? new ResponseModel<object> { IsSuccess = false };
+            }
+            catch (HttpRequestException ex) when (ex.Message.Contains("404"))
+            {
+                Console.WriteLine($"Enrollment check failed: {ex.Message}");
+                return new ResponseModel<object> { IsSuccess = false };
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Unexpected error: {ex.Message}");
+                return new ResponseModel<object> { IsSuccess = false };
+            }
+        }
     }
 }

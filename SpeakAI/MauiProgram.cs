@@ -7,6 +7,7 @@ using SpeakAI.Services.Service;
 using SpeakAI.ViewModels;
 using SpeakAI.Views;
 using System.Net;
+using SpeakAI.Converters;
 
 namespace SpeakAI
 {

@@ -132,5 +132,15 @@ namespace SpeakAI.ViewModels
                 }
             }
         }
+        //public void UpdateProgress(string topicId, decimal earnedPoints)
+        //{
+        //    var topicProgress = TopicProgresses.FirstOrDefault(tp => tp.TopicId == topicId);
+        //    if (topicProgress != null)
+        //    {
+        //        topicProgress.ProgressPoints += earnedPoints; // Cập nhật điểm số ngay lập tức
+        //        OnPropertyChanged(nameof(TopicProgresses)); // Cập nhật UI
+        //    }
+        //}
+
     }
 }
