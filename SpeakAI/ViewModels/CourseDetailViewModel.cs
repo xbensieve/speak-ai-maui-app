@@ -1,5 +1,6 @@
 ﻿using SpeakAI.Services.Interfaces;
 using SpeakAI.Services.Models;
+using SpeakAI.Views;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -38,6 +39,7 @@ public class CourseDetailViewModel : INotifyPropertyChanged
         }
     }
     public ICommand EnrollCommand { get; }
+    public ICommand StudyCommand { get; }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -50,6 +52,10 @@ public class CourseDetailViewModel : INotifyPropertyChanged
     {
         _courseService = courseService;
         EnrollCommand = new Command<string>(async (courseId) => await EnrollCourse(courseId));
+        StudyCommand = new Command(async () =>
+        {
+            await Shell.Current.GoToAsync("study");
+        });
     }
     private async Task EnrollCourse(string courseId)
     {

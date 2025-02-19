@@ -123,6 +123,7 @@
             <VerticalStackLayout Spacing="16" Padding="12">
                 <Button Text="Continue Learning"
                         IsVisible="{Binding IsEnrolled}"
+                        Command="{Binding StudyCommand}"
                         BackgroundColor="#27AE60"
                         TextColor="White"
                         FontSize="18"

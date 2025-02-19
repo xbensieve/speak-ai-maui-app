@@ -10,6 +10,7 @@ namespace SpeakAI
             Routing.RegisterRoute("coursedetail", typeof(CourseDetailPage));
             Routing.RegisterRoute("exercise", typeof(ExercisePage));
             Routing.RegisterRoute("exercisedetail", typeof(ExerciseDetailPage));
+            Routing.RegisterRoute("study", typeof(StudyPage));
         }
     }
 }

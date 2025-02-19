@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using SpeakAI.Services.Interfaces;
+using System.Diagnostics;
 
 namespace SpeakAI.ViewModels
 {
@@ -57,9 +58,7 @@ namespace SpeakAI.ViewModels
         }
 
         public List<Exercise> Exercises => Topic?.Exercises ?? new List<Exercise>();
-        public Exercise CurrentExercise => Exercises != null && Exercises.Count > 0 && _currentIndex >= 0 && _currentIndex < Exercises.Count
-     ? Exercises[_currentIndex]
-     : null;
+        public Exercise CurrentExercise => Exercises != null && Exercises.Count > 0 && _currentIndex >= 0 && _currentIndex < Exercises.Count ? Exercises[_currentIndex] : null;
         public string SelectedAnswer
         {
             get => _selectedAnswer;
@@ -100,7 +99,7 @@ namespace SpeakAI.ViewModels
                     {
                         _currentIndex++;
                         IsAnswerVisible = false;
-
+                        OnPropertyChanged(nameof(IsAnswerVisible));
                         OnPropertyChanged(nameof(CurrentExercise));
                         OnPropertyChanged(nameof(CanGoBack));
                         OnPropertyChanged(nameof(CanGoNext));
@@ -157,11 +156,24 @@ namespace SpeakAI.ViewModels
                         IsAnswerVisible = true;
                         var exerciseId = CurrentExercise?.ExerciseId;
                         var earnedPoints = CurrentExercise?.MaxPoint;
-                        var response = await _courseService.SubmitExerciseResult(exerciseId, (decimal)earnedPoints);
-                        if (response.IsSuccess)
+                        _ = Task.Run(async () =>
                         {
-                            Application.Current.MainPage.DisplayAlert("Success", "Submit success", "OK");
-                        }
+                            try
+                            {
+                                var response = await _courseService.SubmitExerciseResult(exerciseId, (decimal)earnedPoints);
+                                if (response.IsSuccess)
+                                {
+                                    await MainThread.InvokeOnMainThreadAsync(() =>
+                                    {
+                                        Application.Current.MainPage.DisplayAlert("Success", "Submit success", "OK");
+                                    });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                Debug.WriteLine($"Error submitting exercise: {ex.Message}");
+                            }
+                        });
                     }
                     else
                     {
@@ -176,11 +188,7 @@ namespace SpeakAI.ViewModels
                 Console.WriteLine($"Error submitting answer: {ex.Message}");
             }
         }
-
-
-
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
