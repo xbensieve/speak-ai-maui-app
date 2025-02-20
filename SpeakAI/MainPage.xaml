@@ -22,7 +22,7 @@
                     <Label Text="You have completed 75% of this week's goal!" FontSize="14" TextColor="#6B7280"/>
                     <ProgressBar Progress="0.75" HeightRequest="8" BackgroundColor="#BBDEFB"/>
                     <HorizontalStackLayout Spacing="10">
-                        <Button Text="Continue Learning" BackgroundColor="#2563EB" TextColor="White" CornerRadius="10" FontAttributes="Bold"/>
+                        <Button Clicked="OnCounterClicked" Text="Continue Learning" BackgroundColor="#2563EB" TextColor="White" CornerRadius="10" FontAttributes="Bold"/>
                         <Button Text="Set Goal" BackgroundColor="Transparent" TextColor="#2563EB" BorderColor="#2563EB" BorderWidth="2" CornerRadius="10" FontAttributes="Bold"/>
                     </HorizontalStackLayout>
                 </VerticalStackLayout>

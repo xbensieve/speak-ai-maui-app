@@ -8,6 +8,11 @@ using SpeakAI.ViewModels;
 using SpeakAI.Views;
 using System.Net;
 using SpeakAI.Converters;
+using Microsoft.Maui.LifecycleEvents;
+using Plugin.Firebase.Auth;
+using Plugin.Firebase.Bundled.Shared;
+using Plugin.Firebase.Crashlytics;
+using Plugin.Firebase.Bundled.Platforms.Android;
 
 namespace SpeakAI
 {
@@ -30,7 +35,7 @@ namespace SpeakAI
 #endif
             builder.Services.AddSingleton<HttpClient>(sp =>
             {
-                return new HttpClient { BaseAddress = new Uri("http://sai.runasp.net/") };
+                return new HttpClient { BaseAddress = new Uri("http://192.168.1.81:5232/") };
             });
             /* API Services */
             builder.Services.AddSingleton<HttpService>();
@@ -59,6 +64,31 @@ namespace SpeakAI
             builder.Services.AddTransient<ExercisePage>();
             builder.Services.AddTransient<ExerciseDetailPage>();
             return builder.Build();
+        }
+        private static MauiAppBuilder RegisterFirebaseServices(this MauiAppBuilder builder)
+        {
+            builder.ConfigureLifecycleEvents(events =>
+            {
+#if IOS
+            events.AddiOS(iOS => iOS.FinishedLaunching((app, launchOptions) => {
+                CrossFirebase.Initialize(CreateCrossFirebaseSettings());
+                return false;
+            }));
+#else
+                events.AddAndroid(android => android.OnCreate((activity, _) =>
+                    CrossFirebase.Initialize(activity, CreateCrossFirebaseSettings())));
+                CrossFirebaseCrashlytics.Current.SetCrashlyticsCollectionEnabled(true);
+#endif
+            });
+
+            builder.Services.AddSingleton(_ => CrossFirebaseAuth.Current);
+            return builder;
+        }
+
+        private static CrossFirebaseSettings CreateCrossFirebaseSettings()
+        {
+            return new CrossFirebaseSettings(isAuthEnabled: true,
+            isCloudMessagingEnabled: true, isAnalyticsEnabled: true);
         }
     }
 }
