@@ -2,86 +2,88 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SpeakAI.Views.ExercisePage"
              Title="Learning">
-    <StackLayout Padding="20" Spacing="20">
+    
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="20">
+        
+                <!-- Course Title and Description -->
+                <Label Text="{Binding Course.CourseName}" 
+                       FontSize="26" 
+                       FontAttributes="Bold" 
+                       TextColor="#2980b9"
+                       HorizontalOptions="Center" />
+        
+                <Label Text="{Binding Course.Description}" 
+                       FontSize="16" 
+                       TextColor="#7f8c8d"
+                       HorizontalOptions="Center" />
+        
+                <!-- Course Max Points -->
+                <Label Text="{Binding Course.MaxPoint, StringFormat='Max Points: {0}'}" 
+                       FontSize="16" 
+                       TextColor="#2ecc71"
+                       HorizontalOptions="Center" />
+        
+                <!-- Progress Bar -->
+                <StackLayout Orientation="Horizontal" Spacing="10">
+                    <Label Text="Progress" FontSize="14" TextColor="#2ecc71" VerticalOptions="Center" />
+                    <ProgressBar Progress="{Binding EnrolledCourse.ProgressPoints}" 
+                                 HeightRequest="12" 
+                                 HorizontalOptions="FillAndExpand"
+                                 BackgroundColor="#ecf0f1" ProgressColor="#2ecc71" />
+                    <Label Text="{Binding EnrolledCourse.ProgressPoints, StringFormat='{0}'}" 
+                           FontSize="14" 
+                           TextColor="#2ecc71" 
+                           VerticalOptions="Center" />
+                </StackLayout>
+        
+                <!-- Topics List -->
+                <CollectionView ItemsSource="{Binding Topics}" 
+                                VerticalOptions="FillAndExpand" 
+                                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="15" 
+                                   Margin="5" 
+                                   BorderColor="#bdc3c7" 
+                                   CornerRadius="12" 
+                                   BackgroundColor="#ffffff"
+                                   HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnExerciseTapped"/>
+                                </Frame.GestureRecognizers>
+                                <StackLayout Spacing="12">
+                                    <Label Text="{Binding TopicName}" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold" 
+                                           TextColor="#3498db" 
+                                           HorizontalOptions="Center" />
+        
+                                    <StackLayout Orientation="Horizontal" Spacing="25">
+                                        <Label Text="{Binding MaxPoint, StringFormat='Max: {0} points'}" 
+                                               FontSize="14" 
+                                               TextColor="#16a085" 
+                                               VerticalOptions="Center" />
+                                        <Label Text="{Binding ProgressPoints, StringFormat='Progress: {0}'}" 
+                                               FontSize="14" 
+                                               TextColor="#e74c3c" 
+                                               VerticalOptions="Center" />
+                                    </StackLayout>
+        
+                                    <!-- Progress Bar for each topic -->
+                                    <ProgressBar Progress="{Binding ProgressPoints}" 
+                                                 HeightRequest="10" 
+                                                 HorizontalOptions="FillAndExpand"
+                                                 BackgroundColor="#ecf0f1" ProgressColor="#3498db" />
+                                </StackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+        
+            </StackLayout>
+        </ScrollView>
+    </RefreshView>
 
-        <!-- Course Title and Description -->
-        <Label Text="{Binding Course.CourseName}" 
-               FontSize="26" 
-               FontAttributes="Bold" 
-               TextColor="#2980b9"
-               HorizontalOptions="Center" />
-
-        <Label Text="{Binding Course.Description}" 
-               FontSize="16" 
-               TextColor="#7f8c8d"
-               HorizontalOptions="Center" />
-
-        <!-- Course Max Points -->
-        <Label Text="{Binding Course.MaxPoint, StringFormat='Max Points: {0}'}" 
-               FontSize="16" 
-               TextColor="#2ecc71"
-               HorizontalOptions="Center" />
-
-        <!-- Progress Bar -->
-        <StackLayout Orientation="Horizontal" Spacing="10">
-            <Label Text="Progress" FontSize="14" TextColor="#2ecc71" VerticalOptions="Center" />
-            <ProgressBar Progress="{Binding EnrolledCourse.ProgressPoints}" 
-                         HeightRequest="12" 
-                         HorizontalOptions="FillAndExpand"
-                         BackgroundColor="#ecf0f1" ProgressColor="#2ecc71" />
-            <Label Text="{Binding EnrolledCourse.ProgressPoints, StringFormat='{0}'}" 
-                   FontSize="14" 
-                   TextColor="#2ecc71" 
-                   VerticalOptions="Center" />
-        </StackLayout>
-
-        <!-- Topics List -->
-        <CollectionView ItemsSource="{Binding Topics}" 
-                        VerticalOptions="FillAndExpand" 
-                        SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="15" 
-                           Margin="5" 
-                           BorderColor="#bdc3c7" 
-                           CornerRadius="12" 
-                           BackgroundColor="#ffffff"
-                           HasShadow="True">
-                        <!-- Use HasShadow here -->
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnExerciseTapped"/>
-                        </Frame.GestureRecognizers>
-                        <StackLayout Spacing="12">
-                            <Label Text="{Binding TopicName}" 
-                                   FontSize="18" 
-                                   FontAttributes="Bold" 
-                                   TextColor="#3498db" 
-                                   HorizontalOptions="Center" />
-
-                            <StackLayout Orientation="Horizontal" Spacing="25">
-                                <!-- Max Points -->
-                                <Label Text="{Binding MaxPoint, StringFormat='Max: {0} points'}" 
-                                       FontSize="14" 
-                                       TextColor="#16a085" 
-                                       VerticalOptions="Center" />
-
-                                <!-- Progress Points -->
-                                <Label Text="{Binding ProgressPoints, StringFormat='Progress: {0}'}" 
-                                       FontSize="14" 
-                                       TextColor="#e74c3c" 
-                                       VerticalOptions="Center" />
-                            </StackLayout>
-
-                            <!-- Progress Bar for each topic -->
-                            <ProgressBar Progress="{Binding ProgressPoints}" 
-                                         HeightRequest="10" 
-                                         HorizontalOptions="FillAndExpand"
-                                         BackgroundColor="#ecf0f1" ProgressColor="#3498db" />
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-
-    </StackLayout>
 </ContentPage>

@@ -18,7 +18,6 @@ namespace SpeakAI.Services.Service
         {
             _httpService = httpService;
         }
-
         public async Task<ResponseModel<EnrolledCourseResult>> CheckEnrolledCourse(string courseId)
         {
             if (string.IsNullOrEmpty(courseId))

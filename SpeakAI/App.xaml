@@ -5,11 +5,24 @@
              xmlns:local="clr-namespace:SpeakAI"
              x:Class="SpeakAI.App">
     <Application.Resources>
+       
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="Label">
+                <Setter Property="FontFamily" Value="Inter"/>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="FontFamily" Value="Inter"/>
+            </Style>
+            <Style TargetType="Entry">
+                <Setter Property="FontFamily" Value="Inter"/>
+            </Style>
+            <Style TargetType="Editor">
+                <Setter Property="FontFamily" Value="Inter"/>
+            </Style>
             <converter:RadioButtonConverter x:Key="RadioButtonConverter"/>
         </ResourceDictionary>
     </Application.Resources>

@@ -1,115 +1,43 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SpeakAI.Views.AITutorPage"
-             Title="AI Tutor"
-             BackgroundColor="#0F172A">
-    <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="18">
-        
-            
-            <!-- AI Header -->
-        <Frame BackgroundColor="#1E293B"
-               CornerRadius="18"
-               Padding="20"
-               HasShadow="True">
-            <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
-                <Image Source="ai_icon.png"
-                       WidthRequest="50"
-                       HeightRequest="50"
-                       Aspect="AspectFill"/>
-                <VerticalStackLayout>
-                    <Label Text="AI Tutor"
-                           FontSize="22"
-                           FontAttributes="Bold"
-                           TextColor="#00D4FF"/>
-                    <Label Text="Your AI Learning Assistant"
-                           FontSize="15"
-                           TextColor="#CBD5E1"/>
-                </VerticalStackLayout>
-            </HorizontalStackLayout>
-        </Frame>
+             x:Class="SpeakAI.Views.AITutorPage">
 
-        <!-- AI Chat Section -->
-        <Frame BackgroundColor="#1E293B"
-               CornerRadius="18"
-               Padding="20"
-               HasShadow="True"
-               HeightRequest="450">
-            <ScrollView>
-                <VerticalStackLayout Spacing="12">
-                    <!-- User Message -->
-                    <Frame BackgroundColor="#334155"
-                           CornerRadius="14"
-                           Padding="12">
-                        <Label Text="👨‍🎓 You: How can I improve my pronunciation?"
-                               FontSize="16"
-                               FontAttributes="Bold"
-                               TextColor="White"/>
-                    </Frame>
+    <StackLayout Padding="10">
 
-                    <!-- AI Response -->
-                    <Frame BackgroundColor="#00D4FF"
-                           CornerRadius="14"
-                           Padding="12"
-                           HorizontalOptions="End">
-                        <Label Text="🤖 AI Tutor: Try shadowing native speakers, record yourself, and use AI feedback tools."
-                               FontSize="16"
-                               TextColor="Black"/>
-                    </Frame>
-                </VerticalStackLayout>
-            </ScrollView>
-        </Frame>
+        <!-- Scrollable Messages List -->
+        <Grid HeightRequest="400">
+            <ListView x:Name="MessagesListView"
+                      HasUnevenRows="True"
+                      VerticalOptions="FillAndExpand"
+                      SelectionMode="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="5">
+                                <Label Text="{Binding}" FontSize="16" />
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
 
-        <!-- User Input Section -->
-        <Frame BackgroundColor="#1E293B"
-               CornerRadius="18"
-               Padding="14"
-               HasShadow="True">
-            <HorizontalStackLayout Spacing="10">
-                <!-- Voice Input Button -->
-                <Button Text="🎙️"
-                        BackgroundColor="#EF4444"
-                        TextColor="White"
-                        FontSize="15"
-                        Padding="14"
-                        CornerRadius="14"
-                        HeightRequest="50"
-                        WidthRequest="50"/>
-
-                <!-- Text Input -->
-                <Entry Placeholder="Type a message..."
-                       FontSize="16"
-                       TextColor="White"
-                       PlaceholderColor="#94A3B8"
-                       WidthRequest="210"
-                       HeightRequest="50"
-                       HorizontalOptions="FillAndExpand"
-                       />
-
-                <!-- Send Button -->
-                <Button Text="▶"
-                        BackgroundColor="#00D4FF"
-                        TextColor="Black"
-                        FontSize="15"
-                        Padding="12"
-                        CornerRadius="12"
-                        HeightRequest="50"
-                        WidthRequest="50"
-                        FontAttributes="Bold"/>
-            </HorizontalStackLayout>
-        </Frame>
-
-        <!-- AI Speech Output -->
-        <Button Text="🔊 Read AI Response"
-                BackgroundColor="#22C55E"
-                TextColor="White"
-                FontSize="18"
-                Padding="16"
-                CornerRadius="16"
-                HorizontalOptions="Fill"
-                FontAttributes="Bold"/>
-
-    </VerticalStackLayout>
-    </ScrollView>
+        <Entry x:Name="MessageEntry" Placeholder="Type your message..." />
+        <Button Text="Send Message" Clicked="SendMessage_Clicked" />
+        <Button Text="🎤 Start Listening"
+        Clicked="Listen"
+        BackgroundColor="#4CAF50"
+        TextColor="Black"
+        FontSize="18"
+        CornerRadius="25"
+        Scale="1"
+        Opacity="0"
+        x:Name="StartButton">
+            <Button.Triggers>
+                <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                    <Setter Property="Scale" Value="0.9"/>
+                </Trigger>
+            </Button.Triggers>
+        </Button>
+    </StackLayout>
 </ContentPage>

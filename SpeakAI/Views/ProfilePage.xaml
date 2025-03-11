@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SpeakAI.Views.ProfilePage"
@@ -7,8 +6,6 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="30" Spacing="20" HorizontalOptions="Fill">
-
-            <!-- Profile Picture & Name -->
             <Frame BackgroundColor="White"
                    CornerRadius="20"
                    Padding="20"
@@ -27,87 +24,20 @@
                                Aspect="AspectFill"/>
                     </Frame>
                     <VerticalStackLayout>
-                        <Label Text="John Doe"
+                        <Label x:Name="NameLabel"
                                FontSize="22"
                                FontAttributes="Bold"
                                TextColor="#1E293B"/>
-                        <Label Text="johndoe@example.com"
+                        <Label x:Name="EmailLabel"
+                               FontSize="14"
+                               TextColor="#64748B"/>
+                        <Label x:Name="UserIdLabel"
                                FontSize="14"
                                TextColor="#64748B"/>
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
             </Frame>
 
-            <!-- User Stats -->
-            <Frame BackgroundColor="White"
-       CornerRadius="20"
-       Padding="20"
-       HasShadow="True"
-       HorizontalOptions="Fill">
-                <Grid ColumnDefinitions="*,*" 
-          RowDefinitions="Auto,Auto,Auto,Auto,Auto" 
-          ColumnSpacing="20" 
-          RowSpacing="15">
-
-                    <!-- English Level -->
-                    <Label Text="🌟 Level" FontSize="16" FontAttributes="Bold" TextColor="#374151" 
-               Grid.Column="0" Grid.Row="0" HorizontalOptions="Start"/>
-                    <Label Text="Advanced" FontSize="16" TextColor="#10B981" 
-               Grid.Column="1" Grid.Row="0" HorizontalOptions="End"/>
-
-                    <!-- Points -->
-                    <Label Text="🏆 Points" FontSize="16" FontAttributes="Bold" TextColor="#374151" 
-               Grid.Column="0" Grid.Row="1" HorizontalOptions="Start"/>
-                    <Label Text="2450" FontSize="16" TextColor="#F59E0B" 
-               Grid.Column="1" Grid.Row="1" HorizontalOptions="End"/>
-
-                    <!-- Rank -->
-                    <Label Text="🥇 Rank" FontSize="16" FontAttributes="Bold" TextColor="#374151" 
-               Grid.Column="0" Grid.Row="2" HorizontalOptions="Start"/>
-                    <Label Text="Gold" FontSize="16" TextColor="#EAB308" 
-               Grid.Column="1" Grid.Row="2" HorizontalOptions="End"/>
-
-                    <!-- Lessons Completed -->
-                    <Label Text="🎯 Lessons" FontSize="16" FontAttributes="Bold" TextColor="#374151" 
-               Grid.Column="0" Grid.Row="3" HorizontalOptions="Start"/>
-                    <Label Text="120" FontSize="16" TextColor="#6366F1" 
-               Grid.Column="1" Grid.Row="3" HorizontalOptions="End"/>
-
-                    <!-- Streak -->
-                    <Label Text="🔥 Streak" FontSize="16" FontAttributes="Bold" TextColor="#374151" 
-               Grid.Column="0" Grid.Row="4" HorizontalOptions="Start"/>
-                    <Label Text="15 Days" FontSize="16" TextColor="#EF4444" 
-               Grid.Column="1" Grid.Row="4" HorizontalOptions="End"/>
-
-                </Grid>
-            </Frame>
-
-
-            <!-- Settings Buttons -->
-            <Frame BackgroundColor="White"
-                   CornerRadius="20"
-                   Padding="15"
-                   HasShadow="True"
-                   HorizontalOptions="Fill">
-                <VerticalStackLayout Spacing="10">
-                    <Button Text="Edit Profile"
-                            BackgroundColor="#2563EB"
-                            TextColor="White"
-                            FontSize="16"
-                            Padding="12"
-                            CornerRadius="12"
-                            HorizontalOptions="Fill"/>
-                    <Button Text="Change Password"
-                            BackgroundColor="#22C55E"
-                            TextColor="White"
-                            FontSize="16"
-                            Padding="12"
-                            CornerRadius="12"
-                            HorizontalOptions="Fill"/>
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Logout Button -->
             <Button Text="Logout"
                     Clicked="LogoutClicked"
                     BackgroundColor="#EF4444"
@@ -120,5 +50,4 @@
 
         </VerticalStackLayout>
     </ScrollView>
-
 </ContentPage>

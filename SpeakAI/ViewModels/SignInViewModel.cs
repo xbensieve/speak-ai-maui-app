@@ -48,10 +48,11 @@ namespace SpeakAI.ViewModels
         public ICommand SignUpCommand { get; }
         public SignInViewModel(ILoginService loginService, IUserService userService)
         {
-            _loginService = loginService;
-            _userService = userService;
+            _loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+
             SignInCommand = new Command(async () => await OnSignIn(), () => !IsProcessing);
-            SignUpCommand = new Command(async () =>  await OnSignUp(userService));
+            SignUpCommand = new Command(async () => await OnSignUp(userService));
         }
         private async Task OnSignUp(IUserService userService)
         {
@@ -72,12 +73,16 @@ namespace SpeakAI.ViewModels
                 }
                 var user = new LoginRequestModel
                 {
-                    username = Username,
+                    userName = Username,
                     password = Password,
                 };
 
                 var response = await _loginService.Login(user);
-
+                if (response == null)
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Login service returned null response.", "OK");
+                    return;
+                }
                 if (response.IsSuccess)
                 {
                     await Application.Current.MainPage.DisplayAlert("Success", "Signed in successfully!", "OK");

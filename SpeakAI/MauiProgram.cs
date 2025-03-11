@@ -13,7 +13,8 @@ using Plugin.Firebase.Auth;
 using Plugin.Firebase.Bundled.Shared;
 using Plugin.Firebase.Crashlytics;
 using Plugin.Firebase.Bundled.Platforms.Android;
-
+using CommunityToolkit.Maui.Core;
+using UraniumUI;
 namespace SpeakAI
 {
     public static class MauiProgram
@@ -24,10 +25,15 @@ namespace SpeakAI
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseMauiCommunityToolkitCore()
+                .UseUraniumUIMaterial()
+                .UseUraniumUI()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("Inter-Regular.ttf", "Inter");
+                    fonts.AddFont("Inter-Bold.ttf", "InterBold");
                 });
             
 #if DEBUG
@@ -35,7 +41,7 @@ namespace SpeakAI
 #endif
             builder.Services.AddSingleton<HttpClient>(sp =>
             {
-                return new HttpClient { BaseAddress = new Uri("http://192.168.1.81:5232/") };
+                return new HttpClient { BaseAddress = new Uri("http://10.87.46.36:5232/") };
             });
             /* API Services */
             builder.Services.AddSingleton<HttpService>();
@@ -63,6 +69,7 @@ namespace SpeakAI
             builder.Services.AddTransient<CourseDetailPage>();
             builder.Services.AddTransient<ExercisePage>();
             builder.Services.AddTransient<ExerciseDetailPage>();
+            builder.Services.AddTransient<AITutorPage>();
             return builder.Build();
         }
         private static MauiAppBuilder RegisterFirebaseServices(this MauiAppBuilder builder)

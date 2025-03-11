@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
 
 namespace SpeakAI.ViewModels
@@ -27,7 +28,7 @@ namespace SpeakAI.ViewModels
                 {
                     _enrolledCourseId = value;
                     OnPropertyChanged();
-                    LoadCourseProgress();
+                    LoadCourseProgressAsync();
                 }
             }
         }
@@ -63,7 +64,7 @@ namespace SpeakAI.ViewModels
                 {
                     _courseId = value;
                     OnPropertyChanged();
-                    LoadCourseDetails();
+                    LoadCourseDetailsAsync();
                 }
             }
         }
@@ -87,16 +88,32 @@ namespace SpeakAI.ViewModels
                 OnPropertyChanged();
             }
         }
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private bool _isRefreshing;
+        public bool IsRefreshing
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            get => _isRefreshing;
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged();
+            }
         }
-        public event PropertyChangedEventHandler? PropertyChanged;
+
+        public ICommand RefreshCommand { get; }
+        private async Task RefreshData()
+        {
+            IsRefreshing = true;
+            await LoadCourseDetailsAsync();
+            await LoadCourseProgressAsync();
+            IsRefreshing = false;
+        }
+
         public ExerciseViewModel(ICourseService courseService)
         {
             _courseService = courseService;
+            RefreshCommand = new Command(async () => await RefreshData());
         }
-        private async void LoadCourseDetails()
+        private async Task LoadCourseDetailsAsync()
         {
             if (string.IsNullOrEmpty(CourseId)) return;
 
@@ -107,7 +124,7 @@ namespace SpeakAI.ViewModels
                 Topics = Course.Topics ?? new List<Topic>();
             }
         }
-        private async void LoadCourseProgress()
+        private async Task LoadCourseProgressAsync()
         {
             if (string.IsNullOrEmpty(EnrolledCourseId)) return;
 
@@ -132,15 +149,10 @@ namespace SpeakAI.ViewModels
                 }
             }
         }
-        //public void UpdateProgress(string topicId, decimal earnedPoints)
-        //{
-        //    var topicProgress = TopicProgresses.FirstOrDefault(tp => tp.TopicId == topicId);
-        //    if (topicProgress != null)
-        //    {
-        //        topicProgress.ProgressPoints += earnedPoints; // Cập nhật điểm số ngay lập tức
-        //        OnPropertyChanged(nameof(TopicProgresses)); // Cập nhật UI
-        //    }
-        //}
-
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public event PropertyChangedEventHandler? PropertyChanged;
     }
 }
