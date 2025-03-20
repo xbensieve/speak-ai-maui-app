@@ -22,13 +22,12 @@ namespace SpeakAI.Views
             MessagesListView.ItemsSource = Messages;
             ConnectToChatHub();
         }
-
         private async void ConnectToChatHub()
         {
             try
             {
                 _hubConnection = new HubConnectionBuilder()
-                    .WithUrl("http://10.87.46.36:5232/chatHub", options => {
+                    .WithUrl("http://sai.runasp.net/chatHub", options => {
                         options.HttpMessageHandlerFactory = _ => new HttpClientHandler { ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true };
                     })
             .WithAutomaticReconnect()
@@ -62,8 +61,8 @@ namespace SpeakAI.Views
                     Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(() =>
                     {
                         Messages.Add($"You: {result.Text}");
-                        Messages.Add("AI is typing..."); // Show "Typing..." status
-                        ScrollToLastMessage(); // Scroll down
+                        Messages.Add("AI is typing..."); 
+                        ScrollToLastMessage();
                     });
 
                     string token = await Xamarin.Essentials.SecureStorage.GetAsync("AccessToken");
@@ -123,10 +122,18 @@ namespace SpeakAI.Views
                                 Locale = selectedLocale ?? locales.FirstOrDefault()
                             };
                             await Task.WhenAll(
-                                    TextToSpeech.SpeakAsync(responseText, speechOptions),
-                                    Task.Run(() => Messages.Add($"AI: {responseText}")));
-                            MessageEntry.IsEnabled = true; // Re-enable input
-                            ScrollToLastMessage(); // Scroll down
+                                 TextToSpeech.SpeakAsync(responseText, speechOptions),
+                                 Task.Run(() =>
+                                 {
+                                     MainThread.BeginInvokeOnMainThread(() =>
+                                     {
+                                         Messages.Add($"AI: {responseText}");
+                                         ScrollToLastMessage();
+                                     });
+                                 }));
+                            await Task.Delay(100);
+                            ScrollToLastMessage();
+                            MessageEntry.IsEnabled = true;
                         });
                     }
                     catch (Exception ex)
@@ -151,15 +158,15 @@ namespace SpeakAI.Views
             if (string.IsNullOrWhiteSpace(MessageEntry.Text)) return;
 
             string userMessage = MessageEntry.Text;
-            MessageEntry.Text = ""; // Clear input after sending
-            MessageEntry.IsEnabled = false; // Disable input while AI is typing
+            MessageEntry.Text = "";
+            MessageEntry.IsEnabled = false;
 
             // Add user message to chat list
             Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(() =>
             {
                 Messages.Add($"You: {userMessage}");
-                Messages.Add("AI is typing..."); // Show "Typing..." status
-                ScrollToLastMessage(); // Scroll down
+                Messages.Add("AI is typing...");
+                ScrollToLastMessage();
             });
 
             string token = await Xamarin.Essentials.SecureStorage.GetAsync("AccessToken");
@@ -219,10 +226,18 @@ namespace SpeakAI.Views
                         Locale = selectedLocale ?? locales.FirstOrDefault()
                     };
                     await Task.WhenAll(
-                            TextToSpeech.SpeakAsync(responseText, speechOptions),
-                            Task.Run(() => Messages.Add($"AI: {responseText}")));
-                    MessageEntry.IsEnabled = true; // Re-enable input
-                    ScrollToLastMessage(); // Scroll down
+                        TextToSpeech.SpeakAsync(responseText, speechOptions),
+                        Task.Run(() =>
+                        {
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                Messages.Add($"AI: {responseText}");
+                                ScrollToLastMessage();
+                            });
+                        }));
+                    await Task.Delay(100);
+                    ScrollToLastMessage(); 
+                    MessageEntry.IsEnabled = true;
                 });
             }
             catch (Exception ex)
@@ -232,17 +247,16 @@ namespace SpeakAI.Views
                 MessageEntry.IsEnabled = true;
             }
         }
-
-        // Auto-scroll to the last message
         private void ScrollToLastMessage()
         {
-            if (Messages.Count > 0)
+            if (MessagesListView != null && Messages.Count > 0)
             {
-                MessagesListView.ScrollTo(Messages.Last(), ScrollToPosition.End, true);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    MessagesListView.ScrollTo(Messages[Messages.Count - 1], null, ScrollToPosition.End, true);
+                });
             }
         }
-
-
     }
 
     public class ChatHubDTO

@@ -1,4 +1,5 @@
-﻿using SpeakAI.Services.Interfaces;
+﻿using CommunityToolkit.Maui.Alerts;
+using SpeakAI.Services.Interfaces;
 using SpeakAI.Services.Models;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-
 namespace SpeakAI.ViewModels
 {
     public partial class SignInViewModel : INotifyPropertyChanged
@@ -37,7 +37,14 @@ namespace SpeakAI.ViewModels
         public string NotificationMessage
         {
             get => _notificationMessage;
-            set { _notificationMessage = value; OnPropertyChanged(nameof(NotificationMessage)); }
+            set { _notificationMessage = value; OnPropertyChanged(nameof(NotificationMessage)); ShowToast(_notificationMessage); }
+        }
+        private async void ShowToast(string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                await Toast.Make(message, CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
+            }
         }
         private void OnPropertyChanged(string propertyName)
         {
@@ -52,11 +59,11 @@ namespace SpeakAI.ViewModels
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
 
             SignInCommand = new Command(async () => await OnSignIn(), () => !IsProcessing);
-            SignUpCommand = new Command(async () => await OnSignUp(userService));
+            SignUpCommand = new Command(async () => await OnSignUp(userService, loginService));
         }
-        private async Task OnSignUp(IUserService userService)
+        private async Task OnSignUp(IUserService userService, ILoginService loginService)
         {
-            await Application.Current.MainPage.Navigation.PushAsync(new SignUpPage(userService));
+            Application.Current.MainPage = new NavigationPage(new SignUpPage(userService, loginService));
         }
         private async Task OnSignIn()
         {
@@ -66,41 +73,40 @@ namespace SpeakAI.ViewModels
 
             try
             {
-                if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+                if (!ValidateInputs()) return;
+
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    NotificationMessage = "All fields are required.";
-                    return;
-                }
-                var user = new LoginRequestModel
+                    Application.Current.MainPage = new NavigationPage(new SpeakAI.Views.LoadingPage());
+                });
+
+                var response = await Task.Run(async () => await _loginService.Login(new LoginRequestModel
                 {
                     userName = Username,
-                    password = Password,
-                };
+                    password = Password
+                })).ConfigureAwait(false);
 
-                var response = await _loginService.Login(user);
-                if (response == null)
+                if (response?.IsSuccess == true)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", "Login service returned null response.", "OK");
-                    return;
-                }
-                if (response.IsSuccess)
-                {
-                    await Application.Current.MainPage.DisplayAlert("Success", "Signed in successfully!", "OK");
-
-                    ResetFormFields();
-
-                    await Task.Delay(1500);
-
-                    Application.Current.MainPage = new AppShell();
+                    await HandleSuccessfulLogin(response.Message);
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", $"Signup failed: {response.Message}", "OK");
+                    ShowNotification(response?.Message ?? "Error Network!");
+                    Password = string.Empty;
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        Application.Current.MainPage = new SpeakAI.LoginPage(_userService, _loginService);
+                    });
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+                ShowNotification($"Error: {ex.Message}");
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage = new SpeakAI.LoginPage(_userService, _loginService);
+                });
             }
             finally
             {
@@ -112,6 +118,33 @@ namespace SpeakAI.ViewModels
         {
             Username = string.Empty;
             Password = string.Empty;
+        }
+        private async Task HandleSuccessfulLogin(string message)
+        {
+            ShowNotification(message);
+            ResetFormFields();
+            await Task.Delay(200);
+
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Application.Current.MainPage = new AppShell();
+            });
+        }
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+            {
+                ShowNotification("All fields are required.");
+                return false;
+            }
+            return true;
+        }
+        private void ShowNotification(string message)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                NotificationMessage = message;
+            });
         }
     }
 }

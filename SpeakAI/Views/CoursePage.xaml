@@ -7,115 +7,94 @@
     BackgroundColor="#F8F9FA">
 
     <VerticalStackLayout>
-        <!-- Header -->
-        <Frame BackgroundColor="#34495E"
-               Padding="30"
-               HasShadow="True"
-               CornerRadius="20"
-               Margin="10">
-            <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
-                <Label Text="📚 Course List"
-                       FontSize="28"
-                       FontAttributes="Bold"
-                       TextColor="White"
-                       HorizontalOptions="Center"/>
-                <Label Text="Explore a variety of engaging and insightful courses"
-                       FontSize="16"
-                       TextColor="White"
-                       HorizontalOptions="Center"/>
-            </VerticalStackLayout>
-        </Frame>
-
-        <!-- Course List -->
-        <CollectionView ItemsSource="{Binding Courses}" Margin="0">
+        <HorizontalStackLayout Padding="20" VerticalOptions="Start">
+            <Label Text="Courses" 
+                   FontFamily="InterBold"
+                   FontSize="24"
+                   TextColor="Black"/>
+        </HorizontalStackLayout>
+        <CollectionView ItemsSource="{Binding Courses}" Margin="10">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Frame Padding="20"
+                    <Frame Padding="15"
                            Margin="15"
                            BackgroundColor="White"
                            HasShadow="True"
-                           BorderColor="#D6DBDF"
-                           CornerRadius="20"
-                           Opacity="1.0">
+                           CornerRadius="20">
 
                         <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="OnCourseTapped"/>
                         </Frame.GestureRecognizers>
 
-                        <Grid ColumnDefinitions="100, *, 50">
-                            <!-- Course Image -->
-                            <Frame WidthRequest="90" HeightRequest="90"
-                                   Padding="0" CornerRadius="15"
+                        <Grid ColumnDefinitions="80, *, 40" RowDefinitions="Auto, Auto">
+                            <Frame WidthRequest="60" HeightRequest="60"
+                                   Padding="0"
+                                   CornerRadius="10"
                                    Grid.Column="0"
-                                   HasShadow="True"
+                                   HasShadow="False"
                                    BackgroundColor="White"
                                    BorderColor="#D6DBDF"
                                    HorizontalOptions="Start"
                                    VerticalOptions="Center">
                                 <Image Source="course_image_02.webp"
                                        Aspect="AspectFill"
-                                       HeightRequest="90"
-                                       WidthRequest="90"/>
+                                       HeightRequest="60"
+                                       WidthRequest="60"/>
                             </Frame>
 
-                            <!-- Course Details -->
-                            <VerticalStackLayout Grid.Column="1" Spacing="8">
+                            <VerticalStackLayout Grid.Column="1" Spacing="2">
                                 <Label Text="{Binding CourseName}" 
-                                       FontSize="22"
+                                       FontSize="18"
                                        FontAttributes="Bold"
+                                       FontFamily="InterBold"
                                        TextColor="#2C3E50" 
                                        LineBreakMode="TailTruncation"/>
                                 <Label Text="{Binding Description}" 
-                                       FontSize="15"
-                                       TextColor="#7D7D7D" 
+                                       FontSize="14"
+                                       TextColor="#7D7D7D"
+                                       FontFamily="Inter"
                                        LineBreakMode="TailTruncation"
                                        MaxLines="2"/>
 
-                                <!-- Points & Levels -->
                                 <HorizontalStackLayout Spacing="8">
                                     <Image Source="trophy_icon.png" WidthRequest="20" HeightRequest="20"/>
                                     <Label>
                                         <Label.FormattedText>
                                             <FormattedString>
-                                                <Span Text="Points: " FontSize="15" FontAttributes="Bold" TextColor="#FFA500"/>
-                                                <Span Text="{Binding MaxPoint}" FontSize="15" FontAttributes="Bold" TextColor="#00BFFF"/>
+                                                <Span Text="Points: " FontSize="13" FontFamily="Inter" FontAttributes="Bold" TextColor="#FFA500"/>
+                                                <Span Text="{Binding MaxPoint}" FontSize="12" FontFamily="Inter" FontAttributes="Bold" TextColor="#00BFFF"/>
                                             </FormattedString>
                                         </Label.FormattedText>
                                     </Label>
                                 </HorizontalStackLayout>
 
-                                <!-- Level Indicators -->
-                                <HorizontalStackLayout Spacing="8">
-                                    <Frame BackgroundColor="#D4E6F1"
-                                           Padding="8"
-                                           CornerRadius="10"
-                                           HasShadow="False">
+                                <HorizontalStackLayout Spacing="5">
                                         <Label Text="A1" 
-                                               FontSize="13"
+                                               FontSize="12"
+                                               Padding="3,2"
+                                               FontFamily="Inter"
+                                               BackgroundColor="#E5E7EB"
                                                FontAttributes="Bold"
-                                               TextColor="#1B4F72"/>
-                                    </Frame>
-                                    <Frame BackgroundColor="#D1F2EB" 
-                                           Padding="8"
-                                           CornerRadius="10"
-                                           HasShadow="False">
-                                        <Label Text="C2"
-                                               FontSize="13"
+                                               TextColor="Gray"/>
+                                        <Label Text="A2"
+                                               FontSize="12"
+                                               Padding="3,2"
+                                               FontFamily="Inter"
+                                               BackgroundColor="#E5E7EB"
                                                FontAttributes="Bold"
-                                               TextColor="#0E6251"/>
-                                    </Frame>
+                                               TextColor="Gray"/>
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
-
-                            <!-- Arrow Icon -->
-                            <Label Text="➡"
-                                   FontSize="28"
+                            <Label Text="→" 
+                                   FontSize="32"
                                    TextColor="#2C3E50"
+                                   FontAttributes="Bold"
                                    BackgroundColor="Transparent"
-                                   FontAutoScalingEnabled="True"
-                                   HorizontalOptions="Center"
+                                   Padding="5"
+                                   HorizontalOptions="End"
                                    VerticalOptions="Center"
-                                   Grid.Column="2"/>
+                                   Grid.Column="2">
+                            </Label>
                         </Grid>
                     </Frame>
                 </DataTemplate>

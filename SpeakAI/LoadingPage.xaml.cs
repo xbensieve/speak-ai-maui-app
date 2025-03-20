@@ -23,7 +23,7 @@ public partial class LoadingPage : ContentPage
             Application.Current.MainPage = new AppShell();
         } else
 		{
-            Application.Current.MainPage = new AppShell();
+            Application.Current.MainPage = new LoginPage(_userService, _loginService);
         }
 	}
 }

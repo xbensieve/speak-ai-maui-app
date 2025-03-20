@@ -7,12 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using SpeakAI.Services.Models;
+using Android.SE.Omapi;
+using CommunityToolkit.Maui.Alerts;
 
 namespace SpeakAI.ViewModels
 {
     public partial class SignUpViewModel : INotifyPropertyChanged
     {
         private readonly IUserService _userService;
+        private readonly ILoginService _loginService;
         private string _username;
         private string _email;
         private string _fullName;
@@ -67,7 +70,7 @@ namespace SpeakAI.ViewModels
         public string NotificationMessage
         {
             get => _notificationMessage;
-            set { _notificationMessage = value; OnPropertyChanged(nameof(NotificationMessage)); }
+            set { _notificationMessage = value; OnPropertyChanged(nameof(NotificationMessage)); ShowToast(_notificationMessage); }
         }
         public bool IsProcessing
         {
@@ -76,15 +79,23 @@ namespace SpeakAI.ViewModels
         }
         public ICommand SignUpCommand { get; }
         public ICommand SignInCommand { get; }
-        public SignUpViewModel(IUserService userService)
+        public SignUpViewModel(IUserService userService, ILoginService loginService)
         {
             _userService = userService;
+            _loginService = loginService;
             SignUpCommand = new Command(async () => await OnSignUp(), () => !IsProcessing);
             SignInCommand = new Command(async () => await OnSignIn());
         }
+        private async void ShowToast(string message)
+        {
+            if (!string.IsNullOrEmpty(message))
+            {
+                await Toast.Make(message, CommunityToolkit.Maui.Core.ToastDuration.Short).Show();
+            }
+        }
         private async Task OnSignIn()
         {
-            await Application.Current.MainPage.Navigation.PopAsync();
+            Application.Current.MainPage = new NavigationPage(new LoginPage(_userService, _loginService));
         }
         private async Task OnSignUp()
         {
@@ -94,22 +105,17 @@ namespace SpeakAI.ViewModels
 
             try
             {
-                if (string.IsNullOrWhiteSpace(Username) ||
-                    string.IsNullOrWhiteSpace(Email) ||
-                    string.IsNullOrWhiteSpace(FullName) ||
-                    string.IsNullOrWhiteSpace(Gender) ||
-                    string.IsNullOrWhiteSpace(Password) ||
-                    string.IsNullOrWhiteSpace(ConfirmPassword))
-                {
-                    NotificationMessage = "All fields are required.";
-                    return;
-                }
+                if (!ValidateInputs()) return;
 
                 if (Password != ConfirmPassword)
                 {
                     NotificationMessage = "Passwords do not match.";
                     return;
                 }
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage = new NavigationPage(new SpeakAI.Views.LoadingPage());
+                });
 
                 var newUser = new UserModel
                 {
@@ -121,27 +127,29 @@ namespace SpeakAI.ViewModels
                     birthday = Birthday.ToString("yyyy-MM-dd"),
                     gender = Gender
                 };
+               
+                var response = await Task.Run(async () => await _userService.SignUpCustomer(newUser)).ConfigureAwait(false);
 
-                var response = await _userService.SignUpCustomer(newUser);
-
-                if (response.IsSuccess)
+                if (response?.IsSuccess == true)
                 {
-                    await Application.Current.MainPage.DisplayAlert("Success", "Signed up successfully!", "OK");
-
-                    ResetFormFields();
-
-                    await Task.Delay(1500);
-
-                    await Application.Current.MainPage.Navigation.PopAsync();
+                    await HandleSuccessfulSignIn(response.Message);
                 }
                 else
                 {
-                    await Application.Current.MainPage.DisplayAlert("Error", $"Signup failed: {response.Message}", "OK");
+                    ShowNotification(response?.Message ?? "Error Network!");
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        Application.Current.MainPage = new SpeakAI.SignUpPage(_userService, _loginService);
+                    });
                 }
             }
             catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+                ShowNotification($"Error: {ex.Message}");
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current.MainPage = new SpeakAI.LoginPage(_userService, _loginService);
+                });
             }
             finally
             {
@@ -153,6 +161,39 @@ namespace SpeakAI.ViewModels
         private void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(Username) ||
+                 string.IsNullOrWhiteSpace(Email) ||
+                 string.IsNullOrWhiteSpace(FullName) ||
+                 string.IsNullOrWhiteSpace(Gender) ||
+                 string.IsNullOrWhiteSpace(Password) ||
+                 string.IsNullOrWhiteSpace(ConfirmPassword))
+            {
+                ShowNotification("All fields are required.");
+                return false;
+            }
+            return true;
+        }
+        private async Task HandleSuccessfulSignIn(string message)
+        {
+            ShowNotification(message);
+            ResetFormFields();
+            await Application.Current.MainPage.Navigation.PushModalAsync(new SuccessPopup());
+
+            await Task.Delay(2000);
+
+            await Application.Current.MainPage.Navigation.PopModalAsync();
+
+            await Application.Current.MainPage.Navigation.PushAsync(new LoginPage(_userService, _loginService));
+        }
+        private void ShowNotification(string message)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                NotificationMessage = message;
+            });
         }
         private void ResetFormFields()
         {

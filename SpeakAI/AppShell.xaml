@@ -9,15 +9,17 @@
 
     <Shell.Resources>
         <Style TargetType="Shell">
-            <Setter Property="Shell.BackgroundColor" Value="#1E1E2E"/>
-            <Setter Property="Shell.TitleColor" Value="White"/>
-            <Setter Property="Shell.ForegroundColor" Value="White"/>
-            <Setter Property="Shell.DisabledColor" Value="#7D7D7D"/>
-            <Setter Property="Shell.UnselectedColor" Value="#B0B0B0"/>
-            <Setter Property="Shell.TabBarBackgroundColor" Value="#2C2C3E"/>
-            <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-            <Setter Property="Shell.TabBarTitleColor" Value="White"/>
-            <Setter Property="Shell.TabBarUnselectedColor" Value="#A0A0A0"/>
+            <Setter Property="Shell.BackgroundColor" Value="White"/>
+            <Setter Property="Shell.TitleColor" Value="Black"/>
+            <Setter Property="Shell.DisabledColor" Value="#A0A0A0"/>
+            <Setter Property="Shell.UnselectedColor" Value="#7D7D7D"/>
+            <Setter Property="Shell.TabBarBackgroundColor" Value="White"/>
+            <Setter Property="Shell.TabBarForegroundColor" Value="Black"/>
+            <Setter Property="Shell.TabBarTitleColor" Value="Black"/>
+            <Setter Property="Shell.TabBarUnselectedColor" Value="#7D7D7D"/>
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="InterBold"/>
         </Style>
     </Shell.Resources>
     <TabBar>

@@ -163,9 +163,9 @@ namespace SpeakAI.ViewModels
                                 var response = await _courseService.SubmitExerciseResult(exerciseId, (decimal)earnedPoints);
                                 if (response.IsSuccess)
                                 {
-                                    await MainThread.InvokeOnMainThreadAsync(() =>
+                                    ThreadPool.QueueUserWorkItem(_ =>
                                     {
-                                        Application.Current.MainPage.DisplayAlert("Success", "Submit success", "OK");
+                                        Console.WriteLine("Submit success");
                                     });
                                 }
                             }

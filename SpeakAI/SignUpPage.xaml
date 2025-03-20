@@ -1,125 +1,89 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SpeakAI.SignUpPage"
-             Title="Sign Up">
-    <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="25">
-            <StackLayout Orientation="Horizontal"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        Spacing="15">
-                <Image Source="e_learning.png"
-                    WidthRequest="100"
-                    HeightRequest="100"
-                    Aspect="AspectFit"/>
-                <Label Text="Create an Account"
-                    FontSize="28"
-                    FontAttributes="Bold"
-                    VerticalOptions="Center"
-                    TextColor="#0A1A3A"/>
-            </StackLayout>
-            <!-- Input Fields -->
-            <VerticalStackLayout Spacing="15">
-                <Entry x:Name="Username" 
-                       Placeholder="Username" 
-                       Text="{Binding Username}"
+             BackgroundColor="White"
+             x:Class="SpeakAI.SignUpPage">
+    <Grid>
+        <ScrollView>
+            <VerticalStackLayout Padding="30" Spacing="25">
+                <VerticalStackLayout HorizontalOptions="Center" Spacing="5">
+                    <Label Text="Create Your Account"
+                           FontFamily="InterBold"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="#0A1A3A"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+                <VerticalStackLayout Spacing="15" Padding="10, 0">
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F8F8">
+                        <Entry x:Name="Username"
+                               Placeholder="Username" 
+                               Text="{Binding Username}"
+                               FontSize="16"
+                               PlaceholderColor="Gray"/>
+                    </Frame>
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F8F8">
+                        <Entry x:Name="Email" Placeholder="Email" Text="{Binding Email}"
+                               Keyboard="Email" FontSize="16" PlaceholderColor="Gray"/>
+                    </Frame>
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F8F8">
+                        <Entry x:Name="FullName" Placeholder="Full Name" Text="{Binding FullName}"
+                               FontSize="16" PlaceholderColor="Gray"/>
+                    </Frame>
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F8F8">
+                        <DatePicker x:Name="Birthday" Date="{Binding Birthday}" FontSize="16"/>
+                    </Frame>
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F8F8">
+                        <Picker x:Name="Gender" Title="Select Gender" SelectedItem="{Binding Gender}" FontSize="16">
+                            <Picker.Items>
+                                <x:String>Male</x:String>
+                                <x:String>Female</x:String>
+                                <x:String>Other</x:String>
+                            </Picker.Items>
+                        </Picker>
+                    </Frame>
+
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F8F8">
+                        <Entry x:Name="Password" Placeholder="Password" Text="{Binding Password}"
+                               IsPassword="True" FontSize="16" PlaceholderColor="Gray"/>
+                    </Frame>
+
+                    <Frame CornerRadius="10" Padding="10" BackgroundColor="#F8F8F8">
+                        <Entry x:Name="ConfirmPassword" Placeholder="Confirm Password" Text="{Binding ConfirmPassword}"
+                               IsPassword="True" FontSize="16" PlaceholderColor="Gray"/>
+                    </Frame>
+                </VerticalStackLayout>
+
+                <!-- Notification Message -->
+                <Label Text="{Binding NotificationMessage}"
+                       TextColor="Red"
                        FontSize="14"
-                       HeightRequest="50"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       Margin="5,0"/>
+                       HorizontalOptions="Center"
+                       IsVisible="{Binding IsNotificationVisible}"/>
 
-                <Entry x:Name="Email"
-                       Placeholder="Email"
-                       Text="{Binding Email}"
-                       Keyboard="Email"
-                       FontSize="14"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       HeightRequest="50"
-                       Margin="5,0"/>
+                <!-- Sign Up Button -->
+                <Button Text="SIGN UP"
+                        FontSize="18"
+                        BackgroundColor="Blue"
+                        FontFamily="InterBold"
+                        TextColor="White"
+                        CornerRadius="10"
+                        HeightRequest="50"
+                        IsEnabled="{Binding IsNotProcessing}"
+                        Command="{Binding SignUpCommand}"/>
 
-                <Entry x:Name="FullName"
-                       Placeholder="Full Name"
-                       Text="{Binding FullName}"
-                       FontSize="14"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       HeightRequest="50"
-                       Margin="5,0"/>
-
-                <DatePicker x:Name="Birthday"
-                            Date="{Binding Birthday}"
-                            FontSize="14"
-                            BackgroundColor="Transparent"
-                            HeightRequest="50"
-                            Margin="5,0"/>
-
-                <Picker x:Name="Gender"
-                        Title="Select Gender"
-                        SelectedItem="{Binding Gender}"
-                        FontSize="14"
-                        BackgroundColor="Transparent"
-                        Margin="5,0">
-                    <Picker.Items>
-                        <x:String>Male</x:String>
-                        <x:String>Female</x:String>
-                        <x:String>Other</x:String>
-                    </Picker.Items>
-                </Picker>
-
-                <Entry x:Name="Password"
-                       Placeholder="Password"
-                       Text="{Binding Password}"
-                       IsPassword="True"
-                       FontSize="14"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       HeightRequest="50"
-                       Margin="5,0"/>
-
-                <Entry x:Name="ConfirmPassword"
-                       Placeholder="Confirm Password"
-                       Text="{Binding ConfirmPassword}"
-                       IsPassword="True"
-                       FontSize="14"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       HeightRequest="50"
-                       Margin="5,0"/>
+                <!-- Sign In Navigation -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
+                    <Label Text="Already have an account?"
+                           FontSize="14" TextColor="Black"/>
+                    <Label Text="SIGN IN"
+                           FontFamily="InterBold" TextColor="Blue" FontSize="14">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SignInCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
             </VerticalStackLayout>
-
-            <!-- Notification Message -->
-            <Label Text="{Binding NotificationMessage}"
-                   TextColor="Red"
-                   FontSize="16"
-                   HorizontalOptions="Center"
-                   IsVisible="{Binding IsNotificationVisible}"/>
-
-            <!-- Sign Up Button -->
-            <Button Text="Sign Up" 
-                    FontSize="20"
-                    BackgroundColor="#4B0082"
-                    FontAttributes="Bold"
-                    TextColor="White"
-                    CornerRadius="10"
-                    HeightRequest="50"
-                    IsEnabled="{Binding IsNotProcessing}"
-                    Command="{Binding SignUpCommand}"/>
-
-            <!-- Sign In Navigation -->
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
-                <Label Text="Already has an account?"
-                      TextColor="DarkGray" FontSize="14"/>
-                <Label Text=" Sign In"
-                       TextColor="MediumPurple" FontSize="14" FontAttributes="Bold">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SignInCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>
-            </HorizontalStackLayout>
-
-        </VerticalStackLayout>
-    </ScrollView>
+        </ScrollView>
+    </Grid>
 </ContentPage>
