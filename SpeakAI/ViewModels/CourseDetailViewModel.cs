@@ -24,7 +24,19 @@ public class CourseDetailViewModel : INotifyPropertyChanged
         get => _isNew;
         set { _isNew = value; OnPropertyChanged(nameof(IsNew)); }
     }
-    
+    private bool _isLoading;
+    public bool IsLoading
+    {
+        get => _isLoading;
+        set
+        {
+            _isLoading = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(IsNotLoading));
+        }
+    }
+    public bool IsNotLoading => !IsLoading;
+
     public CourseModel Course
     {
         get => _course;
@@ -57,16 +69,48 @@ public class CourseDetailViewModel : INotifyPropertyChanged
             await Shell.Current.GoToAsync("study");
         });
     }
-    private async Task EnrollCourse(string courseId)
+    public async Task EnrollCourse(string courseId)
     {
-        var result = await _courseService.EnrollCourse(courseId);
+        if (IsLoading) return;
 
-        if (result.IsSuccess)
+        IsLoading = true;
+
+        try
         {
-            IsEnrolled = true;
-            IsNew = false;
+            var result = await _courseService.EnrollCourse(courseId);
+
+            if (result?.IsSuccess == true)
+            {
+                await MainThread.InvokeOnMainThreadAsync(() =>
+                {
+                    IsEnrolled = true;
+                    IsNew = false;
+                });
+            }
+            else
+            {
+                Console.WriteLine("Enrollment failed: Server response was unsuccessful.");
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Enrollment failed. Please try again.", "OK");
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Enrollment failed: {ex.Message}");
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "An unexpected error occurred. Please try again later.", "OK");
+            });
+        }
+        finally
+        {
+            IsLoading = false;
         }
     }
+
+
     private async void CheckEnrollmentAsync()
     {
         if (Course == null || string.IsNullOrEmpty(Course.CourseId))
@@ -76,7 +120,8 @@ public class CourseDetailViewModel : INotifyPropertyChanged
 
         try
         {
-            var response = await _courseService.CheckEnrolledCourse(Course.CourseId);
+            var response = await Task.Run(async () => await _courseService.CheckEnrolledCourse(Course.CourseId));
+
             if (response.IsSuccess && response.Result.EnrolledCourseId != null)
             {
                 IsEnrolled = true;
@@ -94,5 +139,6 @@ public class CourseDetailViewModel : INotifyPropertyChanged
             IsEnrolled = false;
             IsNew = true;
         }
-    }   
+    }
+
 }

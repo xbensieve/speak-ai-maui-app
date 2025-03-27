@@ -55,10 +55,8 @@ namespace SpeakAI.Services.Service
 
                     request.Content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
                 }
-
                 using var response = await _httpClient.SendAsync(request);
-                response.EnsureSuccessStatusCode();
-
+                //response.EnsureSuccessStatusCode();
                 var responseData = await response.Content.ReadAsStringAsync();
                 Console.WriteLine($"[DOTNET] Raw API Response: {responseData}");
                 if (string.IsNullOrWhiteSpace(responseData))

@@ -19,6 +19,7 @@ namespace SpeakAI.ViewModels
         private readonly ICourseService _courseService;
         private string _courseId;
         private string _enrolledCourseId;
+        private bool _isLoading;
         public string EnrolledCourseId
         {
             get => _enrolledCourseId;
@@ -32,6 +33,19 @@ namespace SpeakAI.ViewModels
                 }
             }
         }
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                if (_isLoading == value) return;
+                _isLoading = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsNotLoading));
+            }
+        }
+
+        public bool IsNotLoading => !IsLoading;
         private EnrolledCourseProgressModel _progressModel;
         public EnrolledCourseProgressModel EnrolledCourse
         {
@@ -115,38 +129,63 @@ namespace SpeakAI.ViewModels
         }
         private async Task LoadCourseDetailsAsync()
         {
+
             if (string.IsNullOrEmpty(CourseId)) return;
 
-            var response = await _courseService.GetCourseDetails(CourseId);
-            if (response != null && response.IsSuccess)
+            IsLoading = true; // Start loading
+            try
             {
-                Course = response.Result;
-                Topics = Course.Topics ?? new List<Topic>();
+                var response = await _courseService.GetCourseDetails(CourseId);
+                if (response != null && response.IsSuccess)
+                {
+                    Course = response.Result;
+                    Topics = Course.Topics ?? new List<Topic>();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading course details: {ex.Message}");
+            }
+            finally
+            {
+                IsLoading = false; // Stop loading
             }
         }
         private async Task LoadCourseProgressAsync()
         {
             if (string.IsNullOrEmpty(EnrolledCourseId)) return;
 
-            var response = await _courseService.GetCourseProgress(EnrolledCourseId);
-            if (response != null && response.IsSuccess)
+            IsLoading = true; // Start loading
+            try
             {
-                EnrolledCourse = response.Result;
-                TopicProgresses = EnrolledCourse.TopicProgresses ?? new List<TopicProgress>();
-
-                foreach (var topic in Topics)
+                var response = await _courseService.GetCourseProgress(EnrolledCourseId);
+                if (response != null && response.IsSuccess)
                 {
-                    var topicProgress = TopicProgresses.SingleOrDefault(tp => tp.TopicId == topic.TopicId);
-                    if (topicProgress != null)
+                    EnrolledCourse = response.Result;
+                    TopicProgresses = EnrolledCourse.TopicProgresses ?? new List<TopicProgress>();
+
+                    foreach (var topic in Topics)
                     {
-                        Console.WriteLine($"Topic: {topic.TopicName}, Progress: {topicProgress.ProgressPoints}");
-                        topic.ProgressPoints = topicProgress.ProgressPoints;
-                    }
-                    else
-                    {
-                        Console.WriteLine($"No progress found for Topic: {topic.TopicName}");
+                        var topicProgress = TopicProgresses.SingleOrDefault(tp => tp.TopicId == topic.TopicId);
+                        if (topicProgress != null)
+                        {
+                            Console.WriteLine($"Topic: {topic.TopicName}, Progress: {topicProgress.ProgressPoints}");
+                            topic.ProgressPoints = topicProgress.ProgressPoints;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"No progress found for Topic: {topic.TopicName}");
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading course progress: {ex.Message}");
+            }
+            finally
+            {
+                IsLoading = false; // Stop loading
             }
         }
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)

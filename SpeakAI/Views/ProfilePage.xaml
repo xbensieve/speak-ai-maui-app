@@ -1,53 +1,213 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SpeakAI.Views.ProfilePage"
-             Title="Profile"
+             NavigationPage.HasNavigationBar="False"
              BackgroundColor="#F2F6FC">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="20" HorizontalOptions="Fill">
-            <Frame BackgroundColor="White"
-                   CornerRadius="20"
-                   Padding="20"
-                   HasShadow="True"
-                   HorizontalOptions="Fill">
-                <HorizontalStackLayout Spacing="15" VerticalOptions="Center">
-                    <Frame BackgroundColor="#E0E7FF"
-                           CornerRadius="50"
-                           WidthRequest="80"
-                           HeightRequest="80"
-                           Padding="5"
-                           HasShadow="False">
-                        <Image Source="profile_icon.png"
-                               WidthRequest="70"
-                               HeightRequest="70"
-                               Aspect="AspectFill"/>
-                    </Frame>
-                    <VerticalStackLayout>
-                        <Label x:Name="NameLabel"
-                               FontSize="22"
-                               FontAttributes="Bold"
-                               TextColor="#1E293B"/>
-                        <Label x:Name="EmailLabel"
-                               FontSize="14"
-                               TextColor="#64748B"/>
-                        <Label x:Name="UserIdLabel"
-                               FontSize="14"
-                               TextColor="#64748B"/>
+    <RefreshView IsRefreshing="{Binding IsLoading}"
+                 Command="{Binding RefreshProfileCommand}">
+        <ScrollView>
+            <VerticalStackLayout Padding="20"
+                                 Spacing="15">
+
+                <!-- Page Header -->
+                <Label Text="My Profile"
+                       FontFamily="Roboto"
+                       FontSize="26"
+                       FontAttributes="Bold"
+                       TextColor="#1E3A8A"
+                       HorizontalOptions="Center"
+                       Margin="0,0,0,10" />
+
+                <!-- User Profile Information Card -->
+                <Frame CornerRadius="15"
+                       Padding="15"
+                       BackgroundColor="White"
+                       HasShadow="True"
+                       Margin="0,0,0,15">
+                    <VerticalStackLayout Spacing="12">
+                        <!-- Username Row -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Username:"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A8A" />
+                            <Label Grid.Column="1"
+                                   FontFamily="Roboto"
+                                   Text="{Binding Profile.UserName}"
+                                   TextColor="#4B5563" />
+                        </Grid>
+
+                        <!-- Email Row -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Email:"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A8A" />
+                            <Label Grid.Column="1"
+                                   FontFamily="Roboto"
+                                   Text="{Binding Profile.Email}"
+                                   TextColor="#4B5563" />
+                        </Grid>
+
+                        <!-- Full Name Row -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Full Name:"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A8A" />
+                            <Label Grid.Column="1"
+                                   FontFamily="Roboto"
+                                   Text="{Binding Profile.FullName}"
+                                   TextColor="#4B5563" />
+                        </Grid>
+
+                        <!-- Birthday Row -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Birthday:"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A8A" />
+                            <Label Grid.Column="1"
+                                   FontFamily="Roboto"
+                                   Text="{Binding Profile.Birthday, StringFormat='{0:MMM dd, yyyy}', TargetNullValue='N/A'}"
+                                   TextColor="#4B5563" />
+                        </Grid>
+
+                        <!-- Gender Row -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Gender:"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A8A" />
+                            <Label Grid.Column="1"
+                                   FontFamily="Roboto"
+                                   Text="{Binding Profile.Gender}"
+                                   TextColor="#4B5563" />
+                        </Grid>
                     </VerticalStackLayout>
-                </HorizontalStackLayout>
-            </Frame>
+                </Frame>
 
-            <Button Text="Logout"
-                    Clicked="LogoutClicked"
-                    BackgroundColor="#EF4444"
-                    TextColor="White"
-                    FontSize="16"
-                    Padding="14"
-                    CornerRadius="12"
-                    FontAttributes="Bold"
-                    HorizontalOptions="Fill"/>
+                <!-- Premium Membership Information Card -->
+                <Frame CornerRadius="15"
+                       Padding="15"
+                       BackgroundColor="White"
+                       HasShadow="True"
+                       Margin="0,0,0,15">
+                    <VerticalStackLayout Spacing="12">
+                        <!-- Premium Status Row -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Premium:"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A8A" />
+                            <Label Grid.Column="1"
+                                   FontFamily="Roboto"
+                                   Text="{Binding Profile.IsPremium, StringFormat='{0:Yes;No}'}"
+                                   TextColor="{Binding Profile.IsPremium}" />
+                        </Grid>
 
-        </VerticalStackLayout>
-    </ScrollView>
+                        <!-- Premium Expiry Row -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Expiry:"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A8A" />
+                            <Label Grid.Column="1"
+                                   FontFamily="Roboto"
+                                   Text="{Binding Profile.PremiumExpiredTime, StringFormat='{0:MMM dd, yyyy}', TargetNullValue='N/A'}"
+                                   TextColor="#4B5563" />
+                        </Grid>
+
+                        <!-- Verification Status Row -->
+                        <Grid ColumnSpacing="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Label Text="Verified:"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E3A8A" />
+                            <Label Grid.Column="1"
+                                   FontFamily="Roboto"
+                                   Text="{Binding Profile.IsVerified, StringFormat='{0:Yes;No}'}"
+                                   TextColor="{Binding Profile.IsVerified}" />
+                        </Grid>
+                    </VerticalStackLayout>
+                </Frame>
+
+                <!-- Action Buttons Section -->
+                <Button Text="Confirm Email"
+                        FontFamily="Roboto"
+                        Command="{Binding ConfirmEmailCommand}"
+                        BackgroundColor="#3B82F6"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="15,12"
+                        CornerRadius="12"
+                        HorizontalOptions="FillAndExpand"
+                        Margin="0,0,0,10" />
+
+                <Button Text="🔥 Upgrade to Premium 🔥"
+                        FontFamily="Roboto"
+                        Clicked="UpgradeClicked"
+                        BackgroundColor="#FF5733"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="15,12"
+                        CornerRadius="12"
+                        HorizontalOptions="FillAndExpand"
+                        Margin="0,0,0,10">
+                    <Button.Background>
+                        <LinearGradientBrush>
+                            <GradientStop Color="#FF5733" Offset="0.0" />
+                            <GradientStop Color="#F97316" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+
+                <Button Text="Logout"
+                        FontFamily="Roboto"
+                        Clicked="LogoutClicked"
+                        BackgroundColor="#EF4444"
+                        TextColor="White"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Padding="15,12"
+                        CornerRadius="12"
+                        HorizontalOptions="FillAndExpand" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
 </ContentPage>

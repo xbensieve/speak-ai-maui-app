@@ -1,4 +1,6 @@
+using AndroidX.Lifecycle;
 using SpeakAI.Services.Interfaces;
+using SpeakAI.ViewModels;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -16,41 +18,31 @@ namespace SpeakAI.Views
         public ProfilePage(IUserService userService, ILoginService loginService)
         {
             InitializeComponent();
-            _userService = userService;
-            _loginService = loginService;
-            LoadUserProfile();
+            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _loginService = loginService ?? throw new ArgumentNullException(nameof(loginService));
+            BindingContext = new ProfileViewModel(_userService);
+            System.Diagnostics.Debug.WriteLine("ProfilePage initialized");
         }
 
-        private async void LoadUserProfile()
-        {
-            try
-            {
-                string token = await Xamarin.Essentials.SecureStorage.GetAsync("AccessToken");
-                if (!string.IsNullOrEmpty(token))
-                {
-                    var handler = new JwtSecurityTokenHandler();
-                    var jwtToken = handler.ReadJwtToken(token);
-                    var name = jwtToken.Claims.FirstOrDefault(c => c.Type == "name")?.Value ?? "Unknown";
-                    var email = jwtToken.Claims.FirstOrDefault(c => c.Type == "email")?.Value ?? "No email";
-                    var userId = jwtToken.Claims.FirstOrDefault(c => c.Type == "Id")?.Value ?? "Unknown";
-                    NameLabel.Text = name;
-                    EmailLabel.Text = email;
-                    UserIdLabel.Text = $"User ID: {userId}";
-                }
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Error", $"Failed to load profile: {ex.Message}", "OK");
-            }
-        }
         private async void LogoutClicked(object sender, EventArgs e)
         {
             bool answer = await DisplayAlert("Logout", "Are you sure you want to logout?", "No", "Yes");
             if (!answer)
             {
+                System.Diagnostics.Debug.WriteLine("User confirmed logout");
                 Xamarin.Essentials.SecureStorage.RemoveAll();
                 Application.Current.MainPage = new NavigationPage(new LoginPage(_userService, _loginService));
             }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine("Logout cancelled");
+            }
+        }
+
+        private async void UpgradeClicked(object sender, EventArgs e)
+        {
+            System.Diagnostics.Debug.WriteLine("Navigating to payment page");
+            await Shell.Current.GoToAsync("payment");
         }
     }
 }

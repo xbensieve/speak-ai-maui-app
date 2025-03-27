@@ -3,82 +3,100 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:SpeakAI.ViewModels"
              x:Class="SpeakAI.Views.StudyPage"
-             Title="Courses"
-             BackgroundColor="White">
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#F5F7FA">
 
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <Grid ColumnDefinitions="*,*" Padding="20,10,20,0">
-                <VerticalStackLayout Grid.Column="0" HorizontalOptions="FillAndExpand">
-                    <Button x:Name="OngoingButton"
-                Text="Ongoing" 
-                FontSize="18" 
-                TextColor="Blue" 
-                BackgroundColor="Transparent"
-                BorderWidth="0" 
-                Clicked="OnOngoingClicked"/>
-                    <BoxView x:Name="OngoingLine" HeightRequest="2" BackgroundColor="Blue"/>
-                </VerticalStackLayout>
+        <Grid>
+            <ActivityIndicator IsRunning="{Binding IsLoading}" 
+                               IsVisible="{Binding IsLoading}" 
+                               HorizontalOptions="Center" 
+                               VerticalOptions="Center" />
 
-                <VerticalStackLayout Grid.Column="1" HorizontalOptions="FillAndExpand">
-                    <Button x:Name="CompletedButton"
-                Text="Completed" 
-                FontSize="18" 
-                TextColor="Gray" 
-                BackgroundColor="Transparent"
-                BorderWidth="0" 
-                Clicked="OnCompletedClicked"/>
-                    <BoxView x:Name="CompletedLine" HeightRequest="2" BackgroundColor="LightGray"/>
-                </VerticalStackLayout>
-            </Grid>
+            <VerticalStackLayout Padding="25" Spacing="20" IsVisible="{Binding IsNotLoading}">
 
-            <CollectionView ItemsSource="{Binding EnrolledCourses}" 
-                            SelectionMode="Single"
-                            HeightRequest="600">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Frame Padding="0" Margin="0,10,0,0" CornerRadius="15"
+                <!-- Tabs for Ongoing and Completed Courses -->
+                <Grid ColumnDefinitions="*,*" Padding="10,0,10,0">
+                    <VerticalStackLayout Grid.Column="0" HorizontalOptions="FillAndExpand">
+                        <Button x:Name="OngoingButton"
+                                Text="Ongoing" 
+                                FontSize="18" 
+                                TextColor="Blue" 
+                                BackgroundColor="Transparent"
+                                BorderWidth="0" 
+                                FontFamily="Roboto"
+                                Clicked="OnOngoingClicked"/>
+                        <BoxView x:Name="OngoingLine" HeightRequest="3" BackgroundColor="Blue"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" HorizontalOptions="FillAndExpand">
+                        <Button x:Name="CompletedButton"
+                                Text="Completed" 
+                                FontSize="18" 
+                                TextColor="Gray" 
+                                BackgroundColor="Transparent"
+                                BorderWidth="0"
+                                FontFamily="Roboto"
+                                Clicked="OnCompletedClicked"/>
+                        <BoxView x:Name="CompletedLine" HeightRequest="3" BackgroundColor="LightGray"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Courses List -->
+                <CollectionView ItemsSource="{Binding EnrolledCourses}" 
+                                SelectionMode="Single"
+                                HeightRequest="600">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="10" Margin="5,10,5,5" CornerRadius="15"
                                    HasShadow="True" BackgroundColor="White">
-                            <Frame.GestureRecognizers>
-                                <TapGestureRecognizer Tapped="OnCourseTapped"/>
-                            </Frame.GestureRecognizers>
-                            <HorizontalStackLayout>
-                                <Image Source="academic.png" 
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCourseTapped"/>
+                                </Frame.GestureRecognizers>
+
+                                <HorizontalStackLayout>
+                                    <Image Source="academic.png" 
                                            WidthRequest="100" HeightRequest="130"
                                            Aspect="AspectFill"
                                            Margin="10"/>
 
-                                <VerticalStackLayout Padding="10,5,10,5" Spacing="5">
-                                    <Label Text="{Binding CourseName}" 
-                                           TextColor="#222" 
-                                           FontSize="18" 
-                                           FontFamily="Interbold"
-                                           FontAttributes="Bold"/>
-                                    <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center">
-                                        <Label Text="Progress "
-                                               FontSize="14"
-                                               TextColor="#555"
-                                               VerticalOptions="Center"/>
-                                        <ProgressBar Grid.Column="1"
-                                                     Progress="{Binding ProgressPoints}" 
-                                                     HeightRequest="6"
-                                                     WidthRequest="150"
-                                                     BackgroundColor="#ddd" 
-                                                     ProgressColor="#F39C12"/>
-                                    </Grid>
-                                    <Label Text="{Binding ProgressPoints, StringFormat='🌟 {0:N1} progress points'}" 
-                                           FontSize="14"
-                                           FontAttributes="Bold"
-                                           TextColor="#333"/>
-                                    <Label Text="{Binding UpdatedAt, StringFormat='📅 Last updated: {0:MMM dd, yyyy}'}" 
-                                           FontSize="14"
-                                           TextColor="#777"/>
-                                </VerticalStackLayout>
-                            </HorizontalStackLayout>
-                        </Frame>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </VerticalStackLayout>
+                                    <VerticalStackLayout Padding="5,5,10,5" Spacing="6">
+                                        <Label Text="{Binding CourseName}" 
+                                               TextColor="#222" 
+                                               FontSize="18" 
+                                               FontFamily="Roboto"
+                                               FontAttributes="Bold"/>
+
+                                        <Grid ColumnDefinitions="Auto, *" VerticalOptions="Center">
+                                            <Label Text="Progress "
+                                                   FontSize="15"
+                                                   TextColor="#555"
+                                                   FontFamily="Roboto"
+                                                   VerticalOptions="Center"/>
+                                            <ProgressBar Grid.Column="1"
+                                                         Progress="{Binding ProgressPoints}" 
+                                                         HeightRequest="3"
+                                                         WidthRequest="150"
+                                                         BackgroundColor="#E0E0E0" 
+                                                         ProgressColor="#F39C12"/>
+                                        </Grid>
+
+                                        <Label Text="{Binding ProgressPoints, StringFormat='🌟 {0:N1} progress points'}" 
+                                               FontSize="18"
+                                               FontFamily="RobotoMedium"
+                                               TextColor="#333"/>
+                                        <Label Text="{Binding UpdatedAt, StringFormat='📅 Last updated: {0:MMM dd, yyyy}'}" 
+                                               FontSize="12"
+                                               FontFamily="Roboto"
+                                               TextColor="#777"/>
+                                    </VerticalStackLayout>
+                                </HorizontalStackLayout>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>

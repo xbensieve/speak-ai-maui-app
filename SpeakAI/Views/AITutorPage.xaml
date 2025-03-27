@@ -2,40 +2,226 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              BackgroundColor="#F5F5F5"
              x:Class="SpeakAI.Views.AITutorPage">
-    <StackLayout Padding="10" Spacing="5">
-        <CollectionView x:Name="MessagesListView"
-                ItemsSource="{Binding Messages}"
-                VerticalOptions="FillAndExpand"
-                SelectionMode="None">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="10" Margin="5" CornerRadius="15"
-                   HasShadow="False">
-                        <StackLayout Padding="5">
-                            <Label Text="{Binding}" FontSize="16" TextColor="Black" />
-                        </StackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+    <AbsoluteLayout>
+        <!-- Main Content -->
+        <StackLayout AbsoluteLayout.LayoutFlags="All"
+                     AbsoluteLayout.LayoutBounds="0,0,1,1"
+                     Padding="15" 
+                     Spacing="10">
+            <!-- Loading Indicator -->
+            <ActivityIndicator 
+                x:Name="LoadingIndicator"
+                IsRunning="{Binding IsLoading}" 
+                IsVisible="{Binding IsLoading}" 
+                Color="#007AFF"
+                HeightRequest="40"
+                WidthRequest="40"
+                HorizontalOptions="Center" 
+                VerticalOptions="CenterAndExpand" />
 
+            <!-- Messages List -->
+            <CollectionView x:Name="MessagesListView"
+                            IsVisible="{Binding IsLoaded}"
+                            ItemsSource="{Binding Messages}"
+                            VerticalOptions="FillAndExpand"
+                            SelectionMode="None"
+                            Margin="0,0,0,10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame x:Name="MessageFrame"
+                               Padding="15" Margin="5" CornerRadius="12"
+                               HasShadow="True" BackgroundColor="White"
+                               Opacity="0">
+                            <StackLayout Padding="5">
+                                <Label Text="{Binding}" FontSize="18"
+                                       FontFamily="OpenSans-SemiBold"
+                                       TextColor="#333"
+                                       LineBreakMode="WordWrap"/>
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
 
-        <Grid Padding="5" BackgroundColor="White">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="50" />
-            </Grid.ColumnDefinitions>
-            <Entry x:Name="MessageEntry" Placeholder="Type your message..." FontFamily="Inter"
-                   Grid.Column="0" FontSize="16" />
+            <!-- Input Area -->
+            <Frame Padding="5" CornerRadius="25" 
+                   BackgroundColor="White" 
+                   HasShadow="True" 
+                   IsVisible="{Binding IsLoaded}"
+                   VerticalOptions="End">
+                <Grid Padding="5" ColumnSpacing="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Entry x:Name="MessageEntry" 
+                           Placeholder="Type your message..."
+                           FontFamily="OpenSans-Regular" 
+                           FontSize="16"
+                           BackgroundColor="Transparent"
+                           TextColor="#333"
+                           VerticalOptions="Center"
+                           Margin="10,0"/>
+                    <Button x:Name="SendButton"
+                            Text="➤"
+                            Clicked="SendMessage_Clicked"
+                            Grid.Column="1"
+                            FontSize="Large"
+                            TextColor="White"
+                            CornerRadius="25"
+                            WidthRequest="50"
+                            HeightRequest="50"
+                            MinimumWidthRequest="48"
+                            MinimumHeightRequest="48"
+                            Padding="10"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            AutomationId="SendButton">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#007AFF" Offset="0.0" />
+                                <GradientStop Color="#005ECF" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Shadow>
+                            <Shadow Brush="#40000000" 
+                                    Offset="2,2"
+                                    Radius="4"
+                                    Opacity="0.3" />
+                        </Button.Shadow>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup Name="CommonStates">
+                                <VisualState Name="Normal" />
+                                <VisualState Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="Scale" Value="0.95" />
+                                        <Setter Property="Background">
+                                            <Setter.Value>
+                                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                                    <GradientStop Color="#005ECF" Offset="0.0" />
+                                                    <GradientStop Color="#003E9C" Offset="1.0" />
+                                                </LinearGradientBrush>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Property="Opacity" Value="0.6" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Button>
+                </Grid>
+            </Frame>
 
-            <Button Text="➤" Clicked="SendMessage_Clicked"
-                    Grid.Column="1" FontSize="20" BackgroundColor="Blue"
-                    FontFamily="InterBold"
-                    TextColor="White" CornerRadius="25" Padding="5"/>
-        </Grid>
-        <Button Text="Start Listening" Clicked="Listen"
-                FontFamily="InterBold"
-                BackgroundColor="Blue" TextColor="White"
-                CornerRadius="25" x:Name="StartButton"/>
-    </StackLayout>
+            <!-- Listen Button -->
+            <Button x:Name="ListenButton"
+                    Text="🎙 Start Listening"
+                    Clicked="Listen"
+                    IsVisible="{Binding IsLoaded}"
+                    FontFamily="Roboto, OpenSans-SemiBold, Arial, sans-serif"
+                    FontSize="Medium"
+                    TextColor="White"
+                    Padding="15,12"
+                    CornerRadius="25"
+                    WidthRequest="200"
+                    MinimumWidthRequest="180"
+                    HeightRequest="50"
+                    MinimumHeightRequest="48"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Margin="0,15,0,20"
+                    AutomationId="ListenButton">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#FF416C" Offset="0.0" />
+                        <GradientStop Color="#FF4B2B" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+                <Button.Shadow>
+                    <Shadow Brush="#40000000"
+                            Offset="2,2"
+                            Radius="5"
+                            Opacity="0.3" />
+                </Button.Shadow>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup Name="CommonStates">
+                        <VisualState Name="Normal" />
+                        <VisualState Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="0.97" />
+                                <Setter Property="Background">
+                                    <Setter.Value>
+                                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                            <GradientStop Color="#E6395F" Offset="0.0" />
+                                            <GradientStop Color="#E64124" Offset="1.0" />
+                                        </LinearGradientBrush>
+                                    </Setter.Value>
+                                </Setter>
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState Name="Disabled">
+                            <VisualState.Setters>
+                                <Setter Property="Opacity" Value="0.6" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Button>
+        </StackLayout>
+
+        <!-- Floating End Conversation Button -->
+        <Button x:Name="EndConversationButton"
+                Text="End"
+                Clicked="EndConversation_Clicked"
+                IsVisible="{Binding IsLoaded}"
+                FontFamily="Roboto, OpenSans-SemiBold, Arial, sans-serif"
+                FontSize="Medium"
+                TextColor="White"
+                Padding="10"
+                CornerRadius="20"
+                WidthRequest="60"
+                HeightRequest="60"
+                AbsoluteLayout.LayoutFlags="PositionProportional"
+                AbsoluteLayout.LayoutBounds="0.95,0.05,AutoSize,AutoSize"
+                AutomationId="EndConversationButton">
+            <Button.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#FF5733" Offset="0.0" />
+                    <GradientStop Color="#D32F2F" Offset="1.0" />
+                </LinearGradientBrush>
+            </Button.Background>
+            <Button.Shadow>
+                <Shadow Brush="#40000000"
+                        Offset="2,2"
+                        Radius="5"
+                        Opacity="0.3" />
+            </Button.Shadow>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup Name="CommonStates">
+                    <VisualState Name="Normal" />
+                    <VisualState Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.95" />
+                            <Setter Property="Background">
+                                <Setter.Value>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <GradientStop Color="#E64A2E" Offset="0.0" />
+                                        <GradientStop Color="#B71C1C" Offset="1.0" />
+                                    </LinearGradientBrush>
+                                </Setter.Value>
+                            </Setter>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Opacity" Value="0.6" />
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+        </Button>
+    </AbsoluteLayout>
 </ContentPage>

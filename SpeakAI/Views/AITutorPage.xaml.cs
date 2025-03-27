@@ -1,37 +1,228 @@
 using CommunityToolkit.Maui.Media;
 using Microsoft.AspNetCore.SignalR.Client;
+using SpeakAI.Services.Interfaces;
+using SpeakAI.Services.Models;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace SpeakAI.Views
 {
+    [QueryProperty(nameof(TopicId), "topicId")]
     public partial class AITutorPage : ContentPage
     {
+        private readonly IAIService _aIService;
+        private int _topicId;
+        public int TopicId
+        {
+            get => _topicId;
+            set
+            {
+                if (_topicId != value)
+                {
+                    _topicId = value;
+                    OnPropertyChanged(nameof(TopicId));
+                    _ = FetchTopicDataAsync();
+                }
+            }
+        }
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged(nameof(IsLoading));
+            }
+        }
+        private bool _isLoaded;
+        public bool IsLoaded
+        {
+            get => _isLoaded;
+            set
+            {
+                _isLoaded = value;
+                OnPropertyChanged(nameof(IsLoaded));
+            }
+        }
         private HubConnection _hubConnection;
         private readonly ISpeechToText speechToText;
         private CancellationTokenSource tokenSource;
         public CultureInfo culture { get; set; } = CultureInfo.CurrentCulture;
-        public ObservableCollection<string> Messages { get; set; } = new();
-        public AITutorPage() : this(SpeechToText.Default) { }
-        public AITutorPage(ISpeechToText speechToText)
+        private ObservableCollection<string> _messages = new();
+        public ObservableCollection<string> Messages
+        {
+            get => _messages;
+            set
+            {
+                _messages = value;
+                OnPropertyChanged(nameof(Messages));
+            }
+        }
+
+        private readonly Dictionary<string, Frame> _messageFrames = new();
+
+        public AITutorPage(ISpeechToText speechToText, IAIService aIService)
         {
             InitializeComponent();
-            this.speechToText = speechToText;
+
+            this.speechToText = speechToText ?? throw new ArgumentNullException(nameof(speechToText));
+            this._aIService = aIService ?? throw new ArgumentNullException(nameof(aIService));
             BindingContext = this;
             MessagesListView.ItemsSource = Messages;
-            ConnectToChatHub();
+            SetupAnimations();
+        }
+
+        private void SetupAnimations()
+        {
+            this.PropertyChanged += async (s, e) =>
+            {
+                if (e.PropertyName == nameof(IsLoading) && IsLoading)
+                {
+                    LoadingIndicator.Scale = 0.5;
+                    await LoadingIndicator.ScaleTo(1.0, 800, Easing.BounceOut);
+                }
+            };
+
+            Messages.CollectionChanged += async (s, e) =>
+            {
+                if (e.NewItems != null && e.NewItems.Count > 0)
+                {
+                    foreach (string newMessage in e.NewItems)
+                    {
+                        await Task.Delay(100);
+                        if (_messageFrames.TryGetValue(newMessage, out var frame))
+                        {
+                            frame.Opacity = 0;
+                            frame.TranslationY = 20;
+                            await Task.WhenAll(
+                                frame.FadeTo(1, 600, Easing.SinOut),
+                                frame.TranslateTo(0, 0, 600, Easing.SinOut)
+                            );
+                        }
+                    }
+                }
+            };
+
+            AddButtonPressEffect(SendButton);
+            AddButtonPressEffect(ListenButton);
+
+            MessagesListView.ItemTemplate = new DataTemplate(() =>
+            {
+                var frame = new Frame
+                {
+                    Padding = new Thickness(15),
+                    Margin = new Thickness(5),
+                    CornerRadius = 12,
+                    HasShadow = true,
+                    BackgroundColor = Colors.White,
+                    Opacity = 0
+                };
+
+                var stackLayout = new StackLayout { Padding = new Thickness(5) };
+                var label = new Label
+                {
+                    FontSize = 18,
+                    FontFamily = "OpenSans-SemiBold",
+                    TextColor = Color.FromArgb("#333"),
+                    LineBreakMode = LineBreakMode.WordWrap
+                };
+                label.SetBinding(Label.TextProperty, ".");
+
+                stackLayout.Children.Add(label);
+                frame.Content = stackLayout;
+                frame.BindingContextChanged += (s, e) =>
+                {
+                    if (frame.BindingContext is string message)
+                    {
+                        if (!_messageFrames.ContainsKey(message))
+                        {
+                            _messageFrames[message] = frame;
+                        }
+                        else
+                        {
+                            _messageFrames.Remove(message);
+                        }
+                    }
+                };
+                return frame;
+            });
+        }
+        private async Task FetchTopicDataAsync()
+        {
+            IsLoading = true;
+            IsLoaded = false;
+            try
+            {
+                if (_aIService == null)
+                {
+                    throw new InvalidOperationException("AI Service is not initialized!");
+                }
+
+                var topic = new TopicModel
+                {
+                    topicId = _topicId
+                };
+
+                var result = await _aIService.StartTopicAsync(topic);
+
+                if (result != null)
+                {
+                    IsLoaded = true;
+                    IsLoading = false;
+                    var locales = await Microsoft.Maui.Media.TextToSpeech.GetLocalesAsync();
+                    var selectedLocale = locales.FirstOrDefault(l => l.Language.StartsWith("en"));
+                    var speechOptions = new SpeechOptions()
+                    {
+                        Locale = selectedLocale ?? locales.FirstOrDefault()
+                    };
+                    MessageEntry.IsEnabled = false;
+                    ListenButton.IsEnabled = false;
+                    await Task.WhenAll(
+                        TextToSpeech.SpeakAsync(result.BotResponse, speechOptions),
+                        Task.Run(() =>
+                        {
+                            MainThread.BeginInvokeOnMainThread(() =>
+                            {
+                                Messages.Add($"AI: {result.BotResponse}");
+                                ScrollToLastMessage();
+                            });
+                        }));
+                    MessageEntry.IsEnabled = true;
+                    ListenButton.IsEnabled = true;
+                    ConnectToChatHub();
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Failed to fetch data: No valid response.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to fetch data: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsLoading = false;
+            }
         }
         private async void ConnectToChatHub()
         {
             try
             {
                 _hubConnection = new HubConnectionBuilder()
-                    .WithUrl("http://sai.runasp.net/chatHub", options => {
-                        options.HttpMessageHandlerFactory = _ => new HttpClientHandler { ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true };
+                    .WithUrl("http://sai.runasp.net/chatHub", options =>
+                    {
+                        options.HttpMessageHandlerFactory = _ => new HttpClientHandler
+                        {
+                            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+                        };
                     })
-            .WithAutomaticReconnect()
-            .Build();
+                    .WithAutomaticReconnect()
+                    .Build();
 
                 await _hubConnection.StartAsync();
                 System.Diagnostics.Debug.WriteLine("Connected to ChatHub successfully.");
@@ -61,7 +252,7 @@ namespace SpeakAI.Views
                     Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(() =>
                     {
                         Messages.Add($"You: {result.Text}");
-                        Messages.Add("AI is typing..."); 
+                        Messages.Add("AI is typing...");
                         ScrollToLastMessage();
                     });
 
@@ -93,7 +284,7 @@ namespace SpeakAI.Views
                     {
                         UserId = userId,
                         Message = result.Text,
-                        TopicId = 1
+                        TopicId = _topicId
                     };
 
                     if (_hubConnection.State != HubConnectionState.Connected)
@@ -107,20 +298,25 @@ namespace SpeakAI.Views
                     {
                         System.Diagnostics.Debug.WriteLine($"Sending Message: {chatMessage.Message}");
 
-                        // Send message and wait for AI response
                         string responseText = await _hubConnection.InvokeAsync<string>("SendMessage", chatMessage);
 
                         System.Diagnostics.Debug.WriteLine($"Bot Response: {responseText}");
 
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(async() =>
+                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(async () =>
                         {
-                            Messages.Remove("AI is typing...");
+                            var typingMessage = Messages.FirstOrDefault(msg => msg == "AI is typing...");
+                            if (typingMessage != null)
+                            {
+                                Messages.Remove(typingMessage);
+                            }
                             var locales = await Microsoft.Maui.Media.TextToSpeech.GetLocalesAsync();
                             var selectedLocale = locales.FirstOrDefault(l => l.Language.StartsWith("en"));
                             var speechOptions = new SpeechOptions()
                             {
                                 Locale = selectedLocale ?? locales.FirstOrDefault()
                             };
+                            MessageEntry.IsEnabled = false;
+                            ListenButton.IsEnabled = false;
                             await Task.WhenAll(
                                  TextToSpeech.SpeakAsync(responseText, speechOptions),
                                  Task.Run(() =>
@@ -134,6 +330,7 @@ namespace SpeakAI.Views
                             await Task.Delay(100);
                             ScrollToLastMessage();
                             MessageEntry.IsEnabled = true;
+                            ListenButton.IsEnabled = true;
                         });
                     }
                     catch (Exception ex)
@@ -153,6 +350,7 @@ namespace SpeakAI.Views
                 await DisplayAlert("Error", ex.Message, "OK");
             }
         }
+
         private async void SendMessage_Clicked(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(MessageEntry.Text)) return;
@@ -161,7 +359,6 @@ namespace SpeakAI.Views
             MessageEntry.Text = "";
             MessageEntry.IsEnabled = false;
 
-            // Add user message to chat list
             Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(() =>
             {
                 Messages.Add($"You: {userMessage}");
@@ -197,7 +394,7 @@ namespace SpeakAI.Views
             {
                 UserId = userId,
                 Message = userMessage,
-                TopicId = 1
+                TopicId = _topicId
             };
 
             if (_hubConnection.State != HubConnectionState.Connected)
@@ -211,20 +408,25 @@ namespace SpeakAI.Views
             {
                 System.Diagnostics.Debug.WriteLine($"Sending Message: {chatMessage.Message}");
 
-                // Send message and wait for AI response
                 string responseText = await _hubConnection.InvokeAsync<string>("SendMessage", chatMessage);
 
                 System.Diagnostics.Debug.WriteLine($"Bot Response: {responseText}");
 
                 Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(async () =>
                 {
-                    Messages.Remove("AI is typing...");
+                    var typingMessage = Messages.FirstOrDefault(msg => msg == "AI is typing...");
+                    if (typingMessage != null)
+                    {
+                        Messages.Remove(typingMessage);
+                    }
                     var locales = await Microsoft.Maui.Media.TextToSpeech.GetLocalesAsync();
                     var selectedLocale = locales.FirstOrDefault(l => l.Language.StartsWith("en"));
                     var speechOptions = new SpeechOptions()
                     {
                         Locale = selectedLocale ?? locales.FirstOrDefault()
                     };
+                    MessageEntry.IsEnabled = false;
+                    ListenButton.IsEnabled = false;
                     await Task.WhenAll(
                         TextToSpeech.SpeakAsync(responseText, speechOptions),
                         Task.Run(() =>
@@ -236,8 +438,9 @@ namespace SpeakAI.Views
                             });
                         }));
                     await Task.Delay(100);
-                    ScrollToLastMessage(); 
+                    ScrollToLastMessage();
                     MessageEntry.IsEnabled = true;
+                    ListenButton.IsEnabled = true;
                 });
             }
             catch (Exception ex)
@@ -249,12 +452,49 @@ namespace SpeakAI.Views
         }
         private void ScrollToLastMessage()
         {
-            if (MessagesListView != null && Messages.Count > 0)
+            if (MessagesListView != null && Messages.Any())
             {
-                Device.BeginInvokeOnMainThread(() =>
+                MainThread.BeginInvokeOnMainThread(() =>
                 {
-                    MessagesListView.ScrollTo(Messages[Messages.Count - 1], null, ScrollToPosition.End, true);
+                    MessagesListView.ScrollTo(Messages.Last(), position: ScrollToPosition.End, animate: true);
                 });
+            }
+        }
+        private void AddButtonPressEffect(Button button)
+        {
+            button.Pressed += async (s, e) =>
+            {
+                await button.ScaleTo(0.95, 100, Easing.Linear);
+            };
+
+            button.Released += async (s, e) =>
+            {
+                await button.ScaleTo(1.0, 100, Easing.SpringOut);
+            };
+        }
+        public async void EndConversation_Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                IsLoading = true;
+
+                string botResponse = await _hubConnection.InvokeAsync<string>("EndConversation");
+
+                await _hubConnection.StopAsync();
+
+                await MainThread.InvokeOnMainThreadAsync(async () =>
+                {
+                    await DisplayAlert("Conversation Ended", botResponse, "OK");
+                    await Navigation.PopAsync();
+                });
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to end conversation: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
     }

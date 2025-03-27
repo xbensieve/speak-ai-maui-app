@@ -24,6 +24,11 @@
                 <Setter Property="FontFamily" Value="Inter"/>
             </Style>
             <converter:RadioButtonConverter x:Key="RadioButtonConverter"/>
+            <converter:PremiumColorConverter x:Key="PremiumColorConverter"/>
+            <converter:PremiumBorderConverter x:Key="PremiumBorderConverter"/>
+            <converter:PremiumTextColorConverter x:Key="PremiumTextColorConverter"/>
+            <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+            <converter:NullToBooleanConverter x:Key="NullToBooleanConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

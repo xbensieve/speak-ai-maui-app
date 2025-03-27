@@ -1,51 +1,84 @@
-<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage
-	xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SpeakAI.Views.ExerciseDetailPage"
-             BackgroundColor="#F5F5F5"
-             Title="{Binding Topic.TopicName}">
-    <ContentPage.Resources>
-        <ResourceDictionary>
-        </ResourceDictionary>
-    </ContentPage.Resources>
-    <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="20">
-            <!-- Exercise Content Frame with Shadow -->
-            <Frame x:Name="ExerciseFrame" Padding="15" Margin="5"
-                   BorderColor="LightGray"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SpeakAI.Views.ExerciseDetailPage"
+    BackgroundColor="#F5F7FA"
+    Title="{Binding Topic.TopicName}">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#E0F2FE" Offset="0.0"/>
+            <GradientStop Color="#F5F7FA" Offset="1.0"/>
+        </LinearGradientBrush>
+    </ContentPage.Background>
+    <ScrollView Margin="0,10,0,0">
+        <VerticalStackLayout Padding="20" Spacing="25">
+            <Button Text="✕ Exit"
+                    Command="{Binding ExitCommand}"
+                    BackgroundColor="#D32F2F"
+                    TextColor="White"
+                    CornerRadius="25"
+                    FontFamily="RobotoBold"
+                    FontSize="16"
+                    Padding="15,10"
+                    WidthRequest="100"
+                    HeightRequest="50"
+                    HorizontalOptions="End"
+                    VerticalOptions="Start"
+                    Shadow="{Shadow Brush=Black, Radius=15, Opacity=0.3, Offset='2,2'}"
+                    TranslationY="-10"/>
+            <!-- Exercise Card -->
+            <Frame x:Name="ExerciseFrame" Padding="20" Margin="0,0,0,15"
+                   BorderColor="#D3D3D3"
                    BackgroundColor="White"
-                   CornerRadius="12"
+                   CornerRadius="15"
                    HasShadow="True">
-                <VerticalStackLayout Spacing="12">
-                    <!-- Question Section -->
-                    <Label Text="Question:"
-                           FontSize="18"
+                <VerticalStackLayout Spacing="15">
+                    <!-- Question (Modified) -->
+                    <Frame BackgroundColor="#EFF6FF" Padding="15" CornerRadius="12" BorderColor="#BFDBFE">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="Question"
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   TextColor="#1E40AF"
+                                   FontFamily="RobotoBold"
+                                   HorizontalOptions="Start"/>
+                            <Label Text="{Binding CurrentExercise.ContentExercises.Question}"
+                                   FontSize="18"
+                                   FontFamily="RobotoRegular"
+                                   TextColor="#1F2937"
+                                   LineBreakMode="WordWrap"
+                                   Opacity="0.95"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Options Label -->
+                    <Label Text="Options"
+                           FontSize="20"
                            FontAttributes="Bold"
-                           TextColor="DarkBlue"
-                           Padding="0,5"/>
-                    <Label Text="{Binding CurrentExercise.ContentExercises.Question}"
-                           FontSize="17"
-                           TextColor="Black"
-                           Padding="5"/>
-                    <!-- Options Section -->
-                    <Label Text="Options:"
-                           FontSize="18"
-                           FontAttributes="Bold"
-                           TextColor="DarkBlue"
-                           Padding="0,5"/>
+                           TextColor="#1A237E"
+                           FontFamily="RobotoBold"
+                           Margin="0,10,0,5"/>
+
+                    <!-- Dynamic Options -->
                     <ContentView>
                         <ContentView.Triggers>
+                            <!-- True/False Options -->
                             <DataTrigger TargetType="ContentView" Binding="{Binding CurrentExercise.ContentExercises.Type}" Value="true_false">
                                 <Setter Property="Content">
-                                    <Frame BackgroundColor="#F9F9F9" Padding="12" CornerRadius="10">
-                                        <StackLayout>
+                                    <Frame BackgroundColor="#F9F9F9" Padding="15" CornerRadius="12">
+                                        <StackLayout Spacing="10">
                                             <RadioButton Content="True"
-                             GroupName="Answers"
-                             CheckedChanged="_OnCheckedChanged"/>
+                                                         FontSize="16"
+                                                         FontFamily="RobotoRegular"
+                                                         GroupName="Answers"
+                                                         TextColor="#212121"
+                                                         CheckedChanged="_OnCheckedChanged"/>
                                             <RadioButton Content="False"
-                             GroupName="Answers"
-                             CheckedChanged="_OnCheckedChanged"/>
+                                                         FontSize="16"
+                                                         FontFamily="RobotoRegular"
+                                                         GroupName="Answers"
+                                                         TextColor="#212121"
+                                                         CheckedChanged="_OnCheckedChanged"/>
                                         </StackLayout>
                                     </Frame>
                                 </Setter>
@@ -54,19 +87,20 @@
                             <!-- Multiple Choice -->
                             <DataTrigger TargetType="ContentView" Binding="{Binding CurrentExercise.ContentExercises.Type}" Value="multiple_choice">
                                 <Setter Property="Content">
-                                    <Frame BackgroundColor="#F9F9F9" Padding="12" CornerRadius="10">
+                                    <Frame BackgroundColor="#F9F9F9" Padding="15" CornerRadius="12">
                                         <CollectionView ItemsSource="{Binding CurrentExercise.ContentExercises.Options}">
                                             <CollectionView.ItemTemplate>
                                                 <DataTemplate>
                                                     <RadioButton Content="{Binding .}"
-                                     GroupName="ExerciseOptions"
-                                     FontSize="16"
-                                     TextColor="Black"
-                                     Margin="5,3,0,3"
-                                     BackgroundColor="#E9F1FF" 
-                                     BorderColor="#B3D4FC"
-                                     IsChecked="{Binding ., Mode=TwoWay}"
-                                     CheckedChanged="OnOptionSelected"/>
+                                                                 FontSize="16"
+                                                                 FontFamily="RobotoRegular"
+                                                                 TextColor="#212121"
+                                                                 Margin="0,5"
+                                                                 BackgroundColor="Transparent"
+                                                                 BorderColor="#1976D2"
+                                                                 GroupName="ExerciseOptions"
+                                                                 IsChecked="{Binding ., Mode=TwoWay}"
+                                                                 CheckedChanged="OnOptionSelected"/>
                                                 </DataTemplate>
                                             </CollectionView.ItemTemplate>
                                         </CollectionView>
@@ -80,88 +114,108 @@
                                     <Entry Placeholder="Type your answer here..."
                                            Text="{Binding SelectedAnswer}"
                                            FontSize="16"
-                                           TextColor="Black"
-                                           BackgroundColor="White"
-                                           Margin="5,3,0,3"/>
+                                           FontFamily="RobotoRegular"
+                                           TextColor="#212121"
+                                           PlaceholderColor="#757575"
+                                           BackgroundColor="#F9F9F9"
+                                           Margin="0,5"/>
                                 </Setter>
                             </DataTrigger>
                         </ContentView.Triggers>
                     </ContentView>
-                    <!-- Show Answer Button -->
-                    <Button Text="Show Answer"
-                            TextColor="White"
-                            BackgroundColor="#388E3C"
-                            CornerRadius="8"
-                            Command="{Binding ToggleAnswerVisibilityCommand}"
-                            Padding="10,5"
-                            FontSize="16"
-                            HorizontalOptions="Center"/>
-                    <!-- Submit Button -->
-                    <Button Text="Submit"
-        TextColor="White"
-        BackgroundColor="#0288D1"
-        CornerRadius="8"
-        Command="{Binding SubmitAnswerCommand}"
-        Padding="10,5"
-        FontSize="16"
-        HorizontalOptions="Center"/>
-                    <!-- Answer Section -->
-                    <Frame BackgroundColor="#E8F5E9" Padding="10" CornerRadius="8" IsVisible="{Binding IsAnswerVisible}">
-                        <VerticalStackLayout>
-                            <Label Text="Correct Answer:"
-                                   FontSize="18"
+
+                    <!-- Action Buttons (Submit Modified) -->
+                    <Grid ColumnDefinitions="*,10,*" Margin="0,10,0,0">
+                        <Button Grid.Column="0"
+                                Text="Show Answer"
+                                TextColor="White"
+                                BackgroundColor="#388E3C"
+                                CornerRadius="10"
+                                FontFamily="RobotoBold"
+                                FontSize="16"
+                                Padding="15,10"
+                                Command="{Binding ToggleAnswerVisibilityCommand}"
+                                HorizontalOptions="FillAndExpand"
+                                Opacity="{Binding IsAnswerVisible, Converter={StaticResource BooleanToOpacityConverter}, ConverterParameter=0.5}"/>
+                        <Button Grid.Column="2"
+                                Text="Submit"
+                                TextColor="White"
+                                BackgroundColor="#0284C7"
+                                CornerRadius="12"
+                                FontFamily="RobotoBold"
+                                FontSize="16"
+                                Padding="20,12"
+                                Command="{Binding SubmitAnswerCommand}"
+                                HorizontalOptions="FillAndExpand"
+                                Shadow="{Shadow Brush=Gray, Radius=10, Opacity=0.2}"/>
+                    </Grid>
+
+                    <!-- Answer Section (Modified) -->
+                    <Frame BackgroundColor="#DCFCE7" Padding="20" CornerRadius="15" 
+                           IsVisible="{Binding IsAnswerVisible}"
+                           Margin="0,10,0,0"
+                           BorderColor="#BBF7D0">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Correct Answer"
+                                   FontSize="20"
                                    FontAttributes="Bold"
-                                   TextColor="DarkGreen"/>
+                                   FontFamily="RobotoBold"
+                                   TextColor="#166534"
+                                   HorizontalOptions="Start"/>
                             <Label Text="{Binding CurrentExercise.ContentExercises.Answer}"
                                    FontSize="17"
-                                   TextColor="Green"/>
+                                   FontFamily="RobotoRegular"
+                                   TextColor="#16A34A"
+                                   LineBreakMode="WordWrap"/>
                         </VerticalStackLayout>
                     </Frame>
-                    <!-- Explanation Section -->
-                    <Frame BackgroundColor="#E3F2FD" Padding="10" CornerRadius="8" IsVisible="{Binding IsAnswerVisible}">
-                        <VerticalStackLayout>
-                            <Label Text="Explanation:"
-                                   FontSize="18"
+
+                    <!-- Explanation Section (Modified) -->
+                    <Frame BackgroundColor="#DBEAFE" Padding="20" CornerRadius="15" 
+                           IsVisible="{Binding IsAnswerVisible}"
+                           BorderColor="#BFDBFE">
+                        <VerticalStackLayout Spacing="8">
+                            <Label Text="Explanation"
+                                   FontSize="20"
                                    FontAttributes="Bold"
-                                   TextColor="DarkBlue"/>
+                                   FontFamily="RobotoBold"
+                                   TextColor="#1E40AF"
+                                   HorizontalOptions="Start"/>
                             <Label Text="{Binding CurrentExercise.ContentExercises.Explanation}"
-                                   FontSize="16"
-                                   TextColor="Black"/>
+                                   FontSize="17"
+                                   FontFamily="RobotoRegular"
+                                   TextColor="#1F2937"
+                                   LineBreakMode="WordWrap"
+                                   Opacity="0.9"/>
                         </VerticalStackLayout>
                     </Frame>
                 </VerticalStackLayout>
             </Frame>
+
             <!-- Navigation Buttons -->
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-                <!-- Back Button -->
+            <HorizontalStackLayout Spacing="15" HorizontalOptions="CenterAndExpand">
                 <Button Text="Back"
                         Command="{Binding PreviousExerciseCommand}"
                         IsEnabled="{Binding CanGoBack}"
                         BackgroundColor="#1E88E5"
                         TextColor="White"
-                        CornerRadius="8"
+                        CornerRadius="10"
+                        FontFamily="RobotoBold"
                         FontSize="16"
-                        Padding="10,5"
-                        WidthRequest="100"/>
-                <!-- Next Button -->
+                        Padding="15,10"
+                        WidthRequest="120"
+                        Opacity="{Binding CanGoBack, Converter={StaticResource BooleanToOpacityConverter}, ConverterParameter=0.5}"/>
                 <Button Text="Next"
                         Command="{Binding NextExerciseCommand}"
                         IsEnabled="{Binding CanGoNext}"
                         BackgroundColor="#43A047"
                         TextColor="White"
-                        CornerRadius="8"
+                        CornerRadius="10"
+                        FontFamily="RobotoBold"
                         FontSize="16"
-                        Padding="10,5"
-                        WidthRequest="100"/>
-                <!-- Exit Button -->
-                <Button Text="Exit"
-                        Command="{Binding ExitCommand}"
-                        BackgroundColor="Red"
-                        TextColor="White"
-                        CornerRadius="8"
-                        FontSize="16"
-                        Padding="10,5"
-                        WidthRequest="100"/>
+                        Padding="15,10"
+                        WidthRequest="120"
+                        Opacity="{Binding CanGoNext, Converter={StaticResource BooleanToOpacityConverter}, ConverterParameter=0.5}"/>
             </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>

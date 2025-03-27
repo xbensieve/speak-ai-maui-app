@@ -1,104 +1,123 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:Class="SpeakAI.Views.CoursePage"
-    BackgroundColor="#F8F9FA">
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="SpeakAI.Views.CoursePage"
+             BackgroundColor="#F8F9FA">
+    <Grid>
+        <!-- Loading Indicator -->
+        <ActivityIndicator IsRunning="{Binding IsProcessing}" 
+                           IsVisible="{Binding IsProcessing}"
+                           Color="#3498DB"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" />
 
-    <VerticalStackLayout>
-        <HorizontalStackLayout Padding="20" VerticalOptions="Start">
-            <Label Text="Courses" 
-                   FontFamily="InterBold"
-                   FontSize="24"
-                   TextColor="Black"/>
-        </HorizontalStackLayout>
-        <CollectionView ItemsSource="{Binding Courses}" Margin="10">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="15"
-                           Margin="15"
-                           BackgroundColor="White"
-                           HasShadow="True"
-                           CornerRadius="20">
+        <ScrollView IsVisible="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
+            <Grid RowDefinitions="Auto, *" ColumnDefinitions="*">
+                <Label Text="Courses"
+                       FontFamily="RobotoBold"
+                       FontSize="25"
+                       TextColor="#2C3E50"
+                       Padding="20,10,20,5"
+                       HorizontalOptions="Center" 
+                       Grid.Row="0" />
 
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnCourseTapped"/>
-                        </Frame.GestureRecognizers>
+                <CollectionView ItemsSource="{Binding Courses}" 
+                                Margin="15,0"
+                                Grid.Row="1">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="15"
+                                   Margin="0,0,0,15"
+                                   BackgroundColor="{Binding IsPremium, Converter={StaticResource PremiumColorConverter}}"
+                                   HasShadow="True"
+                                   BorderColor="{Binding IsPremium, Converter={StaticResource PremiumBorderConverter}}"
+                                   CornerRadius="15">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCourseTapped" CommandParameter="{Binding}" />
+                                </Frame.GestureRecognizers>
+                                <Grid ColumnDefinitions="100, *, 40" RowDefinitions="Auto">
+                                    <Frame WidthRequest="100" 
+                                           HeightRequest="100"
+                                           Padding="0"
+                                           CornerRadius="8"
+                                           Grid.Column="0"
+                                           HasShadow="False"
+                                           BackgroundColor="White"
+                                           BorderColor="#D6DBDF"
+                                           HorizontalOptions="Start"
+                                           VerticalOptions="Center">
+                                        <Image Source="course_image_02.webp"
+                                               Aspect="AspectFill"
+                                               HeightRequest="100"
+                                               WidthRequest="100" />
+                                    </Frame>
 
-                        <Grid ColumnDefinitions="80, *, 40" RowDefinitions="Auto, Auto">
-                            <Frame WidthRequest="60" HeightRequest="60"
-                                   Padding="0"
-                                   CornerRadius="10"
-                                   Grid.Column="0"
-                                   HasShadow="False"
-                                   BackgroundColor="White"
-                                   BorderColor="#D6DBDF"
-                                   HorizontalOptions="Start"
-                                   VerticalOptions="Center">
-                                <Image Source="course_image_02.webp"
-                                       Aspect="AspectFill"
-                                       HeightRequest="60"
-                                       WidthRequest="60"/>
+                                    <!-- Course Details -->
+                                    <VerticalStackLayout Grid.Column="1" 
+                                                         Spacing="5" 
+                                                         Padding="10,0,0,0">
+                                        <Label Text="{Binding CourseName}" 
+                                               FontSize="20"
+                                               FontFamily="Roboto"
+                                               TextColor="{Binding IsPremium, Converter={StaticResource PremiumTextColorConverter}}"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding Description}" 
+                                               FontSize="15"
+                                               FontFamily="Roboto"
+                                               LineBreakMode="WordWrap"
+                                               MaxLines="2" />
+                                        <Frame CornerRadius="10"
+                                               Padding="6,2"
+                                               BackgroundColor="#FFD700"
+                                               BorderColor="#FFC107"
+                                               HasShadow="False"
+                                               IsVisible="{Binding IsPremium}"
+                                               HorizontalOptions="Start">
+                                            <Label Text="⭐VIP Course"
+                                                   FontSize="Micro"
+                                                   FontFamily="Roboto"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#FFFFFF"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Frame>
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="trophy_icon.png" 
+                                                   WidthRequest="16" 
+                                                   HeightRequest="16" 
+                                                   VerticalOptions="Center" />
+                                            <Label FontSize="Small" 
+                                                   FontFamily="Roboto">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="Points: " 
+                                                              FontAttributes="Bold" 
+                                                              TextColor="#F59E0B" />
+                                                        <Span Text="{Binding MaxPoint}" 
+                                                              TextColor="#00BFFF" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <!-- Arrow -->
+                                    <Label Text="→" 
+                                           FontSize="Large"
+                                           FontFamily="Roboto"
+                                           TextColor="#2C3E50"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           Grid.Column="2" />
+                                </Grid>
                             </Frame>
-
-                            <VerticalStackLayout Grid.Column="1" Spacing="2">
-                                <Label Text="{Binding CourseName}" 
-                                       FontSize="18"
-                                       FontAttributes="Bold"
-                                       FontFamily="InterBold"
-                                       TextColor="#2C3E50" 
-                                       LineBreakMode="TailTruncation"/>
-                                <Label Text="{Binding Description}" 
-                                       FontSize="14"
-                                       TextColor="#7D7D7D"
-                                       FontFamily="Inter"
-                                       LineBreakMode="TailTruncation"
-                                       MaxLines="2"/>
-
-                                <HorizontalStackLayout Spacing="8">
-                                    <Image Source="trophy_icon.png" WidthRequest="20" HeightRequest="20"/>
-                                    <Label>
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="Points: " FontSize="13" FontFamily="Inter" FontAttributes="Bold" TextColor="#FFA500"/>
-                                                <Span Text="{Binding MaxPoint}" FontSize="12" FontFamily="Inter" FontAttributes="Bold" TextColor="#00BFFF"/>
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-                                </HorizontalStackLayout>
-
-                                <HorizontalStackLayout Spacing="5">
-                                        <Label Text="A1" 
-                                               FontSize="12"
-                                               Padding="3,2"
-                                               FontFamily="Inter"
-                                               BackgroundColor="#E5E7EB"
-                                               FontAttributes="Bold"
-                                               TextColor="Gray"/>
-                                        <Label Text="A2"
-                                               FontSize="12"
-                                               Padding="3,2"
-                                               FontFamily="Inter"
-                                               BackgroundColor="#E5E7EB"
-                                               FontAttributes="Bold"
-                                               TextColor="Gray"/>
-                                </HorizontalStackLayout>
-                            </VerticalStackLayout>
-                            <Label Text="→" 
-                                   FontSize="32"
-                                   TextColor="#2C3E50"
-                                   FontAttributes="Bold"
-                                   BackgroundColor="Transparent"
-                                   Padding="5"
-                                   HorizontalOptions="End"
-                                   VerticalOptions="Center"
-                                   Grid.Column="2">
-                            </Label>
-                        </Grid>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+    </Grid>
 </ContentPage>

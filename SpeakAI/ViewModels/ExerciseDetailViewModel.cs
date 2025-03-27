@@ -154,6 +154,7 @@ namespace SpeakAI.ViewModels
                     if (SelectedAnswer == CurrentExercise?.ContentExercises.Answer)
                     {
                         IsAnswerVisible = true;
+                        SelectedAnswer = string.Empty;
                         var exerciseId = CurrentExercise?.ExerciseId;
                         var earnedPoints = CurrentExercise?.MaxPoint;
                         _ = Task.Run(async () =>
@@ -163,11 +164,10 @@ namespace SpeakAI.ViewModels
                                 var response = await _courseService.SubmitExerciseResult(exerciseId, (decimal)earnedPoints);
                                 if (response.IsSuccess)
                                 {
-                                    ThreadPool.QueueUserWorkItem(_ =>
-                                    {
-                                        Console.WriteLine("Submit success");
-                                    });
+                                    SelectedAnswer = string.Empty;
+                                    Console.WriteLine("Submit success");
                                 }
+                                SelectedAnswer = string.Empty;
                             }
                             catch (Exception ex)
                             {

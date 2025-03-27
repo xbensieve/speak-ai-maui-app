@@ -1,128 +1,365 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    x:Class="SpeakAI.MainPage"
-    BackgroundColor="White">
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakAI.MainPage"
+             BackgroundColor="#F5F7FA">
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="15">
-            <HorizontalStackLayout VerticalOptions="Start">
-                <Label Text="Hi, Maya👋" FontSize="24" FontAttributes="Bold" FontFamily="InterBold" TextColor="Black" />
-                <Image Source="chat_icon.png" HeightRequest="30" HorizontalOptions="EndAndExpand" />
-            </HorizontalStackLayout>
-            <Label Text="Let's start learning!" FontSize="18" FontFamily="InterBold" TextColor="Black"/>
+        <VerticalStackLayout Padding="20,30,20,20" Spacing="25">
+            <!-- Greeting -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label x:Name="greetingLabel"
+                       Text="Hi, Maya 👋"
+                       FontSize="26"
+                       FontFamily="RobotoBold"
+                       TextColor="#1F2937"
+                       Grid.Column="0"/>
+                <Image Source="chat_icon.png"
+                       HeightRequest="30"
+                       HorizontalOptions="End"
+                       Grid.Column="1"/>
+            </Grid>
+            <Label Text="Let's start learning!"
+                   FontSize="18"
+                   FontFamily="RobotoMedium"
+                   TextColor="#1F2937"/>
 
-            <Frame BackgroundColor="White" CornerRadius="12" Padding="15" HasShadow="True">
-                <VerticalStackLayout>
-                    <Label Text="How many hours you studied this week" FontFamily="Inter" FontSize="16" TextColor="Black" />
-                    <ProgressBar Progress="0.5" HeightRequest="20"/>
-                    <Button Text="Let's start" BackgroundColor="Blue" FontFamily="Inter" TextColor="White" CornerRadius="8"/>
+            <Frame BackgroundColor="#FFFFFF"
+                   CornerRadius="12"
+                   Padding="15"
+                   HasShadow="True"
+                   BorderColor="#E2E8F0">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="How many hours you studied this week"
+                           FontFamily="RobotoRegular"
+                           FontSize="16"
+                           TextColor="#1F2937"/>
+                    <ProgressBar Progress="0.5"
+                                HeightRequest="20"
+                                ProgressColor="#3B82F6"/>
+                    <Button Text="Let's Start"
+                            BackgroundColor="#3B82F6"
+                            FontFamily="RobotoMedium"
+                            TextColor="#FFFFFF"
+                            Clicked="OnCounterClicked"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            Padding="10"/>
                 </VerticalStackLayout>
             </Frame>
 
-            <Frame BackgroundColor="Orange" CornerRadius="10" Padding="10">
-                <Label Text="Get 50% off SpeakUp Premium and unlock new languages!" FontFamily="Inter" TextColor="White"/>
+            <Frame BackgroundColor="#F97316"
+                   CornerRadius="10"
+                   Padding="15">
+                <Label Text="Get 50% off SpeakUp Premium and unlock new languages!"
+                       FontFamily="RobotoRegular"
+                       TextColor="#FFFFFF"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"/>
             </Frame>
 
-            <Grid ColumnDefinitions="*, Auto">
-                <Label Text="Courses" FontSize="18" TextColor="Black" FontFamily="InterBold" Grid.Column="0"/>
-                <Button Text="See all →" BackgroundColor="Transparent"
-                        FontFamily="Inter" TextColor="Blue" Grid.Column="1"/>
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Courses"
+                       FontSize="20"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoBold"
+                       Grid.Column="0"/>
+                <Button Text="See all →"
+                        BackgroundColor="Transparent"
+                        FontFamily="RobotoMedium"
+                        FontSize="14"
+                        Grid.Column="1"/>
             </Grid>
-
             <ScrollView Orientation="Horizontal">
-                <HorizontalStackLayout Spacing="10" Padding="10">
-                  
-                    <Frame CornerRadius="30" WidthRequest="100" HeightRequest="150" BackgroundColor="LightGray" Padding="5" HasShadow="True">
-                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Image Source="travel.png" WidthRequest="80" HeightRequest="80"/>
-                            <Label Text="Travel" FontSize="12" HorizontalOptions="Center" TextColor="Black" FontFamily="Inter"/>
+                <HorizontalStackLayout Spacing="20" Padding="15,10,15,10">
+                    <!-- Travel Card -->
+                    <Frame CornerRadius="20"
+               WidthRequest="120"
+               HeightRequest="180"
+               Padding="15"
+               HasShadow="True"
+               Margin="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TravelTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                            <Image Source="travel.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       Aspect="AspectFit" />
+                            <Label Text="Travel"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular" />
                         </VerticalStackLayout>
                     </Frame>
 
-                    <Frame CornerRadius="30" WidthRequest="100" HeightRequest="150" BackgroundColor="LightGray" Padding="5" HasShadow="True">
-                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Image Source="practice.png" WidthRequest="80" HeightRequest="80"/>
-                            <Label Text="Practice" FontSize="12" HorizontalOptions="Center" TextColor="Black" FontFamily="Inter"/>
+                    <!-- Practice Card -->
+                    <Frame CornerRadius="20"
+               WidthRequest="120"
+               HeightRequest="180"
+               Padding="15"
+               HasShadow="True"
+               Margin="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PracticeTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                            <Image Source="practice.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       Aspect="AspectFit" />
+                            <Label Text="Practice"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular" />
                         </VerticalStackLayout>
                     </Frame>
 
-                    <Frame CornerRadius="30" WidthRequest="100" HeightRequest="150" BackgroundColor="LightGray" Padding="5" HasShadow="True">
-                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Image Source="business.png" WidthRequest="80" HeightRequest="80"/>
-                            <Label Text="Business" FontSize="12" HorizontalOptions="Center" TextColor="Black" FontFamily="Inter"/>
+                    <!-- Business Card -->
+                    <Frame CornerRadius="20"
+               WidthRequest="120"
+               HeightRequest="180"
+               Padding="15"
+               HasShadow="True"
+               Margin="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BusinessTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                            <Image Source="business.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       Aspect="AspectFit" />
+                            <Label Text="Business"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular" />
                         </VerticalStackLayout>
                     </Frame>
 
-                    <Frame CornerRadius="30" WidthRequest="100" HeightRequest="150" BackgroundColor="LightGray" Padding="5" HasShadow="True">
-                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
-                            <Image Source="academic.png" WidthRequest="80" HeightRequest="80"/>
-                            <Label Text="Academic" FontSize="12" HorizontalOptions="Center" TextColor="Black" FontFamily="Inter"/>
+                    <!-- Academic Card -->
+                    <Frame CornerRadius="20"
+               WidthRequest="120"
+               HeightRequest="180"
+               Padding="15"
+               HasShadow="True"
+               Margin="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AcademicTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                            <Image Source="academic.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       Aspect="AspectFit" />
+                            <Label Text="Academic"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular" />
                         </VerticalStackLayout>
                     </Frame>
-
                 </HorizontalStackLayout>
             </ScrollView>
 
-
+            <!-- User Experience Video -->
             <VerticalStackLayout Spacing="10">
-                <Label Text="User Experience Video" FontSize="18" TextColor="Black" FontFamily="InterBold"/>
-                <Frame BackgroundColor="Transparent" CornerRadius="10" Padding="0" HasShadow="False">
+                <Label Text="User Experience Video"
+                       FontSize="20"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoBold"/>
+                <Frame BackgroundColor="#FFFFFF"
+                       CornerRadius="10"
+                       Padding="0"
+                       HasShadow="True"
+                       BorderColor="#E2E8F0">
                     <Grid>
-                        <Image Source="practice.png" HeightRequest="180" Aspect="AspectFill"/>
-                        <Image Source="play_icon.png" WidthRequest="50" HeightRequest="50" 
-                   HorizontalOptions="Center" VerticalOptions="Center"/>
+                        <Image Source="practice.png"
+                               HeightRequest="180"
+                               Aspect="AspectFill"/>
+                        <Image Source="play_icon.png"
+                               WidthRequest="50"
+                               HeightRequest="50"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
                     </Grid>
                 </Frame>
                 <HorizontalStackLayout Spacing="10">
-                    <Image Source="profile_icon.png" WidthRequest="40" HeightRequest="40" />
+                    <Image Source="profile_icon.png"
+                           WidthRequest="40"
+                           HeightRequest="40"/>
                     <VerticalStackLayout>
-                        <Label Text="Amanda Roch - User Experience Insights" TextColor="Black" FontFamily="Inter"
-                   FontSize="16" FontAttributes="Bold"/>
-                        <Label Text="1.2M views · 2 days ago" FontSize="14" TextColor="Gray"/>
+                        <Label Text="Amanda Roch - User Experience Insights"
+                               TextColor="#1F2937"
+                               FontFamily="RobotoMedium"
+                               FontSize="16"/>
+                        <Label Text="1.2M views · 2 days ago"
+                               FontSize="14"
+                               TextColor="#6B7280"
+                               FontFamily="RobotoRegular"/>
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
 
-
-            <!-- Recent Learning Section with Horizontal Scrolling -->
-            <Grid ColumnDefinitions="*, Auto">
-                <Label Text="Recent learning" FontSize="18" TextColor="Black" FontFamily="InterBold" FontAttributes="Bold" Grid.Column="0"/>
-                <Button Text="See all →" BackgroundColor="Transparent" 
-            FontFamily="Inter" TextColor="Blue" Grid.Column="1"/>
+            <!-- Recent Learning Section -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Recent Learning"
+                       FontSize="20"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoBold"
+                       Grid.Column="0"/>
+                <Button Text="See all →"
+                        BackgroundColor="Transparent"
+                        FontFamily="RobotoMedium"
+                        TextColor="#3B82F6"
+                        FontSize="14"
+                        Grid.Column="1"/>
             </Grid>
             <ScrollView Orientation="Horizontal">
-                <HorizontalStackLayout Spacing="15">
-                    <Frame CornerRadius="10" WidthRequest="150">
-                        <VerticalStackLayout>
-                            <Image Source="business.png" HeightRequest="100"/>
-                            <Label Text="Tourist trip" FontSize="16" HorizontalOptions="Center" TextColor="Black" FontFamily="Inter"/>
+                <HorizontalStackLayout Spacing="20" Padding="15,10,15,10">
+                    <!-- Tourist Trip Card -->
+                    <Frame CornerRadius="15"
+               WidthRequest="160"
+               HeightRequest="180"
+               BackgroundColor="#FFFFFF"
+               BorderColor="#E2E8F0"
+               HasShadow="True"
+               Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TouristTripTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="business.png"
+                       HeightRequest="110"
+                       WidthRequest="140"
+                       Aspect="AspectFill"
+                       HorizontalOptions="Center" />
+                            <Label Text="Tourist Trip"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
                         </VerticalStackLayout>
                     </Frame>
-                    <Frame CornerRadius="10" WidthRequest="150">
-                        <VerticalStackLayout>
-                            <Image Source="academic.png" HeightRequest="100"/>
-                            <Label Text="Hang out with friends" FontSize="16" HorizontalOptions="Center" TextColor="Black" FontFamily="Inter"/>
+
+                    <!-- Hang Out with Friends Card -->
+                    <Frame CornerRadius="15"
+               WidthRequest="160"
+               HeightRequest="180"
+               BackgroundColor="#FFFFFF"
+               BorderColor="#E2E8F0"
+               HasShadow="True"
+               Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding HangOutTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="academic.png"
+                       HeightRequest="110"
+                       WidthRequest="140"
+                       Aspect="AspectFill"
+                       HorizontalOptions="Center" />
+                            <Label Text="Hang Out with Friends"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
                         </VerticalStackLayout>
                     </Frame>
-                    <Frame CornerRadius="10" WidthRequest="150">
-                        <VerticalStackLayout>
-                            <Image Source="practice.png" HeightRequest="100"/>
-                            <Label Text="Business English" FontSize="16" HorizontalOptions="Center" TextColor="Black" FontFamily="Inter"/>
+
+                    <!-- Business English Card -->
+                    <Frame CornerRadius="15"
+               WidthRequest="160"
+               HeightRequest="180"
+               BackgroundColor="#FFFFFF"
+               BorderColor="#E2E8F0"
+               HasShadow="True"
+               Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BusinessEnglishTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="practice.png"
+                       HeightRequest="110"
+                       WidthRequest="140"
+                       Aspect="AspectFill"
+                       HorizontalOptions="Center" />
+                            <Label Text="Business English"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
                         </VerticalStackLayout>
                     </Frame>
-                    <Frame CornerRadius="10" WidthRequest="150">
-                        <VerticalStackLayout>
-                            <Image Source="travel.png" HeightRequest="100"/>
-                            <Label Text="Daily Conversations" FontSize="16" HorizontalOptions="Center" TextColor="Black" FontFamily="Inter"/>
+
+                    <!-- Daily Conversations Card -->
+                    <Frame CornerRadius="15"
+               WidthRequest="160"
+               HeightRequest="180"
+               BackgroundColor="#FFFFFF"
+               BorderColor="#E2E8F0"
+               HasShadow="True"
+               Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DailyConversationsTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="travel.png"
+                       HeightRequest="110"
+                       WidthRequest="140"
+                       Aspect="AspectFill"
+                       HorizontalOptions="Center" />
+                            <Label Text="Daily Conversations"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
                         </VerticalStackLayout>
                     </Frame>
                 </HorizontalStackLayout>
             </ScrollView>
 
-            <Label Text="Suggested for you" FontSize="18" FontAttributes="Bold" TextColor="Black" FontFamily="InterBold"/>
-            <Frame CornerRadius="10">
-                <Label Text="How to Conversation" FontSize="16" TextColor="Black" FontFamily="Inter"/>
+            <!-- Suggested for You -->
+            <Label Text="Suggested for You"
+                   FontSize="20"
+                   TextColor="#1F2937"
+                   FontFamily="RobotoBold"/>
+            <Frame CornerRadius="10"
+                   BackgroundColor="#FFFFFF"
+                   Padding="15"
+                   HasShadow="True"
+                   BorderColor="#E2E8F0">
+                <Label Text="How to Conversation"
+                       FontSize="16"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"/>
             </Frame>
         </VerticalStackLayout>
     </ScrollView>

@@ -80,11 +80,11 @@ namespace SpeakAI.ViewModels
                     Application.Current.MainPage = new NavigationPage(new SpeakAI.Views.LoadingPage());
                 });
 
-                var response = await Task.Run(async () => await _loginService.Login(new LoginRequestModel
+                var response = await _loginService.Login(new LoginRequestModel
                 {
                     userName = Username,
                     password = Password
-                })).ConfigureAwait(false);
+                });
 
                 if (response?.IsSuccess == true)
                 {

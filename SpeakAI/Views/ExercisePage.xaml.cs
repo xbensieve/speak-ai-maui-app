@@ -6,11 +6,13 @@ namespace SpeakAI.Views;
 
 public partial class ExercisePage : ContentPage
 {
-	public ExercisePage(ICourseService courseService)
-	{
-		InitializeComponent();
-		BindingContext = new ExerciseViewModel(courseService);
-	}
+    private readonly ICourseService _courseService;
+    public ExercisePage(ICourseService courseService)
+    {
+        InitializeComponent();
+        _courseService = courseService;
+        BindingContext = new ExerciseViewModel(courseService);
+    }
     private async void OnExerciseTapped(object sender, EventArgs e)
     {
         if (Shell.Current == null)
@@ -22,9 +24,9 @@ public partial class ExercisePage : ContentPage
             if (sender is Frame frame && frame.BindingContext is Topic selectedTopic)
             {
                 var navigationParameter = new Dictionary<string, object>
-                    {
-                        { "topic", selectedTopic }
-                    };
+                        {
+                            { "topic", selectedTopic }
+                        };
                 await Shell.Current.GoToAsync("exercisedetail", navigationParameter);
             }
         }

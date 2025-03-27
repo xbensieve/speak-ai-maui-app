@@ -4,158 +4,202 @@
              x:Class="SpeakAI.Views.CourseDetailPage"
              Title="{Binding Course.CourseName}"
              BackgroundColor="#ECF0F1">
+    <Grid>
+        <Grid IsVisible="{Binding IsLoading}" 
+              BackgroundColor="White"
+              Opacity="0.8"
+              VerticalOptions="FillAndExpand"
+              HorizontalOptions="FillAndExpand">
+            <ActivityIndicator IsRunning="True"
+                               Color="#3498DB"
+                               WidthRequest="50"
+                               HeightRequest="50"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+        </Grid>
+        <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+            <!-- Main Content -->
+            <VerticalStackLayout IsVisible="{Binding IsNotLoading}" Spacing="15">
+                <!-- Course Header -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="12"
+                       Padding="15"
+                       HasShadow="True"
+                       Margin="0,0,0,10">
+                    <Grid ColumnDefinitions="100, *" RowDefinitions="Auto">
+                        <Frame WidthRequest="100" 
+                               HeightRequest="100"
+                               Padding="0" 
+                               CornerRadius="10"
+                               HasShadow="False"
+                               BackgroundColor="White"
+                               BorderColor="#D1D5DB"
+                               Grid.Column="0"
+                               VerticalOptions="Center">
+                            <Image Source="course_image_02.webp"
+                                   Aspect="AspectFill"
+                                   HeightRequest="100"
+                                   WidthRequest="100"
+                                   Opacity="0.95" />
+                        </Frame>
+                        <VerticalStackLayout Grid.Column="1" 
+                                             Spacing="8" 
+                                             Padding="10,0,0,0">
+                            <Label Text="{Binding Course.CourseName}"
+                                   FontSize="Large"
+                                   FontFamily="Roboto"
+                                   FontAttributes="Bold"
+                                   TextColor="#2C3E50"
+                                   LineBreakMode="TailTruncation" />
+                            <Label Text="{Binding Course.Description}"
+                                   FontSize="Medium"
+                                   FontFamily="Roboto"
+                                   TextColor="#6B7280"
+                                   LineBreakMode="WordWrap"
+                                   MaxLines="3" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </Frame>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="20">
-            <!-- Course Header -->
-            <Frame BackgroundColor="White"
-                   CornerRadius="18"
-                   Padding="20"
-                   HasShadow="True">
-                <Grid ColumnDefinitions="120, *" RowDefinitions="Auto">
-                    <Frame WidthRequest="120" HeightRequest="120"
-                           Padding="0" CornerRadius="12"
-                           HasShadow="True"
-                           BackgroundColor="White"
-                           Grid.Column="0">
-                        <Image Source="course_image_02.webp"
-                               Aspect="AspectFill"
-                               HeightRequest="120"
-                               WidthRequest="120"
-                               Opacity="0.95"/>
-                    </Frame>
-                    <VerticalStackLayout Grid.Column="1" Spacing="10" Padding="10">
-                        <Label Text="{Binding Course.CourseName}"
-                               FontSize="28"
+                <!-- Course Overview -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="12"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="📘 Course Overview"
+                               FontSize="Large"
+                               FontFamily="Roboto"
                                FontAttributes="Bold"
-                               TextColor="#2C3E50"
-                               LineBreakMode="TailTruncation"/>
-
-                        <Label Text="{Binding Course.Description}"
-                               FontSize="16"
-                               TextColor="#636E72"
-                               LineBreakMode="WordWrap"
-                               MaxLines="3"/>
+                               TextColor="#34495E" />
+                        <Label Text="Boost your English skills with structured lessons, interactive exercises, and real-world applications."
+                               FontSize="Medium"
+                               FontFamily="Roboto"
+                               TextColor="#4B5563" />
+                        <Label Text="🔹 12 Modules  |  📝 6 Quizzes  |  🎧 Audio Lessons"
+                               FontSize="Small"
+                               FontFamily="Roboto"
+                               FontAttributes="Bold"
+                               TextColor="#2980B9" />
+                        <Label Text="🎯 Learning Outcomes"
+                               FontSize="Medium"
+                               FontFamily="Roboto"
+                               FontAttributes="Bold"
+                               TextColor="#27AE60" />
+                        <VerticalStackLayout Spacing="6">
+                            <HorizontalStackLayout Spacing="5">
+                                <Label Text="✔" 
+                                       FontSize="Medium" 
+                                       FontFamily="Roboto"
+                                       TextColor="#27AE60" />
+                                <Label Text="Expand vocabulary and grammar knowledge"
+                                       FontSize="Small"
+                                       FontFamily="Roboto"
+                                       TextColor="#4B5563" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="5">
+                                <Label Text="✔" 
+                                       FontSize="Medium" 
+                                       FontFamily="Roboto"
+                                       TextColor="#27AE60" />
+                                <Label Text="Improve pronunciation with AI-powered feedback"
+                                       FontSize="Small"
+                                       FontFamily="Roboto"
+                                       TextColor="#4B5563" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="5">
+                                <Label Text="✔" 
+                                       FontSize="Medium" 
+                                       FontFamily="Roboto"
+                                       TextColor="#27AE60" />
+                                <Label Text="Master English for business and travel"
+                                       FontSize="Small"
+                                       FontFamily="Roboto"
+                                       TextColor="#4B5563" />
+                            </HorizontalStackLayout>
+                            <HorizontalStackLayout Spacing="5">
+                                <Label Text="✔" 
+                                       FontSize="Medium" 
+                                       FontFamily="Roboto"
+                                       TextColor="#27AE60" />
+                                <Label Text="Earn a professional certificate upon completion"
+                                       FontSize="Small"
+                                       FontFamily="Roboto"
+                                       TextColor="#4B5563" />
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
                     </VerticalStackLayout>
-                </Grid>
-            </Frame>
+                </Frame>
 
-            <!-- Course Overview -->
-            <Frame BackgroundColor="White"
-                   CornerRadius="18"
-                   Padding="22"
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="14">
-                    <Label Text="📘 Course Overview"
-                           FontSize="24"
-                           FontAttributes="Bold"
-                           TextColor="#34495E"/>
-
-                    <Label Text="Boost your English skills with structured lessons, interactive exercises, and real-world applications."
-                           FontSize="16"
-                           TextColor="Black"/>
-
-                    <Label Text="🔹 12 Comprehensive Modules  |  📝 6 Quizzes  |  🎧 Audio Lessons"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           TextColor="#2980B9"/>
-
-                    <Label Text="🎯 Learning Outcomes"
-                           FontSize="22"
-                           FontAttributes="Bold"
-                           TextColor="#27AE60"/>
-
-                    <VerticalStackLayout Spacing="8">
-                        <HorizontalStackLayout>
-                            <Label Text="✔" FontSize="18" TextColor="#27AE60"/>
-                            <Label Text="Expand vocabulary and grammar knowledge"
-                                   FontSize="16"
-                                   TextColor="Black"/>
-                        </HorizontalStackLayout>
-
-                        <HorizontalStackLayout>
-                            <Label Text="✔" FontSize="18" TextColor="#27AE60"/>
-                            <Label Text="Improve pronunciation with AI-powered feedback"
-                                   FontSize="16"
-                                   TextColor="Black"/>
-                        </HorizontalStackLayout>
-
-                        <HorizontalStackLayout>
-                            <Label Text="✔" FontSize="18" TextColor="#27AE60"/>
-                            <Label Text="Master English for business and travel"
-                                   FontSize="16"
-                                   TextColor="Black"/>
-                        </HorizontalStackLayout>
-
-                        <HorizontalStackLayout>
-                            <Label Text="✔" FontSize="18" TextColor="#27AE60"/>
-                            <Label Text="Earn a professional certificate upon completion"
-                                   FontSize="16"
-                                   TextColor="Black"/>
-                        </HorizontalStackLayout>
+                <!-- Course Content -->
+                <Frame BackgroundColor="White"
+                       CornerRadius="12"
+                       Padding="15"
+                       HasShadow="True">
+                    <VerticalStackLayout Spacing="10">
+                        <Label Text="📖 Course Content"
+                               FontSize="Medium"
+                               FontFamily="Roboto"
+                               FontAttributes="Bold"
+                               TextColor="#E67E22" />
+                        <Label Text="🗂️ Introduction to English |  📌 Intermediate Grammar |  💡 Advanced Conversation"
+                               FontSize="Small"
+                               FontFamily="Roboto"
+                               TextColor="#2D3436" />
+                        <Label Text="🎙️ AI-Powered Speaking Practice  |  🏆 Certification upon Completion"
+                               FontSize="Small"
+                               FontFamily="Roboto"
+                               FontAttributes="Bold"
+                               TextColor="#2980B9" />
                     </VerticalStackLayout>
+                </Frame>
+
+                <!-- Action Buttons -->
+                <VerticalStackLayout Spacing="10" Padding="0,10,0,0">
+                    <Button Text="Continue Learning"
+        IsVisible="{Binding IsEnrolled}"
+        Command="{Binding StudyCommand}"
+        TextColor="White"
+        FontSize="Medium"
+        FontFamily="Roboto"
+        FontAttributes="Bold"
+        Padding="15,12"
+        CornerRadius="12"
+        HorizontalOptions="FillAndExpand">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#27AE60" Offset="0.0" />
+                                <GradientStop Color="#16A34A" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.Triggers>
+                            <Trigger TargetType="Button" Property="IsPressed" Value="True">
+                                <Setter Property="Opacity" Value="0.8" />
+                            </Trigger>
+                        </Button.Triggers>
+                    </Button>
+                    <Button Text="Enroll Now"
+                            FontSize="Medium"
+                            FontFamily="Roboto"
+                            FontAttributes="Bold"
+                            Padding="15,12"
+                            CornerRadius="12"
+                            TextColor="White"
+                            HorizontalOptions="FillAndExpand"
+                            Command="{Binding EnrollCommand}"
+                            CommandParameter="{Binding Course.CourseId}"
+                            IsVisible="{Binding IsNew}">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                <GradientStop Color="#6B48FF" Offset="0.0" />
+                                <GradientStop Color="#00DDEB" Offset="1.0" />
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
                 </VerticalStackLayout>
-            </Frame>
-
-            <!-- Course Content -->
-            <Frame BackgroundColor="White"
-                   CornerRadius="18"
-                   Padding="22"
-                   HasShadow="True">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="📖 Course Content"
-                           FontSize="22"
-                           FontAttributes="Bold"
-                           TextColor="#E67E22"/>
-
-                    <Label Text="🗂️ Introduction to English |  📌 Intermediate Grammar |  💡 Advanced Conversation"
-                           FontSize="16"
-                           TextColor="#2D3436"/>
-
-                    <Label Text="🎙️ AI-Powered Speaking Practice  |  🏆 Certification upon Completion"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           TextColor="#2980B9"/>
-                </VerticalStackLayout>
-            </Frame>
-
-            <!-- Action Buttons -->
-            <VerticalStackLayout Spacing="16" Padding="12">
-                <Button Text="Continue Learning"
-                        IsVisible="{Binding IsEnrolled}"
-                        Command="{Binding StudyCommand}"
-                        BackgroundColor="#27AE60"
-                        TextColor="White"
-                        FontSize="18"
-                        Padding="14"
-                        CornerRadius="14"
-                        HorizontalOptions="Fill"
-                        FontAttributes="Bold">
-                    <Button.Triggers>
-                        <Trigger TargetType="Button" Property="IsPressed" Value="True">
-                            <Setter Property="Opacity" Value="0.8"/>
-                        </Trigger>
-                    </Button.Triggers>
-                </Button>
-
-                <Button Text="Enroll Now"
-                        FontSize="18"
-                        Padding="14"
-                        CornerRadius="14"
-                        FontAttributes="Bold"
-                        TextColor="White"
-                        HorizontalOptions="Fill"
-                        Command="{Binding EnrollCommand}"
-                        CommandParameter="{Binding Course.CourseId}"
-                        IsVisible="{Binding IsNew}">
-                    <Button.Background>
-                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                            <GradientStop Color="#1E88E5" Offset="0.1"/>
-                            <GradientStop Color="#42A5F5" Offset="1.0"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                </Button>
             </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
+    </Grid>
 </ContentPage>
