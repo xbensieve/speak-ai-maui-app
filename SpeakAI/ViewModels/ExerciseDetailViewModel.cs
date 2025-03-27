@@ -8,12 +8,13 @@ using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using SpeakAI.Services.Interfaces;
 using System.Diagnostics;
+using SpeakAI.Services.Service;
 
 namespace SpeakAI.ViewModels
 {
-    [QueryProperty(nameof(Topic), "topic")]
     public class ExerciseDetailViewModel : INotifyPropertyChanged
     {
+        private readonly NavigationDataService _navigationDataService;
         private readonly ICourseService _courseService;
         private Topic _topic;
         private int _currentIndex;
@@ -39,25 +40,7 @@ namespace SpeakAI.ViewModels
             OnPropertyChanged(nameof(IsAnswerVisible));
         }
 
-        public Topic Topic
-        {
-            get { return _topic; }
-            set
-            {
-                if (_topic != value)
-                {
-                    _topic = value;
-                    _currentIndex = 0;
-                    OnPropertyChanged();
-                    OnPropertyChanged(nameof(Exercises));
-                    OnPropertyChanged(nameof(CurrentExercise));
-                    OnPropertyChanged(nameof(CanGoBack));
-                    OnPropertyChanged(nameof(CanGoNext));
-                }
-            }
-        }
-
-        public List<Exercise> Exercises => Topic?.Exercises ?? new List<Exercise>();
+        
         public Exercise CurrentExercise => Exercises != null && Exercises.Count > 0 && _currentIndex >= 0 && _currentIndex < Exercises.Count ? Exercises[_currentIndex] : null;
         public string SelectedAnswer
         {
@@ -81,9 +64,13 @@ namespace SpeakAI.ViewModels
         public ICommand ExitCommand { get; }
         public ICommand SubmitAnswerCommand { get; }
 
-        public ExerciseDetailViewModel(ICourseService courseService)
+        public ExerciseDetailViewModel(ICourseService courseService, NavigationDataService navigationDataService)
         {
+            Debug.WriteLine("[DOTNET] ExerciseDetailViewModel constructor called");
             _courseService = courseService;
+            _navigationDataService = navigationDataService;
+            Topic = _navigationDataService.SelectedTopic;
+            Debug.WriteLine($"[DOTNET] Topic set to: {Topic?.TopicName ?? "null"}");
             NextExerciseCommand = new Command(() =>
             {
                 try
@@ -138,7 +125,26 @@ namespace SpeakAI.ViewModels
             ExitCommand = new Command(async () => await Shell.Current.GoToAsync(".."));
             SubmitAnswerCommand = new Command(OnSubmitAnswer);
         }
+        public Topic Topic
+        {
+            get => _topic;
+            set
+            {
+                if (_topic != value)
+                {
+                    _topic = value;
+                    Debug.WriteLine($"[DOTNET] Topic updated to: {_topic?.TopicName ?? "null"}");
+                    _currentIndex = 0;
+                    OnPropertyChanged();
+                    OnPropertyChanged(nameof(Exercises));
+                    OnPropertyChanged(nameof(CurrentExercise));
+                    OnPropertyChanged(nameof(CanGoBack));
+                    OnPropertyChanged(nameof(CanGoNext));
+                }
+            }
+        }
 
+        public List<Exercise> Exercises => Topic?.Exercises ?? new List<Exercise>();
         private async void OnSubmitAnswer()
         {
             try

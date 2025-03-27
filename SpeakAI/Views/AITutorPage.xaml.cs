@@ -1,4 +1,4 @@
-using CommunityToolkit.Maui.Media;
+﻿using CommunityToolkit.Maui.Media;
 using Microsoft.AspNetCore.SignalR.Client;
 using SpeakAI.Services.Interfaces;
 using SpeakAI.Services.Models;
@@ -480,11 +480,12 @@ namespace SpeakAI.Views
 
                 string botResponse = await _hubConnection.InvokeAsync<string>("EndConversation");
 
+                string formattedResponse = ParseBotResponse(botResponse);
                 await _hubConnection.StopAsync();
 
                 await MainThread.InvokeOnMainThreadAsync(async () =>
                 {
-                    await DisplayAlert("Conversation Ended", botResponse, "OK");
+                    await DisplayAlert("Conversation Ended", formattedResponse, "OK");
                     await Navigation.PopAsync();
                 });
             }
@@ -495,6 +496,48 @@ namespace SpeakAI.Views
             finally
             {
                 IsLoading = false;
+            }
+        }
+        private string ParseBotResponse(string botResponse)
+        {
+            try
+            {
+                var lines = botResponse.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                string summary = "";
+                string weaknesses = "";
+                string suggestions = "";
+
+                foreach (var line in lines)
+                {
+                    if (line.Contains("Summary:"))
+                    {
+                        summary = line.Replace("Summary:", "").Trim();
+                    }
+                    else if (line.Contains("Weaknesses:"))
+                    {
+                        weaknesses = line.Replace("Weaknesses:", "").Trim();
+                    }
+                    else if (line.Contains("Suggestions for Improvement:"))
+                    {
+                        suggestions = line.Replace("Suggestions for Improvement:", "").Trim();
+                    }
+                }
+
+                return $"✨ Your Conversation Summary ✨\n" +
+             $"═══════════════════════\n" +
+             $"📝 *Summary*\n{summary}\n\n" +
+             $"⚠️ *Weaknesses*\n{weaknesses}\n\n" +
+             $"💡 *Suggestions*\n{suggestions}\n" +
+             $"═══════════════════════\n" +
+             $"Keep up the great work! 🚀";
+            }
+            catch
+            {
+                return $"⚠️ Conversation Summary ⚠️\n" +
+               $"═══════════════════════\n" +
+               $"{botResponse}\n" +
+               $"═══════════════════════\n";
             }
         }
     }

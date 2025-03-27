@@ -29,6 +29,7 @@
             <converter:PremiumTextColorConverter x:Key="PremiumTextColorConverter"/>
             <converter:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
             <converter:NullToBooleanConverter x:Key="NullToBooleanConverter" />
+            <converter:BooleanToOpacityConverter x:Key="BooleanToOpacityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

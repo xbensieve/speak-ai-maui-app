@@ -1,14 +1,17 @@
 ﻿using SpeakAI.Services.Interfaces;
+using SpeakAI.Services.Service;
 using SpeakAI.ViewModels;
 
 namespace SpeakAI.Views;
 
 public partial class ExerciseDetailPage : ContentPage
 {
-	public ExerciseDetailPage(ICourseService courseService)
+    private readonly NavigationDataService _navigationDataService;  
+    public ExerciseDetailPage(ICourseService courseService, NavigationDataService navigationDataService)
 	{
 		InitializeComponent();
-        var viewModel = new ExerciseDetailViewModel(courseService);
+        _navigationDataService = navigationDataService;
+        var viewModel = new ExerciseDetailViewModel(courseService, navigationDataService);
         BindingContext = viewModel;
         if (BindingContext == null)
         {

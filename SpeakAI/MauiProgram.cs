@@ -43,6 +43,7 @@ namespace SpeakAI
             builder.Services.AddSingleton<ICourseService, CourseService>();
             builder.Services.AddSingleton<IAIService, AIService>();
             builder.Services.AddSingleton<ISpeechToText>(_ => SpeechToText.Default);
+            builder.Services.AddSingleton<NavigationDataService>();
             /* View Model Logic */
             builder.Services.AddSingleton<StudyViewModel>();
             builder.Services.AddSingleton<SignInViewModel>();
