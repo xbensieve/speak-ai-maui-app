@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "2816761335",
+    "project_id": "speakai-e9cd4",
+    "storage_bucket": "speakai-e9cd4.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2816761335:android:b836a5b2b1bf78e24962f2",
+        "android_client_info": {
+          "package_name": "com.companyname.speakai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIAPLw6rLh14UyhyyQB2kuNiXJ5o2z3pg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

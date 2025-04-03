@@ -15,6 +15,16 @@ namespace SpeakAI.ViewModels
     {
         private readonly ICourseService _courseService;
         public ObservableCollection<CourseModel> Courses { get; set; } = new();
+        private bool _isProcessing;
+        public bool IsProcessing
+        {
+            get => _isProcessing;
+            set
+            {
+                _isProcessing = value;
+                OnPropertyChanged(nameof(IsProcessing));
+            }
+        }
         public ICommand LoadCoursesCommand { get; }
         public CourseViewModel(ICourseService courseService)
         {
@@ -24,16 +34,35 @@ namespace SpeakAI.ViewModels
         }
         private async Task LoadCoursesAsync()
         {
-            Courses.Clear();
-            var res = await _courseService.GetAllCourses();
-            if (res != null)
+            try
             {
-                foreach (var course in res)
+                IsProcessing = true;
+
+                var courses = await Task.Run(() => _courseService.GetAllCourses());
+
+                if (courses != null)
                 {
-                    Courses.Add(course);
+                    MainThread.BeginInvokeOnMainThread(() =>
+                    {
+                        Courses.Clear();
+                        foreach (var course in courses)
+                        {
+                            Courses.Add(course);
+                        }
+                    });
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading courses: {ex.Message}");
+            }
+            finally
+            {
+                IsProcessing = false;
             }
         }
         public event PropertyChangedEventHandler? PropertyChanged;
+        protected virtual void OnPropertyChanged(string propertyName) =>
+       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

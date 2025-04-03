@@ -1,126 +1,60 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="SpeakAI.SignUpPage"
-             BackgroundColor="#EEF0F7"
-             Title="Sign Up">
-    <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="25">
-            <StackLayout Orientation="Horizontal"
-                        HorizontalOptions="Center"
-                        VerticalOptions="Center"
-                        Spacing="15">
-                <Image Source="e_learning.png"
-                    WidthRequest="100"
-                    HeightRequest="100"
-                    Aspect="AspectFit"/>
-                <Label Text="Create an Account"
-                    FontSize="28"
-                    FontAttributes="Bold"
-                    VerticalOptions="Center"
-                    TextColor="#0A1A3A"/>
-            </StackLayout>
-            <!-- Input Fields -->
-            <VerticalStackLayout Spacing="15">
-                <Entry x:Name="Username" 
-                       Placeholder="Username" 
-                       Text="{Binding Username}"
-                       FontSize="14"
-                       HeightRequest="50"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       Margin="5,0"/>
-
-                <Entry x:Name="Email"
-                       Placeholder="Email"
-                       Text="{Binding Email}"
-                       Keyboard="Email"
-                       FontSize="14"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       HeightRequest="50"
-                       Margin="5,0"/>
-
-                <Entry x:Name="FullName"
-                       Placeholder="Full Name"
-                       Text="{Binding FullName}"
-                       FontSize="14"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       HeightRequest="50"
-                       Margin="5,0"/>
-
-                <DatePicker x:Name="Birthday"
-                            Date="{Binding Birthday}"
-                            FontSize="14"
-                            BackgroundColor="Transparent"
-                            HeightRequest="50"
-                            Margin="5,0"/>
-
-                <Picker x:Name="Gender"
-                        Title="Select Gender"
-                        SelectedItem="{Binding Gender}"
-                        FontSize="14"
-                        BackgroundColor="Transparent"
-                        Margin="5,0">
-                    <Picker.Items>
-                        <x:String>Male</x:String>
-                        <x:String>Female</x:String>
-                        <x:String>Other</x:String>
-                    </Picker.Items>
-                </Picker>
-
-                <Entry x:Name="Password"
-                       Placeholder="Password"
-                       Text="{Binding Password}"
-                       IsPassword="True"
-                       FontSize="14"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       HeightRequest="50"
-                       Margin="5,0"/>
-
-                <Entry x:Name="ConfirmPassword"
-                       Placeholder="Confirm Password"
-                       Text="{Binding ConfirmPassword}"
-                       IsPassword="True"
-                       FontSize="14"
-                       PlaceholderColor="Gray"
-                       BackgroundColor="Transparent"
-                       HeightRequest="50"
-                       Margin="5,0"/>
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="SpeakAI.SignUpPage" NavigationPage.HasNavigationBar="False"
+BackgroundColor="#F5F7FA">
+    <Grid>
+        <Frame IsVisible="{Binding IsProcessing}" BackgroundColor="#99000000" CornerRadius="0" Padding="0">
+            <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10">
+                <ActivityIndicator IsRunning="{Binding IsProcessing}" Color="#FFFFFF" WidthRequest="60" HeightRequest="60" />
+                <Label Text="Signing up..." TextColor="#FFFFFF" FontSize="16" FontFamily="RobotoMedium" />
             </VerticalStackLayout>
-
-            <!-- Notification Message -->
-            <Label Text="{Binding NotificationMessage}"
-                   TextColor="Red"
-                   FontSize="16"
-                   HorizontalOptions="Center"
-                   IsVisible="{Binding IsNotificationVisible}"/>
-
-            <!-- Sign Up Button -->
-            <Button Text="Sign Up" 
-                    FontSize="20"
-                    BackgroundColor="#4B0082"
-                    FontAttributes="Bold"
-                    TextColor="White"
-                    CornerRadius="10"
-                    HeightRequest="50"
-                    IsEnabled="{Binding IsNotProcessing}"
-                    Command="{Binding SignUpCommand}"/>
-
-            <!-- Sign In Navigation -->
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
-                <Label Text="Already has an account?"
-                      TextColor="DarkGray" FontSize="14"/>
-                <Label Text=" Sign In"
-                       TextColor="MediumPurple" FontSize="14" FontAttributes="Bold">
-                    <Label.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding SignInCommand}"/>
-                    </Label.GestureRecognizers>
-                </Label>
-            </HorizontalStackLayout>
-
-        </VerticalStackLayout>
-    </ScrollView>
+        </Frame>
+        <ScrollView>
+            <VerticalStackLayout Padding="20,40,20,20" Spacing="30" IsVisible="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
+                <Label Text="Join SpeakAI" FontFamily="RobotoBold" FontSize="34" HorizontalOptions="Center"/>
+                <!-- Input Fields -->
+                <VerticalStackLayout Spacing="15">
+                    <Frame Padding="0" CornerRadius="10" BackgroundColor="#FFFFFF" HeightRequest="50" HasShadow="True" BorderColor="#E2E8F0">
+                        <Entry x:Name="Username" Placeholder="Choose a username" Text="{Binding Username}" FontSize="16" FontFamily="RobotoRegular" Margin="15,0" BackgroundColor="Transparent" ReturnType="Next" ClearButtonVisibility="WhileEditing" />
+                    </Frame>
+                    <Frame Padding="0" CornerRadius="10" BackgroundColor="#FFFFFF" HeightRequest="50" HasShadow="True" BorderColor="#E2E8F0">
+                        <Entry x:Name="Email" Placeholder="Your email" Text="{Binding Email}" Keyboard="Email" FontSize="16" FontFamily="RobotoRegular" Margin="15,0" BackgroundColor="Transparent" ReturnType="Next" ClearButtonVisibility="WhileEditing" />
+                    </Frame>
+                    <Frame Padding="0" CornerRadius="10" BackgroundColor="#FFFFFF" HeightRequest="50" HasShadow="True" BorderColor="#E2E8F0">
+                        <Entry x:Name="FullName" Placeholder="Full name" Text="{Binding FullName}" FontSize="16" FontFamily="RobotoRegular" Margin="15,0" BackgroundColor="Transparent" ReturnType="Next" ClearButtonVisibility="WhileEditing" />
+                    </Frame>
+                    <Grid ColumnDefinitions="*,10,*">
+                        <Frame Grid.Column="0" Padding="15,0" CornerRadius="10" BackgroundColor="#FFFFFF" HeightRequest="50" HasShadow="True" BorderColor="#E2E8F0">
+                            <DatePicker x:Name="Birthday" Date="{Binding Birthday}" FontSize="16" FontFamily="RobotoRegular" TextColor="#2D3748" MinimumDate="1900-01-01" MaximumDate="{Binding CurrentDate}" />
+                        </Frame>
+                        <Frame Grid.Column="2" Padding="15,0" CornerRadius="10" BackgroundColor="#FFFFFF" HeightRequest="50" HasShadow="True" BorderColor="#E2E8F0">
+                            <Picker x:Name="Gender" Title="Select gender" ItemsSource="{Binding GenderOptions}" SelectedItem="{Binding Gender, Mode=TwoWay}" FontSize="16" FontFamily="RobotoRegular" TextColor="#2D3748" />
+                        </Frame>
+                    </Grid>
+                    <Frame Padding="0" CornerRadius="10" BackgroundColor="#FFFFFF" HeightRequest="50" HasShadow="True" BorderColor="#E2E8F0">
+                        <Entry x:Name="Password" Placeholder="Create password (8+ chars)" Text="{Binding Password}" IsPassword="True" FontSize="16" FontFamily="RobotoRegular" Margin="15,0" BackgroundColor="Transparent" ReturnType="Next" ClearButtonVisibility="WhileEditing" />
+                    </Frame>
+                    <Frame Padding="0" CornerRadius="10" BackgroundColor="#FFFFFF" HeightRequest="50" HasShadow="True" BorderColor="#E2E8F0">
+                        <Entry x:Name="ConfirmPassword" Placeholder="Confirm password" Text="{Binding ConfirmPassword}" IsPassword="True" FontSize="16" FontFamily="RobotoRegular" Margin="15,0" BackgroundColor="Transparent" ReturnType="Done" ClearButtonVisibility="WhileEditing" />
+                    </Frame>
+                </VerticalStackLayout>
+                <Label Text="{Binding NotificationMessage}" TextColor="#EF4444" FontSize="14" FontFamily="RobotoMedium" HorizontalOptions="Center" Margin="0,15,0,0" IsVisible="{Binding IsNotificationVisible}" />
+                <Button x:Name="SignUpButton" Text="Sign Up" FontSize="18" FontFamily="RobotoBold" CornerRadius="10" HeightRequest="50" Margin="0,20,0,0" Command="{Binding SignUpCommand}" TextColor="White">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                            <GradientStop Color="#6B48FF" Offset="0.0" />
+                            <GradientStop Color="#00DDEB" Offset="1.0" />
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="8" Margin="0,15,0,0">
+                    <Label Text="Already a member?" FontSize="14" FontFamily="RobotoRegular"/>
+                    <Label Text="Sign In" FontFamily="RobotoBold" FontSize="14">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding SignInCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

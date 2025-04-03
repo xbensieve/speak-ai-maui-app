@@ -15,7 +15,6 @@ namespace SpeakAI
             InitializeComponent();
             _userService = userService;
             _loginService = loginService;
-
             MainPage = new NavigationPage(new LoadingPage(_userService, _loginService));
         }
     }

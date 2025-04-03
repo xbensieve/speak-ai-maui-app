@@ -1,34 +1,123 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="SpeakAI.Views.CoursePage"
-             Title="CoursePage">
-    <VerticalStackLayout Padding="10">
-        <Label 
-        Text="Available Courses"
-        FontSize="24"
-        FontAttributes="Bold"
-        HorizontalOptions="Center"
-        VerticalOptions="Start" />
+             BackgroundColor="#F8F9FA">
+    <Grid>
+        <!-- Loading Indicator -->
+        <ActivityIndicator IsRunning="{Binding IsProcessing}" 
+                           IsVisible="{Binding IsProcessing}"
+                           Color="#3498DB"
+                           WidthRequest="40"
+                           HeightRequest="40"
+                           HorizontalOptions="Center" 
+                           VerticalOptions="Center" />
 
-        <Button Text="Refresh Courses"
-            Command="{Binding LoadCoursesCommand}"
-            BackgroundColor="Blue"
-            TextColor="White"
-            Margin="0,10,0,10"/>
+        <ScrollView IsVisible="{Binding IsProcessing, Converter={StaticResource InverseBooleanConverter}}">
+            <Grid RowDefinitions="Auto, *" ColumnDefinitions="*">
+                <Label Text="Courses"
+                       FontFamily="RobotoBold"
+                       FontSize="25"
+                       TextColor="#2C3E50"
+                       Padding="20,10,20,5"
+                       HorizontalOptions="Center" 
+                       Grid.Row="0" />
 
-        <CollectionView ItemsSource="{Binding Courses}">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame Padding="10" Margin="5" BackgroundColor="LightGray" CornerRadius="10">
-                        <VerticalStackLayout>
-                            <Label Text="{Binding CourseName}" FontSize="20" FontAttributes="Bold" />
-                            <Label Text="{Binding Description}" FontSize="16" TextColor="Gray" />
-                            <Label Text="{Binding MaxPoint, StringFormat='Max Points: {0}'}" FontSize="14" />
-                        </VerticalStackLayout>
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </VerticalStackLayout>
+                <CollectionView ItemsSource="{Binding Courses}" 
+                                Margin="15,0"
+                                Grid.Row="1">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Padding="15"
+                                   Margin="0,0,0,15"
+                                   BackgroundColor="{Binding IsPremium, Converter={StaticResource PremiumColorConverter}}"
+                                   HasShadow="True"
+                                   BorderColor="{Binding IsPremium, Converter={StaticResource PremiumBorderConverter}}"
+                                   CornerRadius="15">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCourseTapped" CommandParameter="{Binding}" />
+                                </Frame.GestureRecognizers>
+                                <Grid ColumnDefinitions="100, *, 40" RowDefinitions="Auto">
+                                    <Frame WidthRequest="100" 
+                                           HeightRequest="100"
+                                           Padding="0"
+                                           CornerRadius="8"
+                                           Grid.Column="0"
+                                           HasShadow="False"
+                                           BackgroundColor="White"
+                                           BorderColor="#D6DBDF"
+                                           HorizontalOptions="Start"
+                                           VerticalOptions="Center">
+                                        <Image Source="course_image_02.webp"
+                                               Aspect="AspectFill"
+                                               HeightRequest="100"
+                                               WidthRequest="100" />
+                                    </Frame>
+
+                                    <!-- Course Details -->
+                                    <VerticalStackLayout Grid.Column="1" 
+                                                         Spacing="5" 
+                                                         Padding="10,0,0,0">
+                                        <Label Text="{Binding CourseName}" 
+                                               FontSize="20"
+                                               FontFamily="Roboto"
+                                               TextColor="{Binding IsPremium, Converter={StaticResource PremiumTextColorConverter}}"
+                                               LineBreakMode="TailTruncation" />
+                                        <Label Text="{Binding Description}" 
+                                               FontSize="15"
+                                               FontFamily="Roboto"
+                                               LineBreakMode="WordWrap"
+                                               MaxLines="2" />
+                                        <Frame CornerRadius="10"
+                                               Padding="6,2"
+                                               BackgroundColor="#FFD700"
+                                               BorderColor="#FFC107"
+                                               HasShadow="False"
+                                               IsVisible="{Binding IsPremium}"
+                                               HorizontalOptions="Start">
+                                            <Label Text="⭐VIP Course"
+                                                   FontSize="Micro"
+                                                   FontFamily="Roboto"
+                                                   FontAttributes="Bold"
+                                                   TextColor="#FFFFFF"
+                                                   HorizontalOptions="Center"
+                                                   VerticalOptions="Center" />
+                                        </Frame>
+                                        <HorizontalStackLayout Spacing="6">
+                                            <Image Source="trophy_icon.png" 
+                                                   WidthRequest="16" 
+                                                   HeightRequest="16" 
+                                                   VerticalOptions="Center" />
+                                            <Label FontSize="Small" 
+                                                   FontFamily="Roboto">
+                                                <Label.FormattedText>
+                                                    <FormattedString>
+                                                        <Span Text="Points: " 
+                                                              FontAttributes="Bold" 
+                                                              TextColor="#F59E0B" />
+                                                        <Span Text="{Binding MaxPoint}" 
+                                                              TextColor="#00BFFF" />
+                                                    </FormattedString>
+                                                </Label.FormattedText>
+                                            </Label>
+                                        </HorizontalStackLayout>
+                                    </VerticalStackLayout>
+
+                                    <!-- Arrow -->
+                                    <Label Text="→" 
+                                           FontSize="Large"
+                                           FontFamily="Roboto"
+                                           TextColor="#2C3E50"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center"
+                                           Grid.Column="2" />
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </Grid>
+        </ScrollView>
+    </Grid>
 </ContentPage>

@@ -5,21 +5,47 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:SpeakAI"
     xmlns:views="clr-namespace:SpeakAI.Views"
-    Title="SpeakAI">
+    Title="SpeakAI"
+    FlyoutBehavior="Disabled">
+    <!-- Cleaner, tab-only UI -->
 
+    <!-- Shell Background Gradient -->
+    <Shell.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+            <!-- Vertical for elegance -->
+            <GradientStop Color="#7C3AED" Offset="0.0" />
+            <!-- Richer purple -->
+            <GradientStop Color="#06B6D4" Offset="1.0" />
+            <!-- Vibrant cyan -->
+        </LinearGradientBrush>
+    </Shell.Background>
+
+    <!-- Shell Resources -->
     <Shell.Resources>
         <Style TargetType="Shell">
-            <Setter Property="Shell.BackgroundColor" Value="#1E1E2E"/>
-            <Setter Property="Shell.TitleColor" Value="White"/>
-            <Setter Property="Shell.ForegroundColor" Value="White"/>
-            <Setter Property="Shell.DisabledColor" Value="#7D7D7D"/>
-            <Setter Property="Shell.UnselectedColor" Value="#B0B0B0"/>
-            <Setter Property="Shell.TabBarBackgroundColor" Value="#2C2C3E"/>
-            <Setter Property="Shell.TabBarForegroundColor" Value="White"/>
-            <Setter Property="Shell.TabBarTitleColor" Value="White"/>
-            <Setter Property="Shell.TabBarUnselectedColor" Value="#A0A0A0"/>
+            <Setter Property="Shell.TitleColor" Value="White" />
+            <Setter Property="Shell.DisabledColor" Value="#B0B0B0" />
+            <Setter Property="Shell.UnselectedColor" Value="#E5E7EB" />
+            <!-- Softer gray -->
+            <Setter Property="Shell.TabBarBackgroundColor" Value="#FFFFFF" />
+            <Setter Property="Shell.TabBarForegroundColor" Value="#7C3AED" />
+            <!-- Matches gradient -->
+            <Setter Property="Shell.TabBarTitleColor" Value="#7C3AED" />
+            <Setter Property="Shell.TabBarUnselectedColor" Value="#9CA3AF" />
+            <!-- Modern gray -->
+        </Style>
+        <Style TargetType="TabBar">
+            <!-- No HeightRequest/Padding here; rely on defaults or content styling -->
+        </Style>
+        <Style TargetType="Label">
+            <Setter Property="FontFamily" Value="InterBold" />
+            <Setter Property="FontSize" Value="18" />
+            <!-- Larger for modern feel -->
+            <Setter Property="TextColor" Value="White" />
         </Style>
     </Shell.Resources>
+
+    <!-- Tab Bar -->
     <TabBar>
         <Tab Title="Home" Icon="home_icon.png">
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}" />
@@ -31,7 +57,7 @@
             <ShellContent ContentTemplate="{DataTemplate views:StudyPage}" />
         </Tab>
         <Tab Title="AI Tutor" Icon="ai_icon.png">
-            <ShellContent ContentTemplate="{DataTemplate views:AITutorPage}" />
+            <ShellContent ContentTemplate="{DataTemplate views:StartAIPage}" />
         </Tab>
         <Tab Title="Profile" Icon="profile_icon.png">
             <ShellContent ContentTemplate="{DataTemplate views:ProfilePage}" />

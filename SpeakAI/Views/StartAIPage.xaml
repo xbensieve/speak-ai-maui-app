@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakAI.Views.StartAIPage"
+             Title="Select a Topic"
+             BackgroundColor="#F5F6F5">
+    <ScrollView>
+        <VerticalStackLayout Spacing="15" 
+                            Padding="20,15,20,20"
+                            MinimumWidthRequest="300">
+            <!-- Topics List -->
+            <CollectionView ItemsSource="{Binding Topics}" 
+                           SelectionMode="None"
+                           MinimumHeightRequest="200">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Padding="15" 
+                              Margin="0,5,0,5" 
+                              CornerRadius="12"
+                              BorderColor="#2C82C9"
+                              BackgroundColor="White"
+                              MinimumWidthRequest="280"
+                              HasShadow="True">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnTopicTapped" 
+                                                    CommandParameter="{Binding}" />
+                            </Frame.GestureRecognizers>
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="{Binding Name}" 
+                                      FontSize="Medium" 
+                                      FontFamily="OpenSans-Regular, Arial, sans-serif"
+                                      FontAttributes="Bold" 
+                                      TextColor="#2C82C9"
+                                      LineBreakMode="WordWrap" />
+                                <Label Text="{Binding Description}" 
+                                      FontSize="Small"
+                                      FontFamily="OpenSans-Regular, Arial, sans-serif"
+                                      TextColor="#666666"
+                                      LineBreakMode="WordWrap"
+                                      MaxLines="3" />
+                            </VerticalStackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Selected Topic Display -->
+            <Frame BackgroundColor="#E8ECEF"
+                  CornerRadius="10"
+                  Padding="15"
+                  Margin="0,10,0,0">
+                <VerticalStackLayout Spacing="15">
+                    <Label x:Name="SelectedTopicLabel" 
+                          Text="Select a topic to see details here."
+                          FontSize="Medium"
+                          FontFamily="OpenSans-Regular, Arial, sans-serif"
+                          FontAttributes="Bold"
+                          TextColor="#333333"
+                          HorizontalTextAlignment="Center"
+                          LineBreakMode="WordWrap" />
+                    <Button x:Name="StartButton"
+                           Text="Start"
+                           FontSize="Medium"
+                           FontFamily="OpenSans-Regular, Arial, sans-serif"
+                           BackgroundColor="#2C82C9"
+                           TextColor="White"
+                           CornerRadius="8"
+                           Padding="15,10"
+                           WidthRequest="200"
+                           MinimumWidthRequest="150"
+                           IsVisible="False"
+                           HorizontalOptions="Center" 
+                           Clicked="OnStartButtonClicked" />
+                </VerticalStackLayout>
+            </Frame>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

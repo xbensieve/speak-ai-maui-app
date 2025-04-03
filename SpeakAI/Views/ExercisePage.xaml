@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakAI.Views.ExercisePage"
+             BackgroundColor="White"
+             Title="Learning">
+
+    <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+
+        <ScrollView>
+            <Grid>
+                <ActivityIndicator IsRunning="{Binding IsLoading}" 
+                   IsVisible="{Binding IsLoading}" 
+                   HorizontalOptions="Center" 
+                   VerticalOptions="Center" />
+                <StackLayout Padding="20" Spacing="5" IsVisible="{Binding IsNotLoading}">
+
+                    <StackLayout Padding="10">
+                        <Label Text="{Binding Course.CourseName}" 
+                           FontSize="30" 
+                           FontAttributes="Bold" 
+                           FontFamily="Roboto"
+                           TextColor="Black"
+                           HorizontalOptions="Start"
+                           Margin="0,0,0,5"/>
+
+                        <Label Text="{Binding Course.Description}" 
+                           FontSize="18" 
+                           TextColor="Gray"
+                           FontFamily="Roboto"
+                           LineBreakMode="WordWrap"
+                           HorizontalOptions="Start"
+                           Margin="0,0,0,15"/>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="⭐ Max Points: " 
+                               FontFamily="Roboto"
+                               FontSize="16" 
+                               FontAttributes="Bold"
+                               TextColor="#f39c12"/>
+                            <Label Text="{Binding Course.MaxPoint}" 
+                               FontSize="16" 
+                               TextColor="#2ecc71"/>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <VerticalStackLayout Padding="20" Spacing="20">
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Label Text="Progress" FontSize="14" TextColor="#2ecc71" VerticalOptions="Center" />
+                            <ProgressBar Progress="{Binding EnrolledCourse.ProgressPoints}" 
+                                     HeightRequest="12" 
+                                     HorizontalOptions="FillAndExpand"
+                                     BackgroundColor="#ecf0f1" ProgressColor="#2ecc71" />
+                            <Label Text="{Binding EnrolledCourse.ProgressPoints, StringFormat='{0}'}" 
+                               FontSize="14" 
+                               FontFamily="Roboto"
+                               TextColor="#2ecc71" 
+                               VerticalOptions="Center" />
+                        </StackLayout>
+                        <CollectionView ItemsSource="{Binding Topics}" 
+                                    VerticalOptions="FillAndExpand" 
+                                    SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Frame Padding="0" Margin="5" CornerRadius="12" HasShadow="True" BackgroundColor="White">
+                                       
+                                        <Frame CornerRadius="12" Padding="0" HasShadow="True" BackgroundColor="White">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="OnExerciseTapped"/>
+                                            </Frame.GestureRecognizers>
+                                            <Grid ColumnDefinitions="100,*,Auto" Padding="10">
+                                                <!-- Rounded Image with Space -->
+                                                <Frame CornerRadius="45" Padding="0" HasShadow="False" BackgroundColor="Transparent" Grid.Column="0" Margin="0,0,10,0">
+                                                    <Image Source="Business.png" WidthRequest="90" HeightRequest="90" Aspect="AspectFill">
+                                                        <Image.Clip>
+                                                            <EllipseGeometry Center="45,45" RadiusX="45" RadiusY="45"/>
+                                                        </Image.Clip>
+                                                    </Image>
+                                                </Frame>
+
+                                                <!-- Text Content -->
+                                                <StackLayout Spacing="8" Grid.Column="1">
+                                                    <Label Text="{Binding TopicName}" FontSize="18" FontAttributes="Bold" TextColor="#222" FontFamily="Roboto"/>
+                                                    <Label Text="{Binding MaxPoint, StringFormat='Max: {0} points'}" 
+                   FontSize="14" 
+                   TextColor="#16a085" 
+                   FontFamily="Roboto"
+                   VerticalOptions="Center" />
+                                                    <Label Text="{Binding ProgressPoints, StringFormat='Progress: {0}'}" 
+                   FontSize="14" 
+                   TextColor="#e74c3c" 
+                   FontFamily="Roboto"
+                   VerticalOptions="Center" />
+                                                    <ProgressBar Progress="{Binding ProgressPoints}" 
+                         HeightRequest="10" 
+                         HorizontalOptions="FillAndExpand"
+                         BackgroundColor="#ecf0f1" ProgressColor="#3498db" />
+                                                </StackLayout>
+                                            </Grid>
+                                        </Frame>
+
+                                    </Frame>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </VerticalStackLayout>
+                </StackLayout>
+            </Grid>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="SpeakAI.Views.ConfirmEmailPage"
+             Title="ConfirmEmailPage">
+
+    <VerticalStackLayout Padding="30"
+                         Spacing="20"
+                         HorizontalOptions="Fill">
+
+        <!-- Instruction Label -->
+        <Label Text="Enter the OTP sent to your email"
+               FontFamily="Roboto"
+               FontSize="20"
+               FontAttributes="Bold"
+               HorizontalOptions="Center" />
+
+        <!-- OTP Input Field -->
+        <Entry x:Name="OtpEntry"
+               Text="{Binding EnteredOtp}"
+               Placeholder="Enter OTP"
+               Keyboard="Numeric"
+               FontFamily="Roboto"
+               FontSize="18"
+               HorizontalOptions="Fill" />
+
+        <!-- Verification Button -->
+        <Button Text="Verify OTP"
+                Command="{Binding VerifyOtpCommand}"
+                FontFamily="Roboto"
+                BackgroundColor="#10B981"
+                TextColor="White"
+                FontSize="16"
+                FontAttributes="Bold"
+                Padding="14"
+                CornerRadius="12"
+                HorizontalOptions="Fill" />
+    </VerticalStackLayout>
+</ContentPage>

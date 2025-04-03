@@ -5,9 +5,9 @@ namespace SpeakAI;
 
 public partial class SignUpPage : ContentPage
 {
-	public SignUpPage(IUserService userService)
+	public SignUpPage(IUserService userService, ILoginService loginService)
 	{
 		InitializeComponent();
-        BindingContext = new SignUpViewModel(userService);
+        BindingContext = new SignUpViewModel(userService, loginService);
     }
 }

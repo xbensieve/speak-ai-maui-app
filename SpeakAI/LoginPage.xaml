@@ -2,69 +2,172 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SpeakAI.LoginPage"
-             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             BackgroundColor="#EEF0F7"
-             Title="Login">
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="#F5F7FA">
     <ScrollView>
-        <VerticalStackLayout Padding="30" Spacing="20" VerticalOptions="Center">
-            <Image Source="e_learning_logo.svg" HeightRequest="200" WidthRequest="400" Aspect="AspectFit" HorizontalOptions="Center"/>
-            <Label Text="For free, join now and start learning"
-                   FontSize="20"
-                   FontAttributes="Bold"
-                   TextColor="Black"
-                   HorizontalOptions="Center"
-                   HorizontalTextAlignment="Center"/>
-            <Entry x:Name="Username" Text="{Binding Username}" Placeholder="Username" FontSize="14" HeightRequest="50" PlaceholderColor="Gray" BackgroundColor="#F5F5F5"  Margin="5,0"/>
-            <Entry x:Name="Password" Text="{Binding Password}" Placeholder="Password" IsPassword="True" FontSize="14" PlaceholderColor="Gray" BackgroundColor="#F5F5F5" HeightRequest="50" Margin="5,0"/>
-            <Label Text="Forgot Password?"
-                   TextColor="MediumVioletRed"
+        <Grid Padding="20,40,20,20"
+              RowSpacing="25"
+              VerticalOptions="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Text="Welcome to SpeakUp!"
+                   FontFamily="RobotoBold"
+                   FontSize="28"
+                   HorizontalOptions="Center"/>
+            <VerticalStackLayout Grid.Row="1" Spacing="15">
+                <Button Text="Sign up with Apple"
+                        BackgroundColor="#FFFFFF"
+                        TextColor="#1F2937"
+                        ImageSource="apple_icon.png"
+                        CornerRadius="12"
+                        Padding="15"
+                        HeightRequest="50"
+                        HorizontalOptions="Fill"
+                        FontFamily="RobotoMedium">
+                    <Button.Shadow>
+                        <Shadow Brush="#000000" Offset="0,2" Radius="4" Opacity="0.1"/>
+                    </Button.Shadow>
+                </Button>
+                <Button Text="Sign up with Google"
+                        BackgroundColor="#FFFFFF"
+                        TextColor="#1F2937"
+                        ImageSource="google_icon.png"
+                        CornerRadius="12"
+                        Padding="15"
+                        HeightRequest="50"
+                        HorizontalOptions="Fill"
+                        FontFamily="RobotoMedium">
+                    <Button.Shadow>
+                        <Shadow Brush="#000000" Offset="0,2" Radius="4" Opacity="0.1"/>
+                    </Button.Shadow>
+                </Button>
+            </VerticalStackLayout>
+
+            <Grid Grid.Row="2" ColumnSpacing="10" Margin="0,10">
+                <BoxView HeightRequest="1"
+                        BackgroundColor="#D1D5DB"
+                        VerticalOptions="Center"
+                        Grid.Column="0"/>
+                <Label Text="OR"
+                       FontSize="14"
+                       FontFamily="RobotoRegular"
+                       TextColor="#6B7280"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"
+                       Grid.Column="1"/>
+                <BoxView HeightRequest="1"
+                        BackgroundColor="#D1D5DB"
+                        VerticalOptions="Center"
+                        Grid.Column="2"/>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+
+            <!-- Input Fields -->
+            <Frame Grid.Row="3" Padding="0"
+                   CornerRadius="10"
+                   BackgroundColor="#FFFFFF"
+                   HeightRequest="50"
+                   HasShadow="True"
+                   BorderColor="#E2E8F0">
+                <Entry x:Name="Username"
+                       Text="{Binding Username}"
+                       Placeholder="Username"
+                       FontSize="16"
+                       FontFamily="RobotoRegular"
+                       TextColor="#1F2937"
+                       PlaceholderColor="#6B7280"
+                       Margin="15,0"
+                       BackgroundColor="Transparent"
+                       ReturnType="Next"
+                       ClearButtonVisibility="WhileEditing"/>
+            </Frame>
+
+            <Frame Grid.Row="4" Padding="0"
+                   CornerRadius="10"
+                   BackgroundColor="#FFFFFF"
+                   HeightRequest="50"
+                   HasShadow="True"
+                   BorderColor="#E2E8F0">
+                <Entry x:Name="Password"
+                       Text="{Binding Password}"
+                       Placeholder="Password"
+                       IsPassword="True"
+                       FontSize="16"
+                       FontFamily="RobotoRegular"
+                       TextColor="#1F2937"
+                       PlaceholderColor="#6B7280"
+                       Margin="15,0"
+                       BackgroundColor="Transparent"
+                       ReturnType="Done"
+                       ClearButtonVisibility="WhileEditing"/>
+            </Frame>
+
+            <!-- Forgot Password -->
+            <Label Grid.Row="5" Text="Forgot Password?"
+                   FontFamily="RobotoMedium"
                    FontSize="14"
-                   Margin="0, 5"
-                   HorizontalOptions="End">
+                   HorizontalOptions="End"
+                   Margin="0,5,0,0">
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ForgotPasswordCommand}"/>
                 </Label.GestureRecognizers>
             </Label>
-            <Label Text="{Binding NotificationMessage}"
-                TextColor="Red"
-                FontSize="16"
-                HorizontalOptions="Center"/>
-            <Button Text="Login"
-                TextColor="White"
-                FontSize="18"
-                FontAttributes="Bold"
-                CornerRadius="30"
-                HeightRequest="50"
-                BackgroundColor="#4B0082"
-                IsEnabled="{Binding IsNotProcessing}"
-                Command="{Binding SignInCommand}">
-            </Button>
-            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Padding="10,5">
-                <BoxView HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="FillAndExpand"/>
-                <Label Text="  Or  " TextColor="Gray"/>
-                <BoxView HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="FillAndExpand"/>
-            </StackLayout>
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="20">
-                <ImageButton Source="apple_icon.png" HeightRequest="50" WidthRequest="50"
-                             CornerRadius="25" BackgroundColor="White" />
-                <ImageButton Source="google_icon.png" HeightRequest="50" WidthRequest="50"
-                             CornerRadius="25" BackgroundColor="White" />
-            </HorizontalStackLayout>
 
-            <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
-                <Label Text="Don't have an account?" TextColor="DarkGray" FontSize="14"/>
-                <Label Text="Sign Up" TextColor="MediumPurple" FontSize="14" FontAttributes="Bold">
+            <Button Grid.Row="6"
+                x:Name="LoginButton"
+                Text="Login"
+                    FontSize="18"
+                    FontFamily="RobotoBold"
+                    CornerRadius="12"
+                    HeightRequest="55"
+                    Padding="15,10"
+                    BackgroundColor="#3B82F6"
+                    HorizontalOptions="Fill"
+                    IsEnabled="{Binding IsNotProcessing}"
+                    Command="{Binding SignInCommand}">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                        <GradientStop Color="#6B48FF" Offset="0.0" />
+                        <GradientStop Color="#00DDEB" Offset="1.0" />
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+
+            <Label Grid.Row="7" Text="By logging in, you agree to our Terms of Service and Privacy Policy"
+                   FontSize="12"
+                   FontFamily="RobotoRegular"
+                   TextColor="#6B7280"
+                   HorizontalOptions="Center"
+                   HorizontalTextAlignment="Center"
+                   Margin="0,10,0,0"/>
+
+            <HorizontalStackLayout Grid.Row="8" HorizontalOptions="Center"
+                                 Spacing="5">
+                <Label Text="Don't have an account?"
+                       FontSize="14"
+                       FontFamily="RobotoRegular"
+                       TextColor="#1F2937"/>
+                <Label Text="Sign Up"
+                       FontFamily="RobotoBold"
+                       FontSize="14">
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding SignUpCommand}"/>
                     </Label.GestureRecognizers>
                 </Label>
             </HorizontalStackLayout>
-
-            <Label Text="By signing up, you agree to the Terms of Service and Privacy Policy, including Cookie Use."
-                FontSize="12"
-                TextColor="Gray"
-                HorizontalTextAlignment="Center"
-                Margin="10,20"/>
-        </VerticalStackLayout>
+        </Grid>
     </ScrollView>
 </ContentPage>

@@ -10,7 +10,7 @@ namespace SpeakAI.Services.Models
     public class LoginResultModel
     {
         [JsonPropertyName("user")]
-        public UserModel User { get; set; }
+        public User User { get; set; }
 
         [JsonPropertyName("accessToken")]
         public string AccessToken { get; set; }

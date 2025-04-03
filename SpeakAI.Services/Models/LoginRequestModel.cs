@@ -8,7 +8,7 @@ namespace SpeakAI.Services.Models
 {
     public class LoginRequestModel
     {
-        public string username { get; set; }
+        public string userName { get; set; }
         public string password { get; set; }
     }
 }

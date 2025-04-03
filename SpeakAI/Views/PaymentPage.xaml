@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="SpeakAI.Views.PaymentPage"
+    BackgroundColor="#F5F7FA"
+    Title="Upgrade to Premium">
+    <ScrollView>
+        <VerticalStackLayout Padding="25" Spacing="25">
+            <Frame BackgroundColor="#FFD700" 
+                Padding="20"
+                   CornerRadius="20"
+                   HasShadow="True"
+                   BorderColor="#FFC107"
+                HorizontalOptions="Fill">
+                <Label Text="Unlock Premium Benefits"
+                       FontSize="26" 
+                    FontFamily="RobotoBold"
+                    FontAttributes="Bold"
+                       TextColor="#1F2937"
+                    HorizontalOptions="Center"
+                       VerticalOptions="Center" />
+            </Frame>
+
+            <!-- Benefits List -->
+            <VerticalStackLayout Spacing="18">
+                <!-- More spacing -->
+                <Label Text="🌟 Access Exclusive Courses"
+                       FontSize="20" 
+                    FontFamily="Roboto"
+                       TextColor="#1F2937"
+                    LineBreakMode="WordWrap" />
+                    <Label Text="🚀 AI-Powered Personalized Learning"
+                       FontSize="20"
+                       FontFamily="Roboto"
+                       TextColor="#1F2937"
+                       LineBreakMode="WordWrap" />
+                    <Label Text="🎧 Offline Access to Your Courses"
+                       FontSize="20"
+                       FontFamily="Roboto"
+                       TextColor="#1F2937"
+                       LineBreakMode="WordWrap" />
+                    <Label Text="📝 Priority Support and New Content"
+                       FontSize="20"
+                       FontFamily="Roboto"
+                       TextColor="#1F2937"
+                       LineBreakMode="WordWrap" />
+                    <Label Text="💰 30-Day Money-Back Guarantee"
+                       FontSize="20"
+                       FontFamily="Roboto"
+                       TextColor="#1F2937"
+                       LineBreakMode="WordWrap" />
+            </VerticalStackLayout>
+
+            <!-- Pricing Frame -->
+            <Frame BackgroundColor="White"
+                   Padding="25" 
+                CornerRadius="15"
+                HasShadow="True"
+                   BorderColor="#D1D5DB"
+                HorizontalOptions="Fill">
+                <VerticalStackLayout Spacing="10" 
+                    HorizontalOptions="Center">
+                    <Label Text="Upgrade to Premium Today!"
+                           FontSize="24" 
+                        FontFamily="RobotoBold"
+                           FontAttributes="Bold"
+                           TextColor="#1F2937"
+                           HorizontalOptions="Center" />
+                        <Label Text="100,000 VND / month"
+                           FontSize="22" 
+                            FontFamily="RobotoBold"
+                           FontAttributes="Bold"
+                           TextColor="#16A34A"
+                            HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Frame>
+            <Entry Placeholder="Enter Voucher Code (optional)"
+                   Text="{Binding VoucherCode}"
+                   FontFamily="Roboto"
+                   FontSize="18"
+                   TextColor="#1F2937"
+                   PlaceholderColor="#6B7280"
+                   HorizontalOptions="Fill"
+                   Keyboard="Default" />
+            <Button Text="Pay Now And Unlock Premium"
+                    BackgroundColor="#16A34A" 
+                TextColor="White"
+                    Padding="15,12"
+                FontSize="20"
+                FontFamily="RobotoBold"
+                    CornerRadius="12"
+                    Command="{Binding PayNowCommand}"
+                    HorizontalOptions="Fill"
+                    HeightRequest="60" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

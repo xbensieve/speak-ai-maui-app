@@ -2,79 +2,364 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="SpeakAI.MainPage"
-             BackgroundColor="#EEF0F7">
-
+             BackgroundColor="#F5F7FA">
     <ScrollView>
-        <VerticalStackLayout Padding="20" Spacing="5">
-            <Grid RowDefinitions="Auto, Auto, Auto, Auto" ColumnDefinitions="Auto, *" RowSpacing="10" ColumnSpacing="10">
-                <Image Source="user_icon.png" WidthRequest="50" HeightRequest="50"
-                        Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" />
-                <Label Text="Hello, Buddy 👋" FontSize="24" FontAttributes="Bold" 
-                        TextColor="Black" VerticalTextAlignment="Center"
-                        Grid.Row="0" Grid.Column="1" />
-                <Image Source="notification_icon.png" WidthRequest="30" HeightRequest="30"
-                        Grid.Row="0" Grid.Column="1" HorizontalOptions="End"/>
-                <Frame Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
-                        Padding="3" CornerRadius="15" BackgroundColor="#F0F0F0"
-                        HasShadow="True">
-                    <SearchBar 
-                        Placeholder="What would you like to learn today?"
-                        FontSize="16"
-                        BackgroundColor="Transparent"
-                        PlaceholderColor="Gray"
-                        HorizontalOptions="Fill" />
-                </Frame>
+        <VerticalStackLayout Padding="20,30,20,20" Spacing="25">
+            <!-- Greeting -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label x:Name="greetingLabel"
+                       Text="Hi, Maya 👋"
+                       FontSize="26"
+                       FontFamily="RobotoBold"
+                       TextColor="#1F2937"
+                       Grid.Column="0"/>
+                <Image Source="chat_icon.png"
+                       HeightRequest="30"
+                       HorizontalOptions="End"
+                       Grid.Column="1"/>
             </Grid>
-            <Label Text="Continue Learning 📚" FontSize="20" FontAttributes="Bold" TextColor="Black" Margin="10, 25" />
-            <HorizontalStackLayout Spacing="15">
-                <Frame BackgroundColor="#4A90E2" Padding="15" CornerRadius="15" WidthRequest="160">
-                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                        <Label Text="15/20" FontSize="18" TextColor="White" />
-                        <Label Text="For beginner" FontSize="16" TextColor="White" />
-                        <Label Text="20 Exercises - Level: A1" FontSize="12" TextColor="White" />
-                    </VerticalStackLayout>
-                </Frame>
-                <Frame BackgroundColor="#F5A623" Padding="15" CornerRadius="15" WidthRequest="160">
-                    <VerticalStackLayout Spacing="5" HorizontalOptions="Center">
-                        <Label Text="10/30" FontSize="18" TextColor="White" />
-                        <Label Text="For Advanced" FontSize="16" TextColor="White" />
-                        <Label Text="30 Exercises - Level: C1" FontSize="12" TextColor="White" />
-                    </VerticalStackLayout>
-                </Frame>
-            </HorizontalStackLayout>
-            <Label Text="Featured Courses" FontSize="20" FontAttributes="Bold" Margin="10, 25" />
-            <Frame BackgroundColor="#E8F5E9" Padding="15" CornerRadius="15" Margin="10, 12">
-                <HorizontalStackLayout>
-                    <Image Source="grammar_icon.png" WidthRequest="50" HeightRequest="50" />
-                    <VerticalStackLayout>
-                        <Label Text="Grammar Quiz" FontSize="16" />
-                        <Label Text="Business English" FontSize="14" TextColor="Gray" />
-                        <Label Text="✔ 100 points" FontSize="12" TextColor="Gray" />
-                    </VerticalStackLayout>
-                </HorizontalStackLayout>
+            <Label Text="Let's start learning!"
+                   FontSize="18"
+                   FontFamily="RobotoMedium"
+                   TextColor="#1F2937"/>
+
+            <Frame BackgroundColor="#FFFFFF"
+                   CornerRadius="12"
+                   Padding="15"
+                   HasShadow="True"
+                   BorderColor="#E2E8F0">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="How many hours you studied this week"
+                           FontFamily="RobotoRegular"
+                           FontSize="16"
+                           TextColor="#1F2937"/>
+                    <ProgressBar Progress="0.5"
+                                HeightRequest="20"
+                                ProgressColor="#3B82F6"/>
+                    <Button Text="Let's Start"
+                            BackgroundColor="#3B82F6"
+                            FontFamily="RobotoMedium"
+                            TextColor="#FFFFFF"
+                            Clicked="OnCounterClicked"
+                            CornerRadius="8"
+                            HeightRequest="40"
+                            Padding="10"/>
+                </VerticalStackLayout>
             </Frame>
 
-            <Frame BackgroundColor="#FFF3E0" Padding="15" CornerRadius="15" Margin="10, 12">
-                <HorizontalStackLayout>
-                    <Image Source="talk_icon.png" WidthRequest="50" HeightRequest="50" />
-                    <VerticalStackLayout>
-                        <Label Text="Pronunciation Improvement" FontSize="16" />
-                        <Label Text="Improve your pronunciation" 
-                               FontSize="12" TextColor="Gray"/>
-                        <Label Text="✔ 100 points" FontSize="12" TextColor="Gray" />
-                    </VerticalStackLayout>
-                </HorizontalStackLayout>
+            <Frame BackgroundColor="#F97316"
+                   CornerRadius="10"
+                   Padding="15">
+                <Label Text="Get 50% off SpeakUp Premium and unlock new languages!"
+                       FontFamily="RobotoRegular"
+                       TextColor="#FFFFFF"
+                       FontSize="14"
+                       HorizontalTextAlignment="Center"/>
             </Frame>
-            <Frame BackgroundColor="AliceBlue" Padding="15" CornerRadius="15" Margin="10, 12">
-                <HorizontalStackLayout>
-                    <Image Source="vocab_icon.png" WidthRequest="50" HeightRequest="50" />
+
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Courses"
+                       FontSize="20"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoBold"
+                       Grid.Column="0"/>
+                <Button Text="See all →"
+                        BackgroundColor="Transparent"
+                        FontFamily="RobotoMedium"
+                        FontSize="14"
+                        Grid.Column="1"/>
+            </Grid>
+            <ScrollView Orientation="Horizontal">
+                <HorizontalStackLayout Spacing="20" Padding="15,10,15,10">
+                    <!-- Travel Card -->
+                    <Frame CornerRadius="20"
+               WidthRequest="120"
+               HeightRequest="180"
+               Padding="15"
+               HasShadow="True"
+               Margin="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TravelTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                            <Image Source="travel.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       Aspect="AspectFit" />
+                            <Label Text="Travel"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Practice Card -->
+                    <Frame CornerRadius="20"
+               WidthRequest="120"
+               HeightRequest="180"
+               Padding="15"
+               HasShadow="True"
+               Margin="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding PracticeTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                            <Image Source="practice.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       Aspect="AspectFit" />
+                            <Label Text="Practice"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Business Card -->
+                    <Frame CornerRadius="20"
+               WidthRequest="120"
+               HeightRequest="180"
+               Padding="15"
+               HasShadow="True"
+               Margin="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BusinessTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                            <Image Source="business.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       Aspect="AspectFit" />
+                            <Label Text="Business"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Academic Card -->
+                    <Frame CornerRadius="20"
+               WidthRequest="120"
+               HeightRequest="180"
+               Padding="15"
+               HasShadow="True"
+               Margin="0">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding AcademicTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center">
+                            <Image Source="academic.png"
+                       WidthRequest="90"
+                       HeightRequest="90"
+                       Aspect="AspectFit" />
+                            <Label Text="Academic"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- User Experience Video -->
+            <VerticalStackLayout Spacing="10">
+                <Label Text="User Experience Video"
+                       FontSize="20"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoBold"/>
+                <Frame BackgroundColor="#FFFFFF"
+                       CornerRadius="10"
+                       Padding="0"
+                       HasShadow="True"
+                       BorderColor="#E2E8F0">
+                    <Grid>
+                        <Image Source="practice.png"
+                               HeightRequest="180"
+                               Aspect="AspectFill"/>
+                        <Image Source="play_icon.png"
+                               WidthRequest="50"
+                               HeightRequest="50"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Grid>
+                </Frame>
+                <HorizontalStackLayout Spacing="10">
+                    <Image Source="profile_icon.png"
+                           WidthRequest="40"
+                           HeightRequest="40"/>
                     <VerticalStackLayout>
-                        <Label Text="Widen vocabs" FontSize="16" />
-                        <Label Text="Learn new words" 
-                   FontSize="12" TextColor="Gray"/>
-                        <Label Text="✔ 100 points" FontSize="12" TextColor="Gray" />
+                        <Label Text="Amanda Roch - User Experience Insights"
+                               TextColor="#1F2937"
+                               FontFamily="RobotoMedium"
+                               FontSize="16"/>
+                        <Label Text="1.2M views · 2 days ago"
+                               FontSize="14"
+                               TextColor="#6B7280"
+                               FontFamily="RobotoRegular"/>
                     </VerticalStackLayout>
                 </HorizontalStackLayout>
+            </VerticalStackLayout>
+
+            <!-- Recent Learning Section -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Text="Recent Learning"
+                       FontSize="20"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoBold"
+                       Grid.Column="0"/>
+                <Button Text="See all →"
+                        BackgroundColor="Transparent"
+                        FontFamily="RobotoMedium"
+                        TextColor="#3B82F6"
+                        FontSize="14"
+                        Grid.Column="1"/>
+            </Grid>
+            <ScrollView Orientation="Horizontal">
+                <HorizontalStackLayout Spacing="20" Padding="15,10,15,10">
+                    <!-- Tourist Trip Card -->
+                    <Frame CornerRadius="15"
+               WidthRequest="160"
+               HeightRequest="180"
+               BackgroundColor="#FFFFFF"
+               BorderColor="#E2E8F0"
+               HasShadow="True"
+               Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding TouristTripTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="business.png"
+                       HeightRequest="110"
+                       WidthRequest="140"
+                       Aspect="AspectFill"
+                       HorizontalOptions="Center" />
+                            <Label Text="Tourist Trip"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Hang Out with Friends Card -->
+                    <Frame CornerRadius="15"
+               WidthRequest="160"
+               HeightRequest="180"
+               BackgroundColor="#FFFFFF"
+               BorderColor="#E2E8F0"
+               HasShadow="True"
+               Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding HangOutTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="academic.png"
+                       HeightRequest="110"
+                       WidthRequest="140"
+                       Aspect="AspectFill"
+                       HorizontalOptions="Center" />
+                            <Label Text="Hang Out with Friends"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Business English Card -->
+                    <Frame CornerRadius="15"
+               WidthRequest="160"
+               HeightRequest="180"
+               BackgroundColor="#FFFFFF"
+               BorderColor="#E2E8F0"
+               HasShadow="True"
+               Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding BusinessEnglishTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="practice.png"
+                       HeightRequest="110"
+                       WidthRequest="140"
+                       Aspect="AspectFill"
+                       HorizontalOptions="Center" />
+                            <Label Text="Business English"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Daily Conversations Card -->
+                    <Frame CornerRadius="15"
+               WidthRequest="160"
+               HeightRequest="180"
+               BackgroundColor="#FFFFFF"
+               BorderColor="#E2E8F0"
+               HasShadow="True"
+               Padding="10">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding DailyConversationsTappedCommand}" />
+                        </Frame.GestureRecognizers>
+                        <VerticalStackLayout Spacing="10">
+                            <Image Source="travel.png"
+                       HeightRequest="110"
+                       WidthRequest="140"
+                       Aspect="AspectFill"
+                       HorizontalOptions="Center" />
+                            <Label Text="Daily Conversations"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"
+                       LineBreakMode="WordWrap"
+                       MaxLines="2" />
+                        </VerticalStackLayout>
+                    </Frame>
+                </HorizontalStackLayout>
+            </ScrollView>
+
+            <!-- Suggested for You -->
+            <Label Text="Suggested for You"
+                   FontSize="20"
+                   TextColor="#1F2937"
+                   FontFamily="RobotoBold"/>
+            <Frame CornerRadius="10"
+                   BackgroundColor="#FFFFFF"
+                   Padding="15"
+                   HasShadow="True"
+                   BorderColor="#E2E8F0">
+                <Label Text="How to Conversation"
+                       FontSize="16"
+                       TextColor="#1F2937"
+                       FontFamily="RobotoRegular"/>
             </Frame>
         </VerticalStackLayout>
     </ScrollView>
