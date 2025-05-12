@@ -31,7 +31,7 @@ SpeakAI is a .NET MAUI application designed to provide an interactive learning e
 ### Installation
 
 1. Clone the repository:
-    git clone https://github.com/xbensieve/SpeakAI-MobileApp.git
+    git clone https://github.com/xbensieve/english-ai-maui-app.git
 2. Open the solution in Visual Studio 2022.
 
 3. Restore the NuGet packages:
