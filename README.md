@@ -1,70 +1,108 @@
-# SpeakAI
+# Speak-AI
 
-SpeakAI is a .NET MAUI application designed to provide an interactive learning experience. The application includes various features such as course management, exercise handling, and user profile management.
+**Speak-AI** is a cross-platform mobile application built with .NET MAUI that provides an interactive and engaging English learning experience. Leveraging real-time communication, Firebase integration, and modern UI design, Speak-AI delivers a robust and user-friendly platform for both Android and iOS.
 
-## Features
+---
 
-- **Course Management**: Browse and enroll in various courses.
-- **Exercise Handling**: Complete exercises and submit answers.
-- **User Profile Management**: Manage user profiles and settings.
-- **Speech to Text**: Utilize speech-to-text functionality for interactive learning.
-- **Firebase Integration**: Includes Firebase for analytics and crash reporting.
+## 📦 Technical Stack
 
-## Technologies Used
+### Frameworks and Platforms
+- **.NET 8**: Modern and high-performance development platform.
+- **.NET MAUI**: Unified project structure for Android and iOS.
 
-- **.NET MAUI**: Cross-platform framework for building native mobile and desktop apps with C# and XAML.
-- **C# 12.0**: Latest version of the C# programming language.
-- **.NET 8**: Latest version of the .NET framework.
-- **CommunityToolkit.Maui**: Provides additional controls and features for .NET MAUI.
-- **Newtonsoft.Json**: Popular high-performance JSON framework for .NET.
-- **Firebase**: Used for analytics and crash reporting.
-- **UraniumUI**: Provides additional UI components for .NET MAUI.
+### Libraries and Packages
+- `CommunityToolkit.Maui`: Essential UI components.
+- `CommunityToolkit.Mvvm`: Simplifies MVVM architecture.
+- `Microsoft.AspNetCore.SignalR.Client`: Real-time communication.
+- `Microsoft.Extensions.Http`: HTTP client and dependency injection support.
+- `Newtonsoft.Json`: JSON serialization/deserialization.
+- `UraniumUI.Material`: Material Design components.
+- `Plugin.Firebase`: Firebase services integration.
+- `Plugin.Firebase.Crashlytics`: Crash reporting support.
 
-## Getting Started
+---
+
+## 🗂️ Project Structure
+
+### 1. `SpeakAI` (.NET MAUI Project)
+Contains UI and platform-specific configuration.
+
+**Key Folders:**
+- `Resources/`
+  - `AppIcon/`: Application icons.
+  - `Splash/`: Splash screen assets (`splash.svg`).
+  - `Images/`: Application images.
+  - `Fonts/`: Custom fonts.
+  - `Raw/`: Additional raw assets.
+- `Views/`: XAML-based pages (e.g., `LoginPage.xaml`, `SignUpPage.xaml`, `CoursePage.xaml`) following MVVM pattern.
+
+**Dependencies:**
+- Firebase for analytics and crash reporting.
+- SignalR for real-time communication.
+
+---
+
+### 2. `SpeakAI.Services`
+Contains business logic and shared models.
+
+**Key Components:**
+- `CourseDetailModel`: Details about the course, topics, and exercises.
+- `Topic`: Represents each course topic.
+- `Exercise`: Stores exercise content and structure.
+
+Built with clean MVVM architecture for maintainability and scalability.
+
+---
+
+## 🚀 Key Features
+
+- ✅ **Cross-Platform Support**: One codebase for Android and iOS via .NET MAUI.
+- 🔥 **Firebase Integration**: Analytics and crash reporting via Firebase.
+- 📡 **Real-Time Communication**: SignalR enables real-time updates.
+- 🎨 **Material Design UI**: Built with UraniumUI for consistency and elegance.
+- 🧩 **Custom Resources**: Easily customize splash screen, icons, images, and fonts.
+
+---
+
+## 🛠️ How to Build and Run
 
 ### Prerequisites
+- Visual Studio 2022 with **.NET MAUI** workload installed.
+- Android and iOS emulators properly configured.
 
-- Visual Studio 2022
-- .NET 8 SDK
-- Android/iOS emulator or physical device for testing
+### Steps
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/xbensieve/english-ai-maui-app.git
+   cd english-ai-maui-app
+2. **Restore Dependencies**:
+   Open the solution in Visual Studio and restore NuGet packages.
+3. **Run the Application**:
+   Select the target platform (Android or iOS) and click the "Run" button in Visual Studio.
 
-### Installation
+---
 
-1. Clone the repository:
-    git clone https://github.com/xbensieve/english-ai-maui-app.git
-2. Open the solution in Visual Studio 2022.
+## Future Enhancements
 
-3. Restore the NuGet packages:
-    dotnet restore
-4. Build and run the project on your preferred platform (Android/iOS).
+- **Cloud Sync**: Implement support for syncing user progress across devices, ensuring a seamless experience for users on different platforms.
+  
+- **Push Notifications**: Integrate **Firebase Cloud Messaging** (FCM) to deliver real-time notifications to users, enhancing engagement and communication.
 
-### Project Structure
+- **Localization**: Expand the application's accessibility by adding support for multiple languages, aiming to reach a broader global audience.
 
-- **SpeakAI**: Main project containing the .NET MAUI application.
-- **SpeakAI.Services**: Contains service classes and interfaces for API communication and business logic.
 
-### Configuration
+---
 
-- **Firebase**: Ensure you have the `google-services.json` file for Android and the equivalent for iOS in the appropriate directories.
+Contributing
+Contributions are welcome! Please follow these steps:
+1.	Fork the repository.
+2.	Create a feature branch.
+3.	Submit a pull request with a detailed description of your changes.
 
-## Usage
+---
 
-- **Course Management**: Navigate to the course page to browse and enroll in courses.
-- **Exercise Handling**: Select a course and complete the exercises provided.
-- **User Profile Management**: Access the profile page to manage user settings and preferences.
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Acknowledgements
-
-- [CommunityToolkit.Maui](https://github.com/CommunityToolkit/Maui)
-- [Newtonsoft.Json](https://www.newtonsoft.com/json)
-- [Firebase](https://firebase.google.com/)
-- [UraniumUI](https://github.com/enisn/UraniumUI)
-
+License
+This project is licensed under the MIT License. See the LICENSE file for details.
+---
+Contact
+For questions or support, please contact [bennguyen.contact@gmail.com].
