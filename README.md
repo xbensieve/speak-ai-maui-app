@@ -4,7 +4,7 @@
 
 ---
 
-## 📦 Technical Stack
+## Technical Stack
 
 ### Frameworks and Platforms
 - **.NET 8**: Modern and high-performance development platform.
@@ -22,7 +22,7 @@
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ### 1. `SpeakAI` (.NET MAUI Project)
 Contains UI and platform-specific configuration.
@@ -54,17 +54,17 @@ Built with clean MVVM architecture for maintainability and scalability.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-- ✅ **Cross-Platform Support**: One codebase for Android and iOS via .NET MAUI.
-- 🔥 **Firebase Integration**: Analytics and crash reporting via Firebase.
-- 📡 **Real-Time Communication**: SignalR enables real-time updates.
-- 🎨 **Material Design UI**: Built with UraniumUI for consistency and elegance.
-- 🧩 **Custom Resources**: Easily customize splash screen, icons, images, and fonts.
+- **Cross-Platform Support**: One codebase for Android and iOS via .NET MAUI.
+- **Firebase Integration**: Analytics and crash reporting via Firebase.
+- **Real-Time Communication**: SignalR enables real-time updates.
+- **Material Design UI**: Built with UraniumUI for consistency and elegance.
+- **Custom Resources**: Easily customize splash screen, icons, images, and fonts.
 
 ---
 
-## 🛠️ How to Build and Run
+## How to Build and Run
 
 ### Prerequisites
 - Visual Studio 2022 with **.NET MAUI** workload installed.
